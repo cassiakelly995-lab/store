@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROMPTUS Store — Prompts Profissionais</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <style>
+        :root {
+            --bg: #030305; --card: #0a0a10; --card2: #0f0f18;
+            --gold: #bf953f; --gold-light: #fcf6ba;
+            --gold-grad: linear-gradient(135deg, #bf953f 0%, #fcf6ba 50%, #b38728 100%);
+            --border: rgba(191,149,63,0.14); --border-h: rgba(191,149,63,0.4);
+            --text: #f0ede8; --sub: rgba(240,237,232,0.45); --accent: rgba(191,149,63,0.07);
+            --green: #27ae60; --red: #e74c3c;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
+        body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse 70% 50% at 50% -10%, rgba(191,149,63,0.05) 0%, transparent 60%); pointer-events: none; z-index: 0; }
+
+        /* PÁGINAS */
+        .page { display: none; min-height: 100vh; position: relative; z-index: 1; }
+        .page.ativa { display: block; }
+
+        /* ══ NAVBAR ══ */
+        .navbar { display: flex; align-items: center; justify-content: space-between; padding: 18px 48px; border-bottom: 1px solid var(--border); background: rgba(3,3,5,0.9); backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 200; flex-wrap: wrap; gap: 12px; }
+        .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 900; background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
+        .nav-logo span { font-size: 11px; font-family: 'DM Sans', sans-serif; font-weight: 600; letter-spacing: 3px; color: var(--sub); -webkit-text-fill-color: var(--sub); }
+        .nav-right { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+        .nav-btn { background: none; border: 1px solid var(--border); color: var(--sub); padding: 8px 18px; border-radius: 3px; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 1px; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
+        .nav-btn:hover { border-color: var(--gold); color: var(--gold); }
+        .nav-btn.gold { background: var(--gold-grad); color: #000; border-color: transparent; }
+        .nav-user { font-size: 12px; font-weight: 600; color: var(--gold); background: var(--accent); border: 1px solid var(--border); border-radius: 20px; padding: 7px 16px; }
+
+        /* ══ HERO LOJA ══ */
+        .hero { padding: 80px 48px 60px; max-width: 1160px; margin: 0 auto; text-align: center; }
+        .hero-kicker { font-size: 9px; font-weight: 700; letter-spacing: 6px; color: var(--gold); text-transform: uppercase; margin-bottom: 18px; }
+        .hero-titulo { font-family: 'Cormorant Garamond', serif; font-size: clamp(38px, 6vw, 72px); font-weight: 900; line-height: 1.1; margin-bottom: 18px; }
+        .hero-titulo em { font-style: italic; background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-sub { font-size: 15px; color: var(--sub); max-width: 520px; margin: 0 auto 14px; line-height: 1.8; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(39,174,96,0.1); border: 1px solid rgba(39,174,96,0.25); border-radius: 20px; padding: 6px 16px; font-size: 10px; font-weight: 700; color: var(--green); letter-spacing: 2px; text-transform: uppercase; margin-top: 12px; }
+
+        /* ══ FILTROS ══ */
+        .filtros-wrap { max-width: 1160px; margin: 0 auto; padding: 0 48px 30px; display: flex; gap: 8px; flex-wrap: wrap; }
+        .filtro { background: var(--card); border: 1px solid var(--border); border-radius: 30px; padding: 8px 18px; font-size: 11px; font-weight: 600; color: var(--sub); cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+        .filtro:hover { border-color: var(--gold); color: var(--gold); }
+        .filtro.ativo { background: var(--gold-grad); color: #000; border-color: transparent; }
+
+        /* BUSCA */
+        .busca-wrap { max-width: 1160px; margin: 0 auto; padding: 0 48px 24px; }
+        .busca { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 14px 20px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; transition: 0.3s; }
+        .busca::placeholder { color: var(--sub); }
+        .busca:focus { border-color: var(--gold); }
+
+        /* ══ GRID DE PROMPTS ══ */
+        .grid-section { max-width: 1160px; margin: 0 auto; padding: 0 48px 80px; }
+        .grid-label { font-size: 9px; font-weight: 700; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+        .grid-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+
+        /* ══ CARD DE PROMPT ══ */
+        .pcard { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: 0.3s; position: relative; animation: fadeUp 0.4s ease both; }
+        .pcard:hover { border-color: var(--border-h); transform: translateY(-3px); }
+        .pcard-top { padding: 22px 22px 16px; }
+        .pcard-area { font-size: 9px; font-weight: 700; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
+        .pcard-titulo { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+        .pcard-desc { font-size: 12px; color: var(--sub); line-height: 1.6; margin-bottom: 14px; }
+
+        /* PREVIEW COM CADEADO */
+        .pcard-preview { position: relative; background: #000; border: 1px solid var(--border); border-radius: 4px; margin: 0 22px 16px; overflow: hidden; }
+        .pcard-preview-texto { font-family: 'Courier New', monospace; font-size: 11px; color: rgba(252,246,186,0.5); line-height: 1.6; padding: 12px 14px; white-space: pre-wrap; }
+        .pcard-preview-blur { position: absolute; bottom: 0; left: 0; right: 0; height: 55px; background: linear-gradient(transparent, #000); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px; }
+        .lock-pill { display: flex; align-items: center; gap: 5px; background: rgba(191,149,63,0.12); border: 1px solid rgba(191,149,63,0.3); border-radius: 20px; padding: 4px 12px; font-size: 9px; font-weight: 700; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; }
+
+        /* CARD BOTTOM */
+        .pcard-bottom { padding: 14px 22px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+        .pcard-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+        .tag { font-size: 8px; font-weight: 700; padding: 3px 9px; border-radius: 20px; background: var(--accent); border: 1px solid var(--border); color: var(--sub); text-transform: uppercase; }
+        .tag.nivel-basico { color: #3498db; border-color: rgba(52,152,219,0.3); background: rgba(52,152,219,0.08); }
+        .tag.nivel-inter { color: #f39c12; border-color: rgba(243,156,18,0.3); background: rgba(243,156,18,0.08); }
+        .tag.nivel-avancado { color: #e74c3c; border-color: rgba(231,76,60,0.3); background: rgba(231,76,60,0.08); }
+        .tag.nivel-premium { color: var(--gold); border-color: rgba(191,149,63,0.3); background: rgba(191,149,63,0.08); }
+        .pcard-preco { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .btn-comprar { background: var(--gold-grad); color: #000; border: none; padding: 10px 20px; border-radius: 3px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: 0.3s; white-space: nowrap; }
+        .btn-comprar:hover { filter: brightness(1.15); }
+
+        /* ══ MODAL COMPRA ══ */
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.94); z-index: 500; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .overlay.show { display: flex; }
+        .modal { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 40px; max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; animation: fadeUp 0.3s ease both; }
+        .modal::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--gold-grad); border-radius: 10px 10px 0 0; }
+        .modal-fechar { position: absolute; top: 14px; right: 18px; background: none; border: none; color: var(--sub); font-size: 24px; cursor: pointer; transition: 0.2s; }
+        .modal-fechar:hover { color: var(--text); }
+        .modal-step { display: none; }
+        .modal-step.ativo { display: block; }
+
+        /* STEP 1 — CADASTRO */
+        .modal-kicker { font-size: 9px; font-weight: 700; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
+        .modal-titulo { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+        .modal-sub { font-size: 13px; color: var(--sub); line-height: 1.7; margin-bottom: 24px; }
+        .inp { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 4px; padding: 14px 16px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; transition: 0.3s; margin-bottom: 12px; }
+        .inp::placeholder { color: var(--sub); }
+        .inp:focus { border-color: var(--gold); }
+        .radio-group { display: flex; gap: 10px; margin-bottom: 16px; }
+        .radio-opt { flex: 1; border: 1px solid var(--border); border-radius: 4px; padding: 12px; cursor: pointer; text-align: center; transition: 0.3s; }
+        .radio-opt.sel { border-color: var(--gold); background: var(--accent); }
+        .radio-opt-icon { font-size: 20px; margin-bottom: 4px; }
+        .radio-opt-label { font-size: 11px; font-weight: 600; color: var(--sub); }
+        .radio-opt.sel .radio-opt-label { color: var(--gold); }
+        .btn-full { width: 100%; background: var(--gold-grad); color: #000; border: none; padding: 16px; border-radius: 4px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; transition: 0.3s; margin-top: 6px; }
+        .btn-full:hover { filter: brightness(1.15); }
+        .btn-full.green { background: linear-gradient(135deg, #27ae60, #52c452); }
+        .btn-full.copied { background: linear-gradient(135deg, #27ae60, #52c452); }
+
+        /* STEP 2 — PIX */
+        .prompt-resumo { background: var(--card2); border: 1px solid var(--border); border-radius: 6px; padding: 16px; margin-bottom: 20px; }
+        .prompt-resumo-nome { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+        .prompt-resumo-preco { font-size: 28px; font-family: 'Cormorant Garamond', serif; font-weight: 700; background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .pix-box { background: #000; border: 1px solid rgba(191,149,63,0.2); border-radius: 6px; padding: 18px; margin-bottom: 16px; text-align: center; }
+        .pix-lbl { font-size: 9px; font-weight: 700; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
+        .pix-key { font-size: 18px; font-weight: 700; color: var(--text); letter-spacing: 2px; margin-bottom: 6px; }
+        .pix-nome { font-size: 11px; color: var(--sub); }
+        .aviso-entrega { font-size: 12px; color: var(--sub); line-height: 1.7; text-align: center; margin-top: 16px; }
+        .aviso-entrega strong { color: var(--gold); }
+
+        /* STEP 3 — AGUARDANDO */
+        .aguardando-box { text-align: center; padding: 20px 0; }
+        .aguardando-icon { font-size: 50px; margin-bottom: 16px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
+        .aguardando-titulo { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 700; margin-bottom: 10px; }
+        .aguardando-sub { font-size: 13px; color: var(--sub); line-height: 1.7; }
+
+        /* ══ PAINEL ADMIN ══ */
+        #page-admin { background: var(--bg); }
+        .admin-header { padding: 30px 40px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
+        .admin-titulo { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; }
+        .admin-titulo em { font-style: italic; background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .admin-tabs { display: flex; gap: 8px; padding: 20px 40px 0; border-bottom: 1px solid var(--border); }
+        .admin-tab { background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 20px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700; color: var(--sub); cursor: pointer; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; margin-bottom: -1px; }
+        .admin-tab.ativo { color: var(--gold); border-bottom-color: var(--gold); }
+        .admin-content { padding: 30px 40px; }
+        .admin-panel { display: none; }
+        .admin-panel.ativo { display: block; }
+
+        /* PEDIDOS */
+        .pedidos-grid { display: flex; flex-direction: column; gap: 12px; }
+        .pedido-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; transition: 0.3s; }
+        .pedido-card:hover { border-color: var(--border-h); }
+        .pedido-info h3 { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+        .pedido-meta { font-size: 11px; color: var(--sub); display: flex; gap: 14px; flex-wrap: wrap; }
+        .pedido-meta span { display: flex; align-items: center; gap: 4px; }
+        .pedido-preco { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .pedido-status { font-size: 9px; font-weight: 700; letter-spacing: 2px; padding: 5px 12px; border-radius: 20px; text-transform: uppercase; }
+        .status-pendente { background: rgba(243,156,18,0.12); border: 1px solid rgba(243,156,18,0.3); color: #f39c12; }
+        .status-entregue { background: rgba(39,174,96,0.12); border: 1px solid rgba(39,174,96,0.3); color: var(--green); }
+        .pedido-acoes { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn-entregar { background: var(--gold-grad); color: #000; border: none; padding: 10px 18px; border-radius: 3px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
+        .btn-entregar:hover { filter: brightness(1.15); }
+        .btn-ver-pedido { background: none; color: var(--gold); border: 1px solid rgba(191,149,63,0.3); padding: 10px 18px; border-radius: 3px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
+        .btn-ver-pedido:hover { background: var(--accent); }
+
+        /* ADICIONAR PROMPT */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .form-full { grid-column: 1 / -1; }
+        .inp-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; color: var(--sub); text-transform: uppercase; margin-bottom: 6px; display: block; }
+        textarea.inp { resize: vertical; min-height: 120px; }
+        select.inp { appearance: none; cursor: pointer; }
+
+        /* STATS ADMIN */
+        .stats-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-bottom: 30px; }
+        .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+        .stat-card-num { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 700; background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 6px; }
+        .stat-card-label { font-size: 10px; color: var(--sub); letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+
+        /* LOGIN ADMIN */
+        #page-admin-login { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: var(--bg); }
+        .admin-login-box { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 40px; width: 100%; max-width: 360px; text-align: center; position: relative; }
+        .admin-login-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--gold-grad); }
+
+        /* TOAST */
+        #toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--gold-grad); color: #000; padding: 13px 26px; border-radius: 4px; font-size: 10px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; opacity: 0; transition: 0.3s; z-index: 9999; pointer-events: none; white-space: nowrap; }
+        #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        .vazio { grid-column: 1/-1; text-align: center; padding: 80px 20px; color: var(--sub); font-size: 13px; letter-spacing: 2px; }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 640px) {
+            .navbar, .hero, .filtros-wrap, .busca-wrap, .grid-section { padding-left: 20px; padding-right: 20px; }
+            .grid { grid-template-columns: 1fr; }
+            .modal { padding: 28px 20px; }
+            .admin-header, .admin-content { padding-left: 20px; padding-right: 20px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .radio-group { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- OVERLAY COMPRA -->
+<div class="overlay" id="overlay-compra">
+    <div class="modal">
+        <button class="modal-fechar" onclick="fecharOverlay()">×</button>
+
+        <!-- STEP 1: DADOS DO CLIENTE -->
+        <div class="modal-step ativo" id="step1">
+            <div class="modal-kicker">Quase lá!</div>
+            <div class="modal-titulo" id="s1-titulo">Petição Inicial</div>
+            <div class="modal-sub">Preencha seus dados para receber o prompt após o pagamento.</div>
+
+            <input class="inp" type="text" id="s1-nome" placeholder="Seu nome completo">
+            <input class="inp" type="email" id="s1-email" placeholder="Seu e-mail">
+            <input class="inp" type="tel" id="s1-whats" placeholder="WhatsApp com DDD">
+
+            <div style="margin-bottom:10px;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--sub);text-transform:uppercase;">Como quer receber o prompt?</div>
+            <div class="radio-group">
+                <div class="radio-opt sel" id="opt-email" onclick="selecionarEntrega('email')">
+                    <div class="radio-opt-icon">📧</div>
+                    <div class="radio-opt-label">E-mail</div>
+                </div>
+                <div class="radio-opt" id="opt-whats" onclick="selecionarEntrega('whats')">
+                    <div class="radio-opt-icon">💬</div>
+                    <div class="radio-opt-label">WhatsApp</div>
+                </div>
+                <div class="radio-opt" id="opt-ambos" onclick="selecionarEntrega('ambos')">
+                    <div class="radio-opt-icon">✅</div>
+                    <div class="radio-opt-label">Os dois</div>
+                </div>
+            </div>
+
+            <div id="s1-erro" style="font-size:11px;color:var(--red);margin-bottom:10px;min-height:16px;"></div>
+            <button class="btn-full" onclick="irParaPix()">CONTINUAR PARA PAGAMENTO →</button>
+        </div>
+
+        <!-- STEP 2: PIX -->
+        <div class="modal-step" id="step2">
+            <div class="modal-kicker">Pagamento</div>
+            <div class="modal-titulo">Pagar com Pix</div>
+            <div class="modal-sub">Faça o Pix abaixo. Seu prompt será enviado após confirmação.</div>
+
+            <div class="prompt-resumo">
+                <div class="prompt-resumo-nome" id="s2-titulo"></div>
+                <div class="prompt-resumo-preco" id="s2-preco"></div>
+            </div>
+
+            <div class="pix-box">
+                <div class="pix-lbl">Chave Pix — CPF</div>
+                <div class="pix-key">39521484829</div>
+                <div class="pix-nome">Cássia Kelly Lins Reis</div>
+            </div>
+
+            <button class="btn-full" id="btn-copiar-pix" onclick="copiarPix()">📋 COPIAR CHAVE PIX</button>
+
+            <div class="aviso-entrega">
+                Após pagar, clique no botão abaixo.<br>
+                <strong>Você receberá o prompt em breve via <span id="s2-entrega"></span>.</strong>
+            </div>
+
+            <button class="btn-full" style="margin-top:16px;background:rgba(39,174,96,0.15);color:var(--green);border:1px solid rgba(39,174,96,0.3);" onclick="confirmarPagamento()">✅ JÁ FIZ O PAGAMENTO</button>
+        </div>
+
+        <!-- STEP 3: AGUARDANDO -->
+        <div class="modal-step" id="step3">
+            <div class="aguardando-box">
+                <div class="aguardando-icon">⏳</div>
+                <div class="aguardando-titulo">Pedido recebido!</div>
+                <div class="aguardando-sub">
+                    Seu pedido foi registrado com sucesso.<br><br>
+                    Estamos verificando o pagamento e em breve você receberá o prompt via <strong id="s3-entrega" style="color:var(--gold);"></strong>.<br><br>
+                    Tempo médio: <strong style="color:var(--gold);">até 1 hora</strong>.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- OVERLAY VER PEDIDO (ADMIN) -->
+<div class="overlay" id="overlay-pedido">
+    <div class="modal">
+        <button class="modal-fechar" onclick="fecharOverlayPedido()">×</button>
+        <div class="modal-kicker">Detalhes do Pedido</div>
+        <div class="modal-titulo" id="op-prompt"></div>
+        <div style="margin:14px 0;padding:14px;background:var(--card2);border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--sub);line-height:1.7;">
+            <div><strong style="color:var(--text);">Cliente:</strong> <span id="op-nome"></span></div>
+            <div><strong style="color:var(--text);">E-mail:</strong> <span id="op-email"></span></div>
+            <div><strong style="color:var(--text);">WhatsApp:</strong> <span id="op-whats"></span></div>
+            <div><strong style="color:var(--text);">Entrega:</strong> <span id="op-entrega"></span></div>
+            <div><strong style="color:var(--text);">Valor:</strong> <span id="op-preco"></span></div>
+            <div><strong style="color:var(--text);">Data:</strong> <span id="op-data"></span></div>
+        </div>
+        <div style="margin-bottom:10px;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--sub);text-transform:uppercase;">Prompt completo para enviar:</div>
+        <div id="op-prompt-completo" style="background:#000;border:1px solid var(--border);border-radius:4px;padding:16px;font-family:'Courier New',monospace;font-size:11px;color:#fcf6ba;line-height:1.7;white-space:pre-wrap;max-height:220px;overflow-y:auto;margin-bottom:14px;"></div>
+        <button class="btn-full" id="btn-copiar-prompt-admin" onclick="copiarPromptAdmin()">📋 COPIAR PROMPT PARA ENVIAR</button>
+        <button class="btn-full" style="margin-top:10px;" id="btn-marcar-entregue" onclick="marcarEntregue()">✅ MARCAR COMO ENTREGUE</button>
+    </div>
+</div>
+
+<!-- ══════════════ PÁGINA: LOJA ══════════════ -->
+<div id="page-loja" class="page ativa">
+    <nav class="navbar">
+        <div class="nav-logo" onclick="irParaLoja()">PROMPTUS <span>STORE</span></div>
+        <div class="nav-right">
+            <button class="nav-btn" onclick="irParaAdminLogin()">🔐 Admin</button>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-kicker">Prompts Profissionais Brasileiros</div>
+        <h1 class="hero-titulo">Prompts que resolvem<br><em>dores reais.</em></h1>
+        <p class="hero-sub">Cada prompt foi criado por especialista, testado contra alucinações e calibrado para o mercado brasileiro. Compre só o que precisa.</p>
+        <div class="hero-badge">🛡️ Anti-alucinação · Anti-mentira · Uso universal</div>
+    </div>
+
+    <div class="busca-wrap">
+        <input class="busca" type="text" id="busca" placeholder="🔍  Buscar prompt... ex: petição, laudo, contrato, proposta" oninput="filtrarPrompts()">
+    </div>
+
+    <div class="filtros-wrap" id="filtros-wrap"></div>
+
+    <div class="grid-section">
+        <div class="grid-label" id="grid-label">Todos os Prompts</div>
+        <div class="grid" id="prompts-grid"></div>
+    </div>
+</div>
+
+<!-- ══════════════ PÁGINA: ADMIN LOGIN ══════════════ -->
+<div id="page-admin-login" class="page" style="display:none;">
+    <div class="admin-login-box">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:900;background:var(--gold-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px;">PROMPTUS</div>
+        <div style="font-size:9px;letter-spacing:4px;color:var(--sub);text-transform:uppercase;margin-bottom:32px;">Painel Admin</div>
+        <input class="inp" type="password" id="admin-senha" placeholder="Senha de administrador" onkeydown="if(event.key==='Enter') loginAdmin()">
+        <div id="admin-erro" style="font-size:11px;color:var(--red);margin-bottom:10px;min-height:16px;"></div>
+        <button class="btn-full" onclick="loginAdmin()">ENTRAR</button>
+        <div style="margin-top:16px;font-size:11px;color:var(--sub);cursor:pointer;" onclick="irParaLoja()">← Voltar à loja</div>
+    </div>
+</div>
+
+<!-- ══════════════ PÁGINA: ADMIN PAINEL ══════════════ -->
+<div id="page-admin" class="page" style="display:none;">
+    <nav class="navbar">
+        <div class="nav-logo">PROMPTUS <span>ADMIN</span></div>
+        <div class="nav-right">
+            <button class="nav-btn" onclick="irParaLoja()">← Ver Loja</button>
+            <button class="nav-btn" onclick="logoutAdmin()">SAIR</button>
+        </div>
+    </nav>
+
+    <div class="admin-header">
+        <div class="admin-titulo">Painel de <em>Gestão</em></div>
+        <div class="stats-cards" style="margin:0;flex:1;justify-content:flex-end;display:flex;gap:14px;flex-wrap:wrap;">
+            <div class="stat-card" style="min-width:140px;">
+                <div class="stat-card-num" id="stat-pedidos">0</div>
+                <div class="stat-card-label">Pedidos totais</div>
+            </div>
+            <div class="stat-card" style="min-width:140px;">
+                <div class="stat-card-num" id="stat-pendentes">0</div>
+                <div class="stat-card-label">Pendentes</div>
+            </div>
+            <div class="stat-card" style="min-width:140px;">
+                <div class="stat-card-num" id="stat-receita">R$0</div>
+                <div class="stat-card-label">Receita total</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-tabs">
+        <button class="admin-tab ativo" onclick="mudarTab('pedidos', this)">📦 Pedidos</button>
+        <button class="admin-tab" onclick="mudarTab('prompts', this)">📝 Prompts</button>
+        <button class="admin-tab" onclick="mudarTab('adicionar', this)">➕ Adicionar Prompt</button>
+    </div>
+
+    <div class="admin-content">
+        <!-- PEDIDOS -->
+        <div class="admin-panel ativo" id="panel-pedidos">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
+                <div style="font-size:13px;color:var(--sub);">Pedidos recentes (clique em Ver para copiar o prompt e entregar)</div>
+                <button class="nav-btn" onclick="carregarPedidos()" style="font-size:10px;">🔄 Atualizar</button>
+            </div>
+            <div class="pedidos-grid" id="pedidos-grid">
+                <div style="text-align:center;padding:40px;color:var(--sub);">Carregando pedidos...</div>
+            </div>
+        </div>
+
+        <!-- LISTA PROMPTS ADMIN -->
+        <div class="admin-panel" id="panel-prompts">
+            <div style="margin-bottom:20px;font-size:13px;color:var(--sub);">Prompts cadastrados. Clique em um para editar.</div>
+            <div class="grid" id="admin-prompts-grid"></div>
+        </div>
+
+        <!-- ADICIONAR PROMPT -->
+        <div class="admin-panel" id="panel-adicionar">
+            <div style="max-width:680px;">
+                <div style="margin-bottom:24px;font-size:13px;color:var(--sub);">Preencha os dados do novo prompt:</div>
+                <div class="form-grid">
+                    <div>
+                        <label class="inp-label">Título do prompt</label>
+                        <input class="inp" type="text" id="f-titulo" placeholder="Ex: Petição Inicial Trabalhista">
+                    </div>
+                    <div>
+                        <label class="inp-label">Área</label>
+                        <select class="inp" id="f-area">
+                            <option value="juridico">⚖️ Jurídico</option>
+                            <option value="medico">🏥 Médico</option>
+                            <option value="negocios">💼 Negócios e RH</option>
+                            <option value="marketing">📣 Marketing</option>
+                            <option value="contabil">📊 Contábil</option>
+                            <option value="psicologia">🧠 Psicologia</option>
+                            <option value="educacao">📚 Educação</option>
+                            <option value="engenharia">🔧 Engenharia</option>
+                            <option value="ti">💻 TI</option>
+                            <option value="outro">✳️ Outro</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="inp-label">Nível de complexidade</label>
+                        <select class="inp" id="f-nivel">
+                            <option value="basico">Básico — R$9,90</option>
+                            <option value="intermediario">Intermediário — R$19,90</option>
+                            <option value="avancado">Avançado — R$29,90</option>
+                            <option value="premium">Premium — R$49,90</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="inp-label">Tag (categoria)</label>
+                        <input class="inp" type="text" id="f-tag" placeholder="Ex: Petição, Laudo, Contrato">
+                    </div>
+                    <div class="form-full">
+                        <label class="inp-label">Descrição (o que este prompt resolve?)</label>
+                        <textarea class="inp" id="f-desc" placeholder="Explique claramente o que o prompt faz e qual dor resolve..." rows="3"></textarea>
+                    </div>
+                    <div class="form-full">
+                        <label class="inp-label">Preview do prompt (primeiras linhas visíveis antes da compra)</label>
+                        <textarea class="inp" id="f-preview" placeholder="PERSONA: Você é advogado(a) trabalhista..." rows="3"></textarea>
+                    </div>
+                    <div class="form-full">
+                        <label class="inp-label">Prompt completo (entregue após pagamento)</label>
+                        <textarea class="inp" id="f-prompt" placeholder="Prompt completo com todas as instruções..." rows="8"></textarea>
+                    </div>
+                </div>
+                <div id="f-erro" style="font-size:11px;color:var(--red);margin:10px 0;min-height:16px;"></div>
+                <button class="btn-full" onclick="salvarPrompt()">✅ SALVAR PROMPT NA LOJA</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ── FIREBASE ──
+const fConfig = { databaseURL: "https://cassia-v9-default-rtdb.firebaseio.com" };
+firebase.initializeApp(fConfig);
+const db = firebase.database();
+
+// ── CONFIG ──
+const ADMIN_SENHA = 'cassia2025';
+const PIX_CHAVE = '39521484829';
+const PIX_NOME = 'Cássia Kelly Lins Reis';
+const PRECOS = { basico: 9.90, intermediario: 19.90, avancado: 29.90, premium: 49.90 };
+const PRECOS_LABEL = { basico: 'R$9,90', intermediario: 'R$19,90', avancado: 'R$29,90', premium: 'R$49,90' };
+const NIVEIS_TAG = { basico: 'nivel-basico', intermediario: 'nivel-inter', avancado: 'nivel-avancado', premium: 'nivel-premium' };
+const NIVEIS_LABEL = { basico: 'Básico', intermediario: 'Intermediário', avancado: 'Avançado', premium: 'Premium' };
+
+const AREAS = [
+    {key:'todos',label:'Todos',emoji:'✨'},
+    {key:'juridico',label:'Jurídico',emoji:'⚖️'},
+    {key:'medico',label:'Médico',emoji:'🏥'},
+    {key:'negocios',label:'Negócios',emoji:'💼'},
+    {key:'marketing',label:'Marketing',emoji:'📣'},
+    {key:'contabil',label:'Contábil',emoji:'📊'},
+    {key:'psicologia',label:'Psicologia',emoji:'🧠'},
+    {key:'educacao',label:'Educação',emoji:'📚'},
+    {key:'engenharia',label:'Engenharia',emoji:'🔧'},
+    {key:'ti',label:'TI',emoji:'💻'},
+    {key:'outro',label:'Outro',emoji:'✳️'},
+];
+
+// ── ANTI-ALUCINAÇÃO (padrão adicionado a todos os prompts) ──
+const ANTI = `\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO — OBRIGATÓRIAS:\n⛔ NUNCA invente dados, nomes, datas, valores ou fatos não fornecidos.\n⛔ NUNCA cite leis ou jurisprudência inexistentes.\n⛔ Se faltar informação essencial, escreva: ⚠️ DADO AUSENTE: [o que falta].\n✅ Use EXCLUSIVAMENTE os dados fornecidos abaixo.\n✅ Em caso de dúvida, sinalize claramente.`;
+
+// ── PROMPTS INICIAIS (base de mercado brasileiro) ──
+const PROMPTS_INICIAIS = [
+{titulo:'Petição Inicial Trabalhista',area:'juridico',nivel:'avancado',tag:'Petição',desc:'Gera petição trabalhista completa com CLT, Súmulas do TST e jurisprudência. Resolve a dor de advogados que perdem horas formatando peças.',preview:'PERSONA: Você é advogado(a) trabalhista sênior com 20 anos de TRT.\nTAREFA: Redigir petição inicial trabalhista completa.\nESTRUTURA:\n1. Qualificação das partes\n2. Dos fatos...',prompt:`PERSONA: Você é advogado(a) trabalhista sênior com 20 anos de experiência no TRT.\nTAREFA: Redigir petição inicial trabalhista completa e tecnicamente impecável.\nESTRUTURA OBRIGATÓRIA:\n1. Qualificação das partes\n2. Dos fatos (cronológico)\n3. Do direito (cite CLT e Súmulas TST específicas)\n4. Dos pedidos (itemize cada um com valor)\n5. Do valor da causa${ANTI}\nDADOS DO CASO:\n[INSIRA AQUI: partes, fatos, verbas e pedidos]`},
+{titulo:'Laudo Médico Completo',area:'medico',nivel:'avancado',tag:'Laudo',desc:'Laudo técnico estruturado com anamnese, CID-10 e conduta. Para médicos que precisam de documentação impecável e rápida.',preview:'PERSONA: Você é médico(a) especialista com 20 anos de experiência clínica.\nTAREFA: Redigir laudo médico completo.\nESTRUTURA:\n1. Identificação do paciente\n2. Anamnese...',prompt:`PERSONA: Você é médico(a) especialista com 20 anos de experiência clínica.\nTAREFA: Redigir laudo médico completo e impecável.\nESTRUTURA:\n1. Identificação do paciente\n2. Queixa principal\n3. Anamnese e histórico\n4. Exame físico\n5. Hipótese diagnóstica e CID-10\n6. Conduta médica${ANTI}\nDADOS:\n[INSIRA: nome, idade, queixas, exames e histórico]`},
+{titulo:'Proposta Comercial de Alto Impacto',area:'negocios',nivel:'intermediario',tag:'Vendas',desc:'Proposta persuasiva focada em valor, não preço. Para empresários que perdem vendas por propostas fracas e genéricas.',preview:'PERSONA: Você é consultor(a) comercial sênior com 20 anos em vendas B2B.\nTAREFA: Redigir proposta comercial profissional.\nESTRUTURA:\n1. Diagnóstico do problema...',prompt:`PERSONA: Você é consultor(a) comercial sênior com 20 anos em vendas B2B.\nTAREFA: Redigir proposta comercial profissional e persuasiva.\nESTRUTURA:\n1. Apresentação executiva\n2. Diagnóstico do problema do cliente\n3. Solução proposta\n4. Benefícios e ROI estimado\n5. Investimento e condições\n6. Próximos passos e prazo${ANTI}\nDADOS:\n[INSIRA: empresa, produto, cliente e valor]`},
+{titulo:'Copy para Página de Vendas',area:'marketing',nivel:'avancado',tag:'Copywriting',desc:'Copy de alta conversão com gatilhos mentais e CTA irresistível. Para quem quer vender mais sem contratar agência.',preview:'PERSONA: Você é copywriter sênior especialista em páginas de vendas.\nTAREFA: Escrever copy completa.\nESTRUTURA:\n1. Headline impactante\n2. Identificação do problema...',prompt:`PERSONA: Você é copywriter sênior especialista em páginas de alta conversão.\nTAREFA: Escrever copy completa para página de vendas.\nESTRUTURA:\n1. Headline impactante (testa 3 opções)\n2. Subheadline de apoio\n3. Identificação da dor do público\n4. Apresentação da solução\n5. Benefícios (não características)\n6. Prova social\n7. Oferta e garantia\n8. CTA urgente${ANTI}\nDADOS:\n[INSIRA: produto, público, preço e diferenciais]`},
+{titulo:'Parecer Contábil Técnico',area:'contabil',nivel:'avancado',tag:'Parecer',desc:'Parecer com fundamentação NBC e legislação tributária. Para contadores que precisam de documentos sólidos e sem erros.',preview:'PERSONA: Você é contador(a) sênior com CRC ativo e 20 anos de experiência.\nTAREFA: Elaborar parecer contábil técnico.\nESTRUTURA:\n1. Do objeto...',prompt:`PERSONA: Você é contador(a) sênior com CRC ativo e 20 anos de experiência.\nTAREFA: Elaborar parecer contábil técnico fundamentado.\nESTRUTURA:\n1. Do objeto do parecer\n2. Da documentação analisada\n3. Da fundamentação (NBC, IFRS, legislação)\n4. Das constatações\n5. Da conclusão fundamentada${ANTI}\nDADOS:\n[INSIRA: empresa, período, situação e dados contábeis]`},
+{titulo:'Relatório Psicológico Completo',area:'psicologia',nivel:'avancado',tag:'Relatório',desc:'Relatório conforme Resolução CFP 06/2019. Para psicólogos que precisam de documentação clínica impecável.',preview:'PERSONA: Você é psicólogo(a) com CRP ativo e 20 anos de experiência.\nTAREFA: Elaborar relatório psicológico completo.\nBASE: Resolução CFP 06/2019...',prompt:`PERSONA: Você é psicólogo(a) com CRP ativo e 20 anos de experiência clínica.\nTAREFA: Elaborar relatório psicológico completo.\nBASE LEGAL: Resolução CFP 06/2019.\nESTRUTURA:\n1. Identificação e finalidade\n2. Procedimentos utilizados\n3. Análise dos resultados\n4. Conclusão\n5. Assinatura e CRP${ANTI}\nDADOS:\n[INSIRA: paciente, demanda e observações clínicas]`},
+{titulo:'Plano de Aula BNCC',area:'educacao',nivel:'intermediario',tag:'Plano de Aula',desc:'Plano completo com habilidades BNCC e metodologias ativas. Para professores que economizam horas de planejamento.',preview:'PERSONA: Você é pedagogo(a) especialista em currículo.\nTAREFA: Elaborar plano de aula completo.\nBASE: BNCC.\nESTRUTURA:\n1. Objetivos de aprendizagem...',prompt:`PERSONA: Você é pedagogo(a) especialista em currículo e didática.\nTAREFA: Elaborar plano de aula completo e aplicável.\nBASE: BNCC.\nESTRUTURA:\n1. Identificação (disciplina, ano, tema, duração)\n2. Objetivos de aprendizagem\n3. Habilidades BNCC\n4. Sequência didática (início, desenvolvimento, fechamento)\n5. Recursos necessários\n6. Avaliação e critérios${ANTI}\nDADOS:\n[INSIRA: disciplina, ano, tema e contexto da turma]`},
+{titulo:'Laudo Técnico de Vistoria',area:'engenharia',nivel:'avancado',tag:'Laudo',desc:'Laudo de vistoria com base ABNT. Para engenheiros que precisam de documentação técnica profissional e sem risco.',preview:'PERSONA: Você é engenheiro(a) civil sênior com CREA ativo.\nTAREFA: Elaborar laudo técnico de vistoria.\nREFERÊNCIAS: NBR aplicável...',prompt:`PERSONA: Você é engenheiro(a) civil sênior com CREA ativo.\nTAREFA: Elaborar laudo técnico de vistoria.\nREFERÊNCIAS: NBR aplicável e legislação municipal.\nESTRUTURA:\n1. Identificação do imóvel e solicitante\n2. Objeto e finalidade\n3. Metodologia\n4. Descrição do estado da edificação\n5. Análise técnica\n6. Conclusão\n7. Recomendações${ANTI}\nDADOS:\n[INSIRA: endereço, data, finalidade e observações]`},
+{titulo:'Documento de Requisitos de Software',area:'ti',nivel:'premium',tag:'Documentação',desc:'Especificação técnica padrão IEEE 830 com requisitos funcionais e não funcionais. Para times de TI que precisam de documentação séria.',preview:'PERSONA: Você é arquiteto(a) de software sênior com 20 anos de experiência.\nTAREFA: Elaborar SRS completo.\nPADRÃO: IEEE 830...',prompt:`PERSONA: Você é arquiteto(a) de software sênior com 20 anos de experiência.\nTAREFA: Elaborar documento de requisitos de software (SRS).\nPADRÃO: IEEE 830.\nESTRUTURA:\n1. Visão geral do sistema\n2. Requisitos funcionais\n3. Requisitos não funcionais\n4. Restrições\n5. Casos de uso principais${ANTI}\nDADOS:\n[INSIRA: sistema, stakeholders e funcionalidades]`},
+{titulo:'Atestado Médico',area:'medico',nivel:'basico',tag:'Atestado',desc:'Atestado com validade legal conforme CFM. Para médicos que precisam de documentação rápida e correta.',preview:'PERSONA: Você é médico(a) com CRM ativo.\nTAREFA: Redigir atestado médico com plena validade legal.\nBASE: Resolução CFM 1.658/2002...',prompt:`PERSONA: Você é médico(a) com CRM ativo.\nTAREFA: Redigir atestado médico com plena validade legal.\nBASE: Resolução CFM 1.658/2002.\nESTRUTURA:\n1. Identificação do paciente\n2. Diagnóstico ou CID (se autorizado)\n3. Período de afastamento\n4. Recomendações\n5. Dados do médico e CRM${ANTI}\nDADOS:\n[INSIRA: paciente, diagnóstico, período e CRM]`},
+{titulo:'Contrato de Prestação de Serviços',area:'juridico',nivel:'intermediario',tag:'Contrato',desc:'Contrato com cláusulas protetivas baseado no Código Civil. Para quem quer se proteger juridicamente sem pagar advogado.',preview:'PERSONA: Você é advogado(a) civilista especialista em contratos.\nTAREFA: Redigir contrato de prestação de serviços.\nBASE: Código Civil arts. 593-609...',prompt:`PERSONA: Você é advogado(a) civilista especialista em contratos.\nTAREFA: Redigir contrato de prestação de serviços completo.\nBASE: Código Civil arts. 593-609.\nESTRUTURA:\n1. Qualificação das partes\n2. Do objeto\n3. Do prazo\n4. Do valor e pagamento\n5. Das obrigações\n6. Da rescisão e multa\n7. Do foro${ANTI}\nDADOS:\n[INSIRA: partes, objeto, valores e condições]`},
+{titulo:'Sequência de E-mails de Vendas',area:'marketing',nivel:'intermediario',tag:'E-mail Marketing',desc:'5 e-mails que nutrem e convertem leads. Para empresários que querem vender mais no piloto automático.',preview:'PERSONA: Você é especialista em e-mail marketing e copywriting.\nTAREFA: Criar sequência de 5 e-mails de nutrição.\nFLUXO: Boas-vindas → Dor → Solução...',prompt:`PERSONA: Você é especialista em e-mail marketing e copywriting.\nTAREFA: Criar sequência completa de 5 e-mails de nutrição e conversão.\nESTRUTURA DE CADA E-MAIL:\n- Assunto irresistível\n- Abertura que conecta\n- Corpo com valor ou storytelling\n- CTA claro\nFLUXO: E1 boas-vindas → E2 dor → E3 solução → E4 prova → E5 oferta${ANTI}\nDADOS:\n[INSIRA: produto, público e oferta]`},
+{titulo:'Avaliação de Desempenho Completa',area:'negocios',nivel:'intermediario',tag:'RH',desc:'Formulário e relatório de avaliação com PDI. Para gestores que querem dar feedback justo e estruturado.',preview:'PERSONA: Você é especialista em gestão de desempenho.\nTAREFA: Elaborar avaliação de desempenho completa.\nESTRUTURA:\n1. Competências avaliadas...',prompt:`PERSONA: Você é especialista em gestão de desempenho.\nTAREFA: Elaborar avaliação de desempenho completa e justa.\nESTRUTURA:\n1. Identificação do colaborador\n2. Competências avaliadas (com escala 1-5)\n3. Resultados vs. metas\n4. Pontos fortes\n5. Pontos de desenvolvimento\n6. PDI (Plano de Desenvolvimento Individual)\n7. Feedback e próximos passos${ANTI}\nDADOS:\n[INSIRA: colaborador, cargo, período e metas]`},
+{titulo:'Planejamento Tributário Empresarial',area:'contabil',nivel:'premium',tag:'Tributário',desc:'Planejamento tributário legal para redução da carga fiscal. Para empresas que pagam imposto a mais sem saber.',preview:'PERSONA: Você é contador(a) tributarista sênior.\nTAREFA: Elaborar planejamento tributário legal.\nBASE: IRPJ, CSLL, PIS, COFINS...',prompt:`PERSONA: Você é contador(a) tributarista sênior.\nTAREFA: Elaborar planejamento tributário legal e eficiente.\nBASE LEGAL: IRPJ, CSLL, PIS, COFINS e legislação vigente.\nESTRUTURA:\n1. Diagnóstico fiscal atual\n2. Comparativo de regimes (Simples, Lucro Presumido, Real)\n3. Oportunidades de economia identificadas\n4. Recomendações legais\n5. Projeção de economia${ANTI}\nDADOS:\n[INSIRA: empresa, faturamento e regime atual]`},
+{titulo:'Laudo Psicológico para INSS',area:'psicologia',nivel:'premium',tag:'Laudo Pericial',desc:'Laudo de incapacidade por transtorno mental para benefício previdenciário. Para psicólogos que atendem pacientes em demanda judicial.',preview:'PERSONA: Você é psicólogo(a) com CRP ativo especializado em avaliação pericial.\nTAREFA: Elaborar laudo para afastamento e benefício INSS...',prompt:`PERSONA: Você é psicólogo(a) com CRP ativo especializado em avaliação pericial.\nTAREFA: Elaborar laudo psicológico para afastamento e benefício INSS.\nBASE: Lei 8.213/91 e Resolução CFP 06/2019.\nESTRUTURA:\n1. Identificação do periciado\n2. Anamnese psicológica\n3. Histórico de tratamentos\n4. Avaliação do estado mental atual\n5. Diagnóstico CID-10\n6. Impacto na capacidade laborativa\n7. Conclusão e prazo de afastamento${ANTI}\nDADOS:\n[INSIRA: paciente, diagnóstico e histórico]`},
+];
+
+// ── ESTADO ──
+let todosPrompts = [];
+let areaAtiva = 'todos';
+let pedidoAtual = null;
+let entregaOpc = 'email';
+let pedidoAdminAtual = null;
+
+// ── FIREBASE: CARREGAR PROMPTS ──
+function carregarPrompts() {
+    db.ref('promptus_prompts').once('value').then(snap => {
+        if (!snap.exists()) {
+            // Popula com prompts iniciais
+            PROMPTS_INICIAIS.forEach(p => {
+                db.ref('promptus_prompts').push({ ...p, criadoEm: Date.now() });
+            });
+            setTimeout(carregarPrompts, 1500);
+            return;
+        }
+        todosPrompts = [];
+        snap.forEach(child => {
+            todosPrompts.push({ id: child.key, ...child.val() });
+        });
+        renderFiltros();
+        renderPrompts();
+        renderAdminPrompts();
+    });
+}
+
+// ── RENDER FILTROS ──
+function renderFiltros() {
+    const wrap = document.getElementById('filtros-wrap');
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    AREAS.forEach(a => {
+        const btn = document.createElement('button');
+        btn.className = 'filtro' + (a.key === areaAtiva ? ' ativo' : '');
+        btn.innerText = a.emoji + ' ' + a.label;
+        btn.onclick = () => { areaAtiva = a.key; renderFiltros(); renderPrompts(); };
+        wrap.appendChild(btn);
+    });
+}
+
+// ── RENDER PROMPTS ──
+function renderPrompts() {
+    const busca = (document.getElementById('busca')?.value || '').toLowerCase();
+    const grid = document.getElementById('prompts-grid');
+    const lbl = document.getElementById('grid-label');
+    if (!grid) return;
+
+    let lista = todosPrompts.filter(p => {
+        const mA = areaAtiva === 'todos' || p.area === areaAtiva;
+        const mB = !busca || p.titulo.toLowerCase().includes(busca) || p.desc.toLowerCase().includes(busca) || p.tag.toLowerCase().includes(busca);
+        return mA && mB;
+    });
+
+    const areaLabel = AREAS.find(a => a.key === areaAtiva);
+    if (lbl) lbl.childNodes[0] && (lbl.innerHTML = (areaAtiva === 'todos' ? 'Todos os Prompts' : areaLabel?.label) + ' <span style="opacity:0.4;font-size:10px;">(' + lista.length + ')</span>');
+
+    grid.innerHTML = '';
+    if (lista.length === 0) { grid.innerHTML = '<div class="vazio">Nenhum prompt encontrado.</div>'; return; }
+
+    lista.forEach((p, i) => {
+        const preco = PRECOS_LABEL[p.nivel] || 'R$19,90';
+        const nivelTag = NIVEIS_TAG[p.nivel] || '';
+        const nivelLabel = NIVEIS_LABEL[p.nivel] || '';
+        const areaInfo = AREAS.find(a => a.key === p.area);
+        const card = document.createElement('div');
+        card.className = 'pcard';
+        card.style.animationDelay = (i * 0.04) + 's';
+        card.innerHTML = `
+            <div class="pcard-top">
+                <div class="pcard-area">${areaInfo?.emoji || ''} ${areaInfo?.label || ''}</div>
+                <div class="pcard-titulo">${p.titulo}</div>
+                <div class="pcard-desc">${p.desc}</div>
+            </div>
+            <div class="pcard-preview">
+                <div class="pcard-preview-texto">${p.preview || ''}</div>
+                <div class="pcard-preview-blur">
+                    <div class="lock-pill">🔒 Desbloqueado após compra</div>
+                </div>
+            </div>
+            <div class="pcard-bottom">
+                <div class="pcard-tags">
+                    <span class="tag ${nivelTag}">${nivelLabel}</span>
+                    <span class="tag">${p.tag}</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <span class="pcard-preco">${preco}</span>
+                    <button class="btn-comprar" onclick='abrirCompra(${JSON.stringify(p).replace(/'/g,"&apos;")})'>COMPRAR</button>
+                </div>
+            </div>`;
+        grid.appendChild(card);
+    });
+}
+function filtrarPrompts() { renderPrompts(); }
+
+// ── COMPRA ──
+function abrirCompra(p) {
+    pedidoAtual = p;
+    document.getElementById('s1-titulo').innerText = p.titulo;
+    document.getElementById('s1-erro').innerText = '';
+    document.getElementById('s1-nome').value = '';
+    document.getElementById('s1-email').value = '';
+    document.getElementById('s1-whats').value = '';
+    selecionarEntrega('email');
+    mostrarStep('step1');
+    document.getElementById('overlay-compra').classList.add('show');
+}
+
+function selecionarEntrega(tipo) {
+    entregaOpc = tipo;
+    ['email','whats','ambos'].forEach(t => {
+        document.getElementById('opt-'+t).classList.toggle('sel', t === tipo);
+    });
+}
+
+function irParaPix() {
+    const nome = document.getElementById('s1-nome').value.trim();
+    const email = document.getElementById('s1-email').value.trim();
+    const whats = document.getElementById('s1-whats').value.trim();
+    const erro = document.getElementById('s1-erro');
+
+    if (!nome) { erro.innerText = 'INFORME SEU NOME'; return; }
+    if (!email) { erro.innerText = 'INFORME SEU E-MAIL'; return; }
+    if (!whats) { erro.innerText = 'INFORME SEU WHATSAPP'; return; }
+
+    document.getElementById('s2-titulo').innerText = pedidoAtual.titulo;
+    document.getElementById('s2-preco').innerText = PRECOS_LABEL[pedidoAtual.nivel] || 'R$19,90';
+    const entregaTexto = entregaOpc === 'email' ? 'E-mail' : entregaOpc === 'whats' ? 'WhatsApp' : 'E-mail e WhatsApp';
+    document.getElementById('s2-entrega').innerText = entregaTexto;
+    mostrarStep('step2');
+}
+
+function confirmarPagamento() {
+    const nome = document.getElementById('s1-nome').value.trim();
+    const email = document.getElementById('s1-email').value.trim();
+    const whats = document.getElementById('s1-whats').value.trim();
+    const entregaTexto = entregaOpc === 'email' ? 'E-mail' : entregaOpc === 'whats' ? 'WhatsApp' : 'E-mail e WhatsApp';
+
+    const pedido = {
+        promptId: pedidoAtual.id,
+        promptTitulo: pedidoAtual.titulo,
+        promptCompleto: pedidoAtual.prompt,
+        nome, email, whats,
+        entrega: entregaTexto,
+        preco: PRECOS_LABEL[pedidoAtual.nivel],
+        status: 'pendente',
+        criadoEm: Date.now()
+    };
+
+    db.ref('promptus_pedidos').push(pedido).then(() => {
+        document.getElementById('s3-entrega').innerText = entregaTexto;
+        mostrarStep('step3');
+    }).catch(() => showToast('ERRO AO REGISTRAR. TENTE NOVAMENTE.'));
+}
+
+function mostrarStep(id) {
+    ['step1','step2','step3'].forEach(s => {
+        document.getElementById(s).classList.toggle('ativo', s === id);
+    });
+}
+
+function fecharOverlay() {
+    document.getElementById('overlay-compra').classList.remove('show');
+    setTimeout(() => mostrarStep('step1'), 300);
+}
+
+function copiarPix() {
+    const btn = document.getElementById('btn-copiar-pix');
+    const ok = () => { btn.innerText = '✓ CHAVE COPIADA!'; btn.classList.add('copied'); showToast('CHAVE PIX COPIADA!'); setTimeout(() => { btn.innerText = '📋 COPIAR CHAVE PIX'; btn.classList.remove('copied'); }, 3000); };
+    if (navigator.clipboard) navigator.clipboard.writeText(PIX_CHAVE).then(ok).catch(() => fallback(PIX_CHAVE, ok));
+    else fallback(PIX_CHAVE, ok);
+}
+
+// ── ADMIN ──
+function irParaAdminLogin() { mostrarPagina('page-admin-login'); }
+
+function loginAdmin() {
+    const senha = document.getElementById('admin-senha').value;
+    if (senha === ADMIN_SENHA) {
+        document.getElementById('admin-erro').innerText = '';
+        mostrarPagina('page-admin');
+        carregarPedidos();
+        renderAdminPrompts();
+    } else {
+        document.getElementById('admin-erro').innerText = 'SENHA INCORRETA';
+    }
+}
+
+function logoutAdmin() { mostrarPagina('page-admin-login'); }
+function irParaLoja() { mostrarPagina('page-loja'); }
+
+function mudarTab(tab, el) {
+    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('ativo'));
+    document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('ativo'));
+    el.classList.add('ativo');
+    document.getElementById('panel-' + tab).classList.add('ativo');
+    if (tab === 'pedidos') carregarPedidos();
+    if (tab === 'prompts') renderAdminPrompts();
+}
+
+function carregarPedidos() {
+    db.ref('promptus_pedidos').orderByChild('criadoEm').once('value').then(snap => {
+        const grid = document.getElementById('pedidos-grid');
+        if (!grid) return;
+        if (!snap.exists()) { grid.innerHTML = '<div style="text-align:center;padding:40px;color:var(--sub);">Nenhum pedido ainda.</div>'; return; }
+
+        let pedidos = [];
+        snap.forEach(c => pedidos.push({ id: c.key, ...c.val() }));
+        pedidos.reverse();
+
+        const pendentes = pedidos.filter(p => p.status === 'pendente').length;
+        const receita = pedidos.reduce((acc, p) => acc + parseFloat((p.preco || 'R$0').replace('R$','').replace(',','.') || 0), 0);
+        document.getElementById('stat-pedidos').innerText = pedidos.length;
+        document.getElementById('stat-pendentes').innerText = pendentes;
+        document.getElementById('stat-receita').innerText = 'R$' + receita.toFixed(2).replace('.',',');
+
+        grid.innerHTML = '';
+        pedidos.forEach(p => {
+            const div = document.createElement('div');
+            div.className = 'pedido-card';
+            const data = new Date(p.criadoEm).toLocaleString('pt-BR');
+            div.innerHTML = `
+                <div class="pedido-info">
+                    <h3>${p.promptTitulo}</h3>
+                    <div class="pedido-meta">
+                        <span>👤 ${p.nome}</span>
+                        <span>📧 ${p.email}</span>
+                        <span>💬 ${p.whats}</span>
+                        <span>📦 ${p.entrega}</span>
+                        <span>🕐 ${data}</span>
+                    </div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+                    <span class="pedido-preco">${p.preco}</span>
+                    <span class="pedido-status ${p.status === 'pendente' ? 'status-pendente' : 'status-entregue'}">${p.status === 'pendente' ? '⏳ Pendente' : '✅ Entregue'}</span>
+                    <div class="pedido-acoes">
+                        <button class="btn-ver-pedido" onclick='abrirPedidoAdmin(${JSON.stringify(p).replace(/'/g,"&apos;")})'>VER / ENTREGAR</button>
+                    </div>
+                </div>`;
+            grid.appendChild(div);
+        });
+    });
+}
+
+function abrirPedidoAdmin(p) {
+    pedidoAdminAtual = p;
+    document.getElementById('op-prompt').innerText = p.promptTitulo;
+    document.getElementById('op-nome').innerText = p.nome;
+    document.getElementById('op-email').innerText = p.email;
+    document.getElementById('op-whats').innerText = p.whats;
+    document.getElementById('op-entrega').innerText = p.entrega;
+    document.getElementById('op-preco').innerText = p.preco;
+    document.getElementById('op-data').innerText = new Date(p.criadoEm).toLocaleString('pt-BR');
+    document.getElementById('op-prompt-completo').innerText = p.promptCompleto || 'Prompt não encontrado.';
+    document.getElementById('btn-marcar-entregue').style.display = p.status === 'entregue' ? 'none' : 'block';
+    document.getElementById('overlay-pedido').classList.add('show');
+}
+
+function fecharOverlayPedido() { document.getElementById('overlay-pedido').classList.remove('show'); }
+
+function copiarPromptAdmin() {
+    const texto = document.getElementById('op-prompt-completo').innerText;
+    const btn = document.getElementById('btn-copiar-prompt-admin');
+    const ok = () => { btn.innerText = '✓ PROMPT COPIADO! AGORA ENVIE PARA O CLIENTE.'; btn.classList.add('green'); showToast('PROMPT COPIADO!'); setTimeout(() => { btn.innerText = '📋 COPIAR PROMPT PARA ENVIAR'; btn.classList.remove('green'); }, 4000); };
+    if (navigator.clipboard) navigator.clipboard.writeText(texto).then(ok).catch(() => fallback(texto, ok));
+    else fallback(texto, ok);
+}
+
+function marcarEntregue() {
+    if (!pedidoAdminAtual) return;
+    db.ref('promptus_pedidos/' + pedidoAdminAtual.id).update({ status: 'entregue' }).then(() => {
+        showToast('PEDIDO MARCADO COMO ENTREGUE!');
+        fecharOverlayPedido();
+        carregarPedidos();
+    });
+}
+
+// SALVAR PROMPT
+function salvarPrompt() {
+    const titulo = document.getElementById('f-titulo').value.trim();
+    const area = document.getElementById('f-area').value;
+    const nivel = document.getElementById('f-nivel').value;
+    const tag = document.getElementById('f-tag').value.trim();
+    const desc = document.getElementById('f-desc').value.trim();
+    const preview = document.getElementById('f-preview').value.trim();
+    const prompt = document.getElementById('f-prompt').value.trim();
+    const erro = document.getElementById('f-erro');
+
+    if (!titulo || !tag || !desc || !preview || !prompt) { erro.innerText = 'PREENCHA TODOS OS CAMPOS'; return; }
+
+    db.ref('promptus_prompts').push({ titulo, area, nivel, tag, desc, preview, prompt, criadoEm: Date.now() }).then(() => {
+        showToast('PROMPT SALVO COM SUCESSO!');
+        erro.innerText = '';
+        ['f-titulo','f-tag','f-desc','f-preview','f-prompt'].forEach(id => document.getElementById(id).value = '');
+        carregarPrompts();
+    }).catch(() => { erro.innerText = 'ERRO AO SALVAR. TENTE NOVAMENTE.'; });
+}
+
+function renderAdminPrompts() {
+    const grid = document.getElementById('admin-prompts-grid');
+    if (!grid) return;
+    if (todosPrompts.length === 0) { grid.innerHTML = '<div class="vazio">Nenhum prompt cadastrado.</div>'; return; }
+    grid.innerHTML = '';
+    todosPrompts.forEach(p => {
+        const areaInfo = AREAS.find(a => a.key === p.area);
+        const card = document.createElement('div');
+        card.className = 'pcard';
+        card.innerHTML = `
+            <div class="pcard-top">
+                <div class="pcard-area">${areaInfo?.emoji || ''} ${areaInfo?.label || ''}</div>
+                <div class="pcard-titulo">${p.titulo}</div>
+                <div class="pcard-desc" style="font-size:11px;">${p.desc}</div>
+            </div>
+            <div class="pcard-bottom">
+                <span class="tag ${NIVEIS_TAG[p.nivel] || ''}">${NIVEIS_LABEL[p.nivel] || ''}</span>
+                <span class="pcard-preco">${PRECOS_LABEL[p.nivel] || ''}</span>
+            </div>`;
+        grid.appendChild(card);
+    });
+}
+
+// ── NAVEGAÇÃO ──
+function mostrarPagina(id) {
+    document.querySelectorAll('.page').forEach(p => { p.classList.remove('ativa'); p.style.display = 'none'; });
+    const pg = document.getElementById(id);
+    pg.style.display = 'block';
+    pg.classList.add('ativa');
+    window.scrollTo(0, 0);
+}
+
+// ── UTILS ──
+function fallback(texto, cb) {
+    const ta = document.createElement('textarea');
+    ta.value = texto; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); cb(); } catch(e){}
+    document.body.removeChild(ta);
+}
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.innerText = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+}
+document.getElementById('overlay-compra').addEventListener('click', e => { if (e.target === document.getElementById('overlay-compra')) fecharOverlay(); });
+document.getElementById('overlay-pedido').addEventListener('click', e => { if (e.target === document.getElementById('overlay-pedido')) fecharOverlayPedido(); });
+
+// ── INIT ──
+carregarPrompts();
+</script>
+</body>
+</html>
