@@ -21,11 +21,9 @@
         body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
         body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse 70% 50% at 50% -10%, rgba(191,149,63,0.05) 0%, transparent 60%); pointer-events: none; z-index: 0; }
 
-        /* PÁGINAS */
         .page { display: none; min-height: 100vh; position: relative; z-index: 1; }
         .page.ativa { display: block; }
 
-        /* ══ NAVBAR ══ */
         .navbar { display: flex; align-items: center; justify-content: space-between; padding: 18px 48px; border-bottom: 1px solid var(--border); background: rgba(3,3,5,0.9); backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 200; flex-wrap: wrap; gap: 12px; }
         .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 900; background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
         .nav-logo span { font-size: 11px; font-family: 'DM Sans', sans-serif; font-weight: 600; letter-spacing: 3px; color: var(--sub); -webkit-text-fill-color: var(--sub); }
@@ -33,9 +31,7 @@
         .nav-btn { background: none; border: 1px solid var(--border); color: var(--sub); padding: 8px 18px; border-radius: 3px; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 1px; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
         .nav-btn:hover { border-color: var(--gold); color: var(--gold); }
         .nav-btn.gold { background: var(--gold-grad); color: #000; border-color: transparent; }
-        .nav-user { font-size: 12px; font-weight: 600; color: var(--gold); background: var(--accent); border: 1px solid var(--border); border-radius: 20px; padding: 7px 16px; }
 
-        /* ══ HERO LOJA ══ */
         .hero { padding: 80px 48px 60px; max-width: 1160px; margin: 0 auto; text-align: center; }
         .hero-kicker { font-size: 9px; font-weight: 700; letter-spacing: 6px; color: var(--gold); text-transform: uppercase; margin-bottom: 18px; }
         .hero-titulo { font-family: 'Cormorant Garamond', serif; font-size: clamp(38px, 6vw, 72px); font-weight: 900; line-height: 1.1; margin-bottom: 18px; }
@@ -43,25 +39,21 @@
         .hero-sub { font-size: 15px; color: var(--sub); max-width: 520px; margin: 0 auto 14px; line-height: 1.8; }
         .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(39,174,96,0.1); border: 1px solid rgba(39,174,96,0.25); border-radius: 20px; padding: 6px 16px; font-size: 10px; font-weight: 700; color: var(--green); letter-spacing: 2px; text-transform: uppercase; margin-top: 12px; }
 
-        /* ══ FILTROS ══ */
         .filtros-wrap { max-width: 1160px; margin: 0 auto; padding: 0 48px 30px; display: flex; gap: 8px; flex-wrap: wrap; }
         .filtro { background: var(--card); border: 1px solid var(--border); border-radius: 30px; padding: 8px 18px; font-size: 11px; font-weight: 600; color: var(--sub); cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
         .filtro:hover { border-color: var(--gold); color: var(--gold); }
         .filtro.ativo { background: var(--gold-grad); color: #000; border-color: transparent; }
 
-        /* BUSCA */
         .busca-wrap { max-width: 1160px; margin: 0 auto; padding: 0 48px 24px; }
         .busca { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 14px 20px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; transition: 0.3s; }
         .busca::placeholder { color: var(--sub); }
         .busca:focus { border-color: var(--gold); }
 
-        /* ══ GRID DE PROMPTS ══ */
         .grid-section { max-width: 1160px; margin: 0 auto; padding: 0 48px 80px; }
         .grid-label { font-size: 9px; font-weight: 700; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
         .grid-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
 
-        /* ══ CARD DE PROMPT ══ */
         .pcard { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: 0.3s; position: relative; animation: fadeUp 0.4s ease both; }
         .pcard:hover { border-color: var(--border-h); transform: translateY(-3px); }
         .pcard-top { padding: 22px 22px 16px; }
@@ -69,13 +61,11 @@
         .pcard-titulo { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
         .pcard-desc { font-size: 12px; color: var(--sub); line-height: 1.6; margin-bottom: 14px; }
 
-        /* PREVIEW COM CADEADO */
         .pcard-preview { position: relative; background: #000; border: 1px solid var(--border); border-radius: 4px; margin: 0 22px 16px; overflow: hidden; }
         .pcard-preview-texto { font-family: 'Courier New', monospace; font-size: 11px; color: rgba(252,246,186,0.5); line-height: 1.6; padding: 12px 14px; white-space: pre-wrap; }
         .pcard-preview-blur { position: absolute; bottom: 0; left: 0; right: 0; height: 55px; background: linear-gradient(transparent, #000); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px; }
         .lock-pill { display: flex; align-items: center; gap: 5px; background: rgba(191,149,63,0.12); border: 1px solid rgba(191,149,63,0.3); border-radius: 20px; padding: 4px 12px; font-size: 9px; font-weight: 700; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; }
 
-        /* CARD BOTTOM */
         .pcard-bottom { padding: 14px 22px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
         .pcard-tags { display: flex; gap: 6px; flex-wrap: wrap; }
         .tag { font-size: 8px; font-weight: 700; padding: 3px 9px; border-radius: 20px; background: var(--accent); border: 1px solid var(--border); color: var(--sub); text-transform: uppercase; }
@@ -87,7 +77,7 @@
         .btn-comprar { background: var(--gold-grad); color: #000; border: none; padding: 10px 20px; border-radius: 3px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: 0.3s; white-space: nowrap; }
         .btn-comprar:hover { filter: brightness(1.15); }
 
-        /* ══ MODAL COMPRA ══ */
+        /* MODAL */
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.94); z-index: 500; display: none; align-items: center; justify-content: center; padding: 20px; }
         .overlay.show { display: flex; }
         .modal { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 40px; max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; animation: fadeUp 0.3s ease both; }
@@ -97,7 +87,6 @@
         .modal-step { display: none; }
         .modal-step.ativo { display: block; }
 
-        /* STEP 1 — CADASTRO */
         .modal-kicker { font-size: 9px; font-weight: 700; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
         .modal-titulo { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 700; margin-bottom: 6px; }
         .modal-sub { font-size: 13px; color: var(--sub); line-height: 1.7; margin-bottom: 24px; }
@@ -115,7 +104,6 @@
         .btn-full.green { background: linear-gradient(135deg, #27ae60, #52c452); }
         .btn-full.copied { background: linear-gradient(135deg, #27ae60, #52c452); }
 
-        /* STEP 2 — PIX */
         .prompt-resumo { background: var(--card2); border: 1px solid var(--border); border-radius: 6px; padding: 16px; margin-bottom: 20px; }
         .prompt-resumo-nome { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; margin-bottom: 4px; }
         .prompt-resumo-preco { font-size: 28px; font-family: 'Cormorant Garamond', serif; font-weight: 700; background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -126,14 +114,23 @@
         .aviso-entrega { font-size: 12px; color: var(--sub); line-height: 1.7; text-align: center; margin-top: 16px; }
         .aviso-entrega strong { color: var(--gold); }
 
-        /* STEP 3 — AGUARDANDO */
+        /* CAIXA WHATSAPP COMPROVANTE */
+        .whats-box { background: rgba(37,211,102,0.08); border: 1px solid rgba(37,211,102,0.3); border-radius: 8px; padding: 16px 18px; margin: 16px 0; display: flex; align-items: flex-start; gap: 12px; }
+        .whats-box-icon { font-size: 26px; flex-shrink: 0; margin-top: 2px; }
+        .whats-box-text { font-size: 12px; color: rgba(240,237,232,0.75); line-height: 1.7; }
+        .whats-box-text strong { color: #25D366; display: block; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+        .whats-box-numero { font-size: 18px; font-weight: 700; color: #25D366; letter-spacing: 2px; margin-top: 6px; display: block; }
+
+        .btn-whats { width: 100%; background: linear-gradient(135deg, #25D366, #128C7E); color: #fff; border: none; padding: 14px; border-radius: 4px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: 0.3s; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+        .btn-whats:hover { filter: brightness(1.1); }
+
         .aguardando-box { text-align: center; padding: 20px 0; }
         .aguardando-icon { font-size: 50px; margin-bottom: 16px; animation: pulse 2s infinite; }
         @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
         .aguardando-titulo { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 700; margin-bottom: 10px; }
         .aguardando-sub { font-size: 13px; color: var(--sub); line-height: 1.7; }
 
-        /* ══ PAINEL ADMIN ══ */
+        /* ADMIN */
         #page-admin { background: var(--bg); }
         .admin-header { padding: 30px 40px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
         .admin-titulo { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; }
@@ -145,7 +142,6 @@
         .admin-panel { display: none; }
         .admin-panel.ativo { display: block; }
 
-        /* PEDIDOS */
         .pedidos-grid { display: flex; flex-direction: column; gap: 12px; }
         .pedido-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; transition: 0.3s; }
         .pedido-card:hover { border-color: var(--border-h); }
@@ -162,25 +158,21 @@
         .btn-ver-pedido { background: none; color: var(--gold); border: 1px solid rgba(191,149,63,0.3); padding: 10px 18px; border-radius: 3px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
         .btn-ver-pedido:hover { background: var(--accent); }
 
-        /* ADICIONAR PROMPT */
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
         .form-full { grid-column: 1 / -1; }
         .inp-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; color: var(--sub); text-transform: uppercase; margin-bottom: 6px; display: block; }
         textarea.inp { resize: vertical; min-height: 120px; }
         select.inp { appearance: none; cursor: pointer; }
 
-        /* STATS ADMIN */
         .stats-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-bottom: 30px; }
         .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
         .stat-card-num { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 700; background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 6px; }
         .stat-card-label { font-size: 10px; color: var(--sub); letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
 
-        /* LOGIN ADMIN */
         #page-admin-login { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: var(--bg); }
         .admin-login-box { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 40px; width: 100%; max-width: 360px; text-align: center; position: relative; }
         .admin-login-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--gold-grad); }
 
-        /* TOAST */
         #toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--gold-grad); color: #000; padding: 13px 26px; border-radius: 4px; font-size: 10px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; opacity: 0; transition: 0.3s; z-index: 9999; pointer-events: none; white-space: nowrap; }
         #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
@@ -235,7 +227,7 @@
             <button class="btn-full" onclick="irParaPix()">CONTINUAR PARA PAGAMENTO →</button>
         </div>
 
-        <!-- STEP 2: PIX -->
+        <!-- STEP 2: PIX + INSTRUÇÃO COMPROVANTE -->
         <div class="modal-step" id="step2">
             <div class="modal-kicker">Pagamento</div>
             <div class="modal-titulo">Pagar com Pix</div>
@@ -254,12 +246,26 @@
 
             <button class="btn-full" id="btn-copiar-pix" onclick="copiarPix()">📋 COPIAR CHAVE PIX</button>
 
-            <div class="aviso-entrega">
-                Após pagar, clique no botão abaixo.<br>
-                <strong>Você receberá o prompt em breve via <span id="s2-entrega"></span>.</strong>
+            <!-- INSTRUÇÃO COMPROVANTE VIA WHATSAPP -->
+            <div class="whats-box" style="margin-top:20px;">
+                <div class="whats-box-icon">📲</div>
+                <div class="whats-box-text">
+                    <strong>📌 Após pagar, envie o comprovante:</strong>
+                    Depois de realizar o Pix, envie o <strong style="color:var(--gold);display:inline;font-size:inherit;text-transform:none;letter-spacing:0;">comprovante de pagamento</strong> para o nosso WhatsApp. Seu prompt será entregue rapidamente após a confirmação!
+                    <span class="whats-box-numero">(11) 97885-7415</span>
+                </div>
             </div>
 
-            <button class="btn-full" style="margin-top:16px;background:rgba(39,174,96,0.15);color:var(--green);border:1px solid rgba(39,174,96,0.3);" onclick="confirmarPagamento()">✅ JÁ FIZ O PAGAMENTO</button>
+            <a id="btn-whats-comprovante" class="btn-whats" href="#" target="_blank" onclick="abrirWhatsComprovante(event)">
+                💬 ENVIAR COMPROVANTE VIA WHATSAPP
+            </a>
+
+            <div class="aviso-entrega" style="margin-top:12px;">
+                Você receberá o prompt via <strong><span id="s2-entrega"></span></strong> após confirmação.<br>
+                Tempo médio: <strong>até 1 hora</strong>.
+            </div>
+
+            <button class="btn-full" style="margin-top:16px;background:rgba(39,174,96,0.15);color:var(--green);border:1px solid rgba(39,174,96,0.3);" onclick="confirmarPagamento()">✅ JÁ ENVIEI O COMPROVANTE</button>
         </div>
 
         <!-- STEP 3: AGUARDANDO -->
@@ -271,6 +277,16 @@
                     Seu pedido foi registrado com sucesso.<br><br>
                     Estamos verificando o pagamento e em breve você receberá o prompt via <strong id="s3-entrega" style="color:var(--gold);"></strong>.<br><br>
                     Tempo médio: <strong style="color:var(--gold);">até 1 hora</strong>.
+                </div>
+
+                <!-- LEMBRETE WHATS NO STEP 3 -->
+                <div class="whats-box" style="margin-top:24px;text-align:left;">
+                    <div class="whats-box-icon">📲</div>
+                    <div class="whats-box-text">
+                        <strong>Não esquece!</strong>
+                        Envie o comprovante do Pix para garantir a entrega mais rápida:
+                        <span class="whats-box-numero">(11) 97885-7415</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -298,7 +314,7 @@
     </div>
 </div>
 
-<!-- ══════════════ PÁGINA: LOJA ══════════════ -->
+<!-- PÁGINA: LOJA -->
 <div id="page-loja" class="page ativa">
     <nav class="navbar">
         <div class="nav-logo" onclick="irParaLoja()">PROMPTUS <span>STORE</span></div>
@@ -326,7 +342,7 @@
     </div>
 </div>
 
-<!-- ══════════════ PÁGINA: ADMIN LOGIN ══════════════ -->
+<!-- PÁGINA: ADMIN LOGIN -->
 <div id="page-admin-login" class="page" style="display:none;">
     <div class="admin-login-box">
         <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:900;background:var(--gold-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px;">PROMPTUS</div>
@@ -338,7 +354,7 @@
     </div>
 </div>
 
-<!-- ══════════════ PÁGINA: ADMIN PAINEL ══════════════ -->
+<!-- PÁGINA: ADMIN PAINEL -->
 <div id="page-admin" class="page" style="display:none;">
     <nav class="navbar">
         <div class="nav-logo">PROMPTUS <span>ADMIN</span></div>
@@ -373,7 +389,6 @@
     </div>
 
     <div class="admin-content">
-        <!-- PEDIDOS -->
         <div class="admin-panel ativo" id="panel-pedidos">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
                 <div style="font-size:13px;color:var(--sub);">Pedidos recentes (clique em Ver para copiar o prompt e entregar)</div>
@@ -384,13 +399,11 @@
             </div>
         </div>
 
-        <!-- LISTA PROMPTS ADMIN -->
         <div class="admin-panel" id="panel-prompts">
-            <div style="margin-bottom:20px;font-size:13px;color:var(--sub);">Prompts cadastrados. Clique em um para editar.</div>
+            <div style="margin-bottom:20px;font-size:13px;color:var(--sub);">Prompts cadastrados.</div>
             <div class="grid" id="admin-prompts-grid"></div>
         </div>
 
-        <!-- ADICIONAR PROMPT -->
         <div class="admin-panel" id="panel-adicionar">
             <div style="max-width:680px;">
                 <div style="margin-bottom:24px;font-size:13px;color:var(--sub);">Preencha os dados do novo prompt:</div>
@@ -457,6 +470,7 @@ const db = firebase.database();
 const ADMIN_SENHA = 'cassia2025';
 const PIX_CHAVE = '39521484829';
 const PIX_NOME = 'Cássia Kelly Lins Reis';
+const WHATS_COMPROVANTE = '5511978857415';
 const PRECOS = { basico: 9.90, intermediario: 19.90, avancado: 29.90, premium: 49.90 };
 const PRECOS_LABEL = { basico: 'R$9,90', intermediario: 'R$19,90', avancado: 'R$29,90', premium: 'R$49,90' };
 const NIVEIS_TAG = { basico: 'nivel-basico', intermediario: 'nivel-inter', avancado: 'nivel-avancado', premium: 'nivel-premium' };
@@ -476,11 +490,10 @@ const AREAS = [
     {key:'outro',label:'Outro',emoji:'✳️'},
 ];
 
-// ── ANTI-ALUCINAÇÃO (padrão adicionado a todos os prompts) ──
 const ANTI = `\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO — OBRIGATÓRIAS:\n⛔ NUNCA invente dados, nomes, datas, valores ou fatos não fornecidos.\n⛔ NUNCA cite leis ou jurisprudência inexistentes.\n⛔ Se faltar informação essencial, escreva: ⚠️ DADO AUSENTE: [o que falta].\n✅ Use EXCLUSIVAMENTE os dados fornecidos abaixo.\n✅ Em caso de dúvida, sinalize claramente.`;
 
-// ── PROMPTS INICIAIS (base de mercado brasileiro) ──
-const PROMPTS_INICIAIS = [
+// ── 14 PROMPTS ORIGINAIS ──
+const PROMPTS_ORIGINAIS = [
 {titulo:'Petição Inicial Trabalhista',area:'juridico',nivel:'avancado',tag:'Petição',desc:'Gera petição trabalhista completa com CLT, Súmulas do TST e jurisprudência. Resolve a dor de advogados que perdem horas formatando peças.',preview:'PERSONA: Você é advogado(a) trabalhista sênior com 20 anos de TRT.\nTAREFA: Redigir petição inicial trabalhista completa.\nESTRUTURA:\n1. Qualificação das partes\n2. Dos fatos...',prompt:`PERSONA: Você é advogado(a) trabalhista sênior com 20 anos de experiência no TRT.\nTAREFA: Redigir petição inicial trabalhista completa e tecnicamente impecável.\nESTRUTURA OBRIGATÓRIA:\n1. Qualificação das partes\n2. Dos fatos (cronológico)\n3. Do direito (cite CLT e Súmulas TST específicas)\n4. Dos pedidos (itemize cada um com valor)\n5. Do valor da causa${ANTI}\nDADOS DO CASO:\n[INSIRA AQUI: partes, fatos, verbas e pedidos]`},
 {titulo:'Laudo Médico Completo',area:'medico',nivel:'avancado',tag:'Laudo',desc:'Laudo técnico estruturado com anamnese, CID-10 e conduta. Para médicos que precisam de documentação impecável e rápida.',preview:'PERSONA: Você é médico(a) especialista com 20 anos de experiência clínica.\nTAREFA: Redigir laudo médico completo.\nESTRUTURA:\n1. Identificação do paciente\n2. Anamnese...',prompt:`PERSONA: Você é médico(a) especialista com 20 anos de experiência clínica.\nTAREFA: Redigir laudo médico completo e impecável.\nESTRUTURA:\n1. Identificação do paciente\n2. Queixa principal\n3. Anamnese e histórico\n4. Exame físico\n5. Hipótese diagnóstica e CID-10\n6. Conduta médica${ANTI}\nDADOS:\n[INSIRA: nome, idade, queixas, exames e histórico]`},
 {titulo:'Proposta Comercial de Alto Impacto',area:'negocios',nivel:'intermediario',tag:'Vendas',desc:'Proposta persuasiva focada em valor, não preço. Para empresários que perdem vendas por propostas fracas e genéricas.',preview:'PERSONA: Você é consultor(a) comercial sênior com 20 anos em vendas B2B.\nTAREFA: Redigir proposta comercial profissional.\nESTRUTURA:\n1. Diagnóstico do problema...',prompt:`PERSONA: Você é consultor(a) comercial sênior com 20 anos em vendas B2B.\nTAREFA: Redigir proposta comercial profissional e persuasiva.\nESTRUTURA:\n1. Apresentação executiva\n2. Diagnóstico do problema do cliente\n3. Solução proposta\n4. Benefícios e ROI estimado\n5. Investimento e condições\n6. Próximos passos e prazo${ANTI}\nDADOS:\n[INSIRA: empresa, produto, cliente e valor]`},
@@ -498,6 +511,54 @@ const PROMPTS_INICIAIS = [
 {titulo:'Laudo Psicológico para INSS',area:'psicologia',nivel:'premium',tag:'Laudo Pericial',desc:'Laudo de incapacidade por transtorno mental para benefício previdenciário. Para psicólogos que atendem pacientes em demanda judicial.',preview:'PERSONA: Você é psicólogo(a) com CRP ativo especializado em avaliação pericial.\nTAREFA: Elaborar laudo para afastamento e benefício INSS...',prompt:`PERSONA: Você é psicólogo(a) com CRP ativo especializado em avaliação pericial.\nTAREFA: Elaborar laudo psicológico para afastamento e benefício INSS.\nBASE: Lei 8.213/91 e Resolução CFP 06/2019.\nESTRUTURA:\n1. Identificação do periciado\n2. Anamnese psicológica\n3. Histórico de tratamentos\n4. Avaliação do estado mental atual\n5. Diagnóstico CID-10\n6. Impacto na capacidade laborativa\n7. Conclusão e prazo de afastamento${ANTI}\nDADOS:\n[INSIRA: paciente, diagnóstico e histórico]`},
 ];
 
+// ── 30 NOVOS PROMPTS ──
+const PROMPTS_NOVOS = [
+// JURÍDICO
+{titulo:'Recurso de Multa de Trânsito',area:'juridico',nivel:'basico',tag:'Recurso',desc:'Recurso administrativo para contestar multas de trânsito com base no CTB. Para motoristas que querem se defender sem advogado.',preview:'PERSONA: Você é advogado(a) especialista em direito de trânsito.\nTAREFA: Redigir recurso de multa de trânsito.\nBASE: Código de Trânsito Brasileiro...',prompt:`PERSONA: Você é advogado(a) especialista em direito de trânsito.\nTAREFA: Redigir recurso administrativo de multa de trânsito.\nBASE: Código de Trânsito Brasileiro (Lei 9.503/97).\nESTRUTURA:\n1. Identificação do recorrente e veículo\n2. Dados da autuação\n3. Dos fundamentos do recurso\n4. Da nulidade ou ilegitimidade (se aplicável)\n5. Do pedido de cancelamento ou redução\n6. Documentos anexos${ANTI}\nDADOS:\n[INSIRA: nome, CPF, placa, auto de infração, data e descrição da infração]`},
+{titulo:'Notificação Extrajudicial',area:'juridico',nivel:'basico',tag:'Notificação',desc:'Notificação formal com prazo e consequências legais claras. Para cobrar dívidas, rescindir contratos ou alertar sobre inadimplência.',preview:'PERSONA: Você é advogado(a) civilista com expertise em notificações extrajudiciais.\nTAREFA: Redigir notificação extrajudicial formal.\nEFEITO: Interrupção da prescrição...',prompt:`PERSONA: Você é advogado(a) civilista com expertise em notificações extrajudiciais.\nTAREFA: Redigir notificação extrajudicial formal e com efeito legal.\nFUNDAMENTO: Código Civil e legislação aplicável.\nESTRUTURA:\n1. Identificação do notificante e notificado\n2. Dos fatos que motivam a notificação\n3. Do direito violado\n4. Da exigência e prazo para cumprimento\n5. Das consequências do descumprimento\n6. Da forma de resposta esperada${ANTI}\nDADOS:\n[INSIRA: partes, fato, valor ou obrigação, prazo desejado]`},
+{titulo:'Habeas Corpus Simples',area:'juridico',nivel:'avancado',tag:'Habeas Corpus',desc:'HC para prisão ilegal, excesso de prazo ou constrangimento ilegal. Para advogados criminalistas que precisam de agilidade.',preview:'PERSONA: Você é advogado(a) criminalista com 20 anos de experiência.\nTAREFA: Redigir habeas corpus.\nBASE: CPP art. 647 e CF art. 5º LXVIII...',prompt:`PERSONA: Você é advogado(a) criminalista com 20 anos de experiência.\nTAREFA: Redigir habeas corpus completo.\nBASE: CPP arts. 647-667 e CF art. 5º, LXVIII.\nESTRUTURA:\n1. Autoridade coatora\n2. Identificação do paciente\n3. Dos fatos (prisão, excesso de prazo ou constrangimento)\n4. Do direito violado\n5. Do cabimento do HC\n6. Do pedido (liminar e mérito)${ANTI}\nDADOS:\n[INSIRA: paciente, autoridade coatora, fatos, tipo de constrangimento]`},
+// MÉDICO
+{titulo:'Carta de Encaminhamento Médico',area:'medico',nivel:'basico',tag:'Encaminhamento',desc:'Carta de encaminhamento clara e objetiva para especialistas. Padroniza a comunicação entre médicos e garante continuidade do cuidado.',preview:'PERSONA: Você é médico(a) com CRM ativo.\nTAREFA: Redigir carta de encaminhamento.\nESTRUTURA:\n1. Identificação do paciente\n2. Motivo do encaminhamento...',prompt:`PERSONA: Você é médico(a) com CRM ativo.\nTAREFA: Redigir carta de encaminhamento para especialista.\nESTRUTURA:\n1. Identificação do paciente (nome, idade, sexo)\n2. Médico solicitante e especialidade\n3. Hipótese diagnóstica e CID-10\n4. Resumo clínico (anamnese, exames, tratamentos)\n5. Motivo do encaminhamento\n6. Urgência (rotina, preferencial, urgente)\n7. Assinatura e CRM${ANTI}\nDADOS:\n[INSIRA: paciente, diagnóstico, exames realizados, motivo]`},
+{titulo:'Evolução Médica Hospitalar',area:'medico',nivel:'intermediario',tag:'Evolução',desc:'Evolução diária estruturada com SOAP. Para médicos plantonistas e hospitalistas que precisam de registros rápidos e completos.',preview:'PERSONA: Você é médico(a) hospitalista com experiência em UTI e enfermaria.\nTAREFA: Redigir evolução médica diária.\nFORMATO: SOAP (Subjetivo, Objetivo, Avaliação, Plano)...',prompt:`PERSONA: Você é médico(a) hospitalista com experiência em UTI e enfermaria.\nTAREFA: Redigir evolução médica diária no formato SOAP.\nESTRUTURA:\nS — Subjetivo (queixa do dia, sintomas relatados)\nO — Objetivo (sinais vitais, exame físico, exames laboratoriais)\nA — Avaliação (diagnóstico e análise clínica)\nP — Plano (conduta, ajuste de medicamentos, solicitações)${ANTI}\nDADOS:\n[INSIRA: nome do paciente, dia de internação, queixas, vitais, exames e diagnóstico]`},
+{titulo:'Receita Médica com Orientações',area:'medico',nivel:'basico',tag:'Receita',desc:'Receita padronizada com posologia clara e orientações ao paciente. Evita erros e melhora adesão ao tratamento.',preview:'PERSONA: Você é médico(a) com CRM ativo.\nTAREFA: Redigir receita médica com orientações ao paciente.\nESTRUTURA:\n1. Identificação\n2. Medicamentos...',prompt:`PERSONA: Você é médico(a) com CRM ativo.\nTAREFA: Redigir receita médica com orientações claras.\nESTRUTURA:\n1. Identificação do paciente\n2. Medicamentos prescritos (nome, forma, dose, posologia, duração)\n3. Orientações ao paciente (como tomar, cuidados, interações)\n4. Retorno recomendado\n5. Dados do médico, CRM e assinatura${ANTI}\nDADOS:\n[INSIRA: paciente, diagnóstico, medicamentos, posologia e orientações específicas]`},
+// NEGÓCIOS
+{titulo:'Plano de Negócios Completo',area:'negocios',nivel:'premium',tag:'Planejamento',desc:'Plano de negócios estruturado para captação de investimento ou abertura de empresa. Para empreendedores que precisam de credibilidade.',preview:'PERSONA: Você é consultor(a) de negócios com MBA e 20 anos de experiência.\nTAREFA: Elaborar plano de negócios completo.\nESTRUTURA:\n1. Resumo Executivo...',prompt:`PERSONA: Você é consultor(a) de negócios com MBA e 20 anos de experiência.\nTAREFA: Elaborar plano de negócios completo e profissional.\nESTRUTURA:\n1. Resumo Executivo\n2. Descrição da empresa e modelo de negócio\n3. Análise de mercado (SWOT e concorrência)\n4. Plano de marketing e vendas\n5. Plano operacional\n6. Estrutura organizacional\n7. Projeções financeiras (12-36 meses)\n8. Necessidade de investimento${ANTI}\nDADOS:\n[INSIRA: nome da empresa, segmento, produto/serviço, público-alvo e capital disponível]`},
+{titulo:'Ata de Reunião Corporativa',area:'negocios',nivel:'basico',tag:'Ata',desc:'Ata de reunião formal com decisões, responsáveis e prazos. Para gestores que precisam de registros claros e rastreáveis.',preview:'PERSONA: Você é secretário(a) executivo(a) corporativo sênior.\nTAREFA: Redigir ata de reunião formal.\nESTRUTURA:\n1. Cabeçalho e participantes...',prompt:`PERSONA: Você é secretário(a) executivo(a) corporativo sênior.\nTAREFA: Redigir ata de reunião formal e completa.\nESTRUTURA:\n1. Cabeçalho (empresa, data, local, horário)\n2. Participantes e cargos\n3. Pauta da reunião\n4. Desenvolvimento (discussões e deliberações por ponto)\n5. Decisões tomadas (com responsável e prazo)\n6. Próximos passos e data da próxima reunião\n7. Assinaturas${ANTI}\nDADOS:\n[INSIRA: empresa, data, participantes, pauta e decisões]`},
+{titulo:'Script de Vendas por Telefone',area:'negocios',nivel:'intermediario',tag:'Vendas',desc:'Script completo para cold call com objeções respondidas. Para vendedores que precisam aumentar a taxa de conversão.',preview:'PERSONA: Você é especialista em vendas consultivas e inside sales.\nTAREFA: Criar script de vendas por telefone.\nFASES: Abertura → Qualificação → Apresentação → Objeções → Fechamento...',prompt:`PERSONA: Você é especialista em vendas consultivas e inside sales.\nTAREFA: Criar script completo de vendas por telefone.\nESTRUTURA:\nFASE 1: Abertura e rapport (30 segundos)\nFASE 2: Qualificação (perguntas SPIN)\nFASE 3: Apresentação do produto/serviço\nFASE 4: Tratamento de objeções (mínimo 5 objeções + respostas)\nFASE 5: Fechamento com urgência\nFASE 6: Follow-up pós-chamada${ANTI}\nDADOS:\n[INSIRA: produto/serviço, público-alvo, principais diferenciais e objeções comuns]`},
+// MARKETING
+{titulo:'Calendário de Conteúdo Mensal',area:'marketing',nivel:'intermediario',tag:'Conteúdo',desc:'30 dias de posts com temas, formatos e CTAs para redes sociais. Para quem quer presença digital consistente sem esforço.',preview:'PERSONA: Você é social media sênior especialista em marketing de conteúdo.\nTAREFA: Criar calendário de conteúdo mensal.\nFORMATO: Tabela com data, tema, formato e CTA...',prompt:`PERSONA: Você é social media sênior especialista em marketing de conteúdo.\nTAREFA: Criar calendário editorial de 30 dias completo.\nESTRUTURA POR DIA:\n- Data\n- Tema/assunto\n- Formato (carrossel, reels, stories, post estático)\n- Headline principal\n- Legenda (resumo)\n- CTA (chamada para ação)\n- Hashtags sugeridas\nBALANCEAMENTO: 60% conteúdo educativo, 20% engajamento, 20% vendas${ANTI}\nDADOS:\n[INSIRA: nicho, produto/serviço, público e redes sociais ativas]`},
+{titulo:'Briefing de Campanha Publicitária',area:'marketing',nivel:'avancado',tag:'Campanha',desc:'Briefing completo para agências ou designers. Elimina retrabalho e garante que a campanha bata no alvo certo.',preview:'PERSONA: Você é diretor(a) de marketing com 20 anos de experiência em campanhas.\nTAREFA: Redigir briefing completo de campanha publicitária...',prompt:`PERSONA: Você é diretor(a) de marketing com 20 anos de experiência em campanhas.\nTAREFA: Redigir briefing completo de campanha publicitária.\nESTRUTURA:\n1. Contexto e histórico da marca\n2. Objetivo da campanha (SMART)\n3. Público-alvo (persona detalhada)\n4. Mensagem principal e tom de voz\n5. Canais e formatos\n6. Orçamento e prazo\n7. KPIs e métricas de sucesso\n8. Referências visuais e de comunicação${ANTI}\nDADOS:\n[INSIRA: marca, produto, objetivo, público, orçamento e prazo]`},
+{titulo:'Roteiro para Vídeo de Vendas (VSL)',area:'marketing',nivel:'premium',tag:'VSL',desc:'Roteiro de vídeo de vendas com estrutura comprovada PAS + prova social + oferta. Para infoprodutores e negócios digitais.',preview:'PERSONA: Você é roteirista especialista em VSL (Video Sales Letter).\nTAREFA: Criar roteiro de vídeo de vendas.\nESTRUTURA: Gancho → Dor → Promessa → Prova → Oferta...',prompt:`PERSONA: Você é roteirista especialista em VSL (Video Sales Letter).\nTAREFA: Criar roteiro completo de vídeo de vendas de alta conversão.\nESTRUTURA:\n1. Gancho (primeiros 10 segundos que prendem)\n2. Identificação da dor (empatia)\n3. Apresentação do problema raiz\n4. Promessa de transformação\n5. Apresentação da solução\n6. Prova social (depoimentos e resultados)\n7. Oferta detalhada + bônus\n8. Garantia\n9. Urgência e escassez\n10. CTA final${ANTI}\nDADOS:\n[INSIRA: produto, público, transformação prometida, preço e bônus]`},
+// CONTÁBIL
+{titulo:'Relatório Gerencial Financeiro',area:'contabil',nivel:'avancado',tag:'Relatório',desc:'Relatório gerencial com DRE, fluxo de caixa e análise de indicadores. Para contadores e CFOs que apresentam resultados à diretoria.',preview:'PERSONA: Você é controller financeiro sênior.\nTAREFA: Elaborar relatório gerencial financeiro.\nESTRUTURA:\n1. DRE Gerencial\n2. Fluxo de Caixa...',prompt:`PERSONA: Você é controller financeiro sênior com expertise em gestão.\nTAREFA: Elaborar relatório gerencial financeiro completo.\nESTRUTURA:\n1. Resumo executivo (highlights do período)\n2. DRE Gerencial (receita, custos, despesas, EBITDA)\n3. Fluxo de caixa (operacional, investimento, financiamento)\n4. Indicadores financeiros (margem, liquidez, endividamento)\n5. Comparativo com período anterior\n6. Análise de variações relevantes\n7. Recomendações${ANTI}\nDADOS:\n[INSIRA: empresa, período, dados financeiros e indicadores]`},
+{titulo:'Declaração de Imposto de Renda PF',area:'contabil',nivel:'intermediario',tag:'IRPF',desc:'Orientação completa para organização e declaração do IRPF. Para contadores que atendem pessoas físicas na época de IR.',preview:'PERSONA: Você é contador(a) especialista em IRPF com 15 anos de experiência.\nTAREFA: Orientar e organizar dados para declaração de IR...',prompt:`PERSONA: Você é contador(a) especialista em IRPF com 15 anos de experiência.\nTAREFA: Organizar e orientar a declaração completa de IRPF.\nESTRUTURA:\n1. Checklist de documentos necessários\n2. Rendimentos tributáveis (emprego, aluguel, autônomo)\n3. Rendimentos isentos e não tributáveis\n4. Deduções legais (saúde, educação, dependentes)\n5. Bens e direitos\n6. Dívidas e ônus\n7. Fontes pagadoras e informes de rendimento\n8. Orientações para evitar malha fina${ANTI}\nDADOS:\n[INSIRA: perfil do contribuinte, fontes de renda e despesas dedutíveis]`},
+// PSICOLOGIA
+{titulo:'Plano Terapêutico Individual',area:'psicologia',nivel:'avancado',tag:'Plano Terapêutico',desc:'PTI estruturado com objetivos, metas e técnicas por abordagem. Para psicólogos clínicos que querem organizar e documentar o tratamento.',preview:'PERSONA: Você é psicólogo(a) clínico(a) com pós-graduação em psicoterapia.\nTAREFA: Elaborar Plano Terapêutico Individual.\nBASE: CRP e abordagem escolhida...',prompt:`PERSONA: Você é psicólogo(a) clínico(a) com pós-graduação em psicoterapia.\nTAREFA: Elaborar Plano Terapêutico Individual (PTI) completo.\nESTRUTURA:\n1. Dados do paciente e demanda inicial\n2. Hipótese diagnóstica e CID-10\n3. Abordagem teórica utilizada\n4. Objetivos terapêuticos (curto, médio e longo prazo)\n5. Metas e indicadores de progresso\n6. Técnicas e intervenções planejadas\n7. Frequência e duração estimada do tratamento\n8. Critérios de encerramento${ANTI}\nDADOS:\n[INSIRA: paciente, demanda, diagnóstico e abordagem do psicólogo]`},
+{titulo:'Devolutiva Psicológica ao Paciente',area:'psicologia',nivel:'intermediario',tag:'Devolutiva',desc:'Texto de devolutiva claro, empático e técnico para entregar ao paciente. Para psicólogos que querem comunicar resultados de forma profissional.',preview:'PERSONA: Você é psicólogo(a) clínico(a) experiente.\nTAREFA: Redigir devolutiva psicológica ao paciente.\nTOM: Empático, claro, técnico e acessível...',prompt:`PERSONA: Você é psicólogo(a) clínico(a) experiente.\nTAREFA: Redigir devolutiva psicológica ao paciente.\nPRINCÍPIOS: Linguagem clara, empática, técnica e livre de jargões excessivos.\nESTRUTURA:\n1. Introdução (contexto da avaliação)\n2. Aspectos observados e avaliados\n3. Principais achados e diagnóstico (em linguagem acessível)\n4. Recursos e potencialidades do paciente\n5. Áreas de atenção e desenvolvimento\n6. Recomendações terapêuticas\n7. Palavras de encorajamento e encerramento${ANTI}\nDADOS:\n[INSIRA: paciente, demanda, achados da avaliação e diagnóstico]`},
+// EDUCAÇÃO
+{titulo:'Projeto Didático Interdisciplinar',area:'educacao',nivel:'avancado',tag:'Projeto',desc:'Projeto pedagógico que integra múltiplas disciplinas com BNCC. Para coordenadores e professores que querem inovar no ensino.',preview:'PERSONA: Você é coordenador(a) pedagógico com mestrado em educação.\nTAREFA: Elaborar projeto didático interdisciplinar.\nBASE: BNCC e metodologias ativas...',prompt:`PERSONA: Você é coordenador(a) pedagógico com mestrado em educação.\nTAREFA: Elaborar projeto didático interdisciplinar completo.\nBASE: BNCC e metodologias ativas.\nESTRUTURA:\n1. Título e tema do projeto\n2. Justificativa e relevância\n3. Disciplinas envolvidas e habilidades BNCC\n4. Objetivos gerais e específicos\n5. Cronograma de atividades\n6. Metodologias ativas utilizadas (PBL, sala invertida, etc.)\n7. Recursos necessários\n8. Avaliação e produto final\n9. Referências pedagógicas${ANTI}\nDADOS:\n[INSIRA: escola, nível de ensino, tema, disciplinas e duração]`},
+{titulo:'Prova e Gabarito Comentado',area:'educacao',nivel:'intermediario',tag:'Avaliação',desc:'Elaboração de prova com questões objetivas e discursivas + gabarito comentado. Para professores que economizam tempo na elaboração de avaliações.',preview:'PERSONA: Você é professor(a) especialista em avaliação educacional.\nTAREFA: Elaborar prova completa com gabarito comentado.\nBASE: Taxonomia de Bloom...',prompt:`PERSONA: Você é professor(a) especialista em avaliação educacional.\nTAREFA: Elaborar prova completa com gabarito comentado.\nBASE: Taxonomia de Bloom e habilidades BNCC.\nESTRUTURA DA PROVA:\n1. Cabeçalho (escola, disciplina, data, turma, aluno)\n2. Instruções gerais\n3. Questões objetivas (múltipla escolha) — nível crescente\n4. Questões discursivas\n5. Valor por questão e total\nGABARITO:\n- Resposta correta de cada questão\n- Justificativa detalhada\n- Habilidade BNCC avaliada${ANTI}\nDADOS:\n[INSIRA: disciplina, ano, conteúdo, nível de dificuldade e número de questões]`},
+{titulo:'Parecer Descritivo do Aluno',area:'educacao',nivel:'basico',tag:'Parecer',desc:'Parecer qualitativo do desenvolvimento do aluno para boletim ou conselho de classe. Poupa tempo do professor e qualifica o registro.',preview:'PERSONA: Você é professor(a) da educação básica com vasta experiência.\nTAREFA: Redigir parecer descritivo individual do aluno.\nTOM: Objetivo, respeitoso e propositivo...',prompt:`PERSONA: Você é professor(a) da educação básica com vasta experiência.\nTAREFA: Redigir parecer descritivo individual do aluno.\nTOM: Objetivo, respeitoso, propositivo — evitar rótulos negativos.\nESTRUTURA:\n1. Aspectos cognitivos (aprendizagem e rendimento)\n2. Aspectos socioemocionais (comportamento e relações)\n3. Participação e engajamento\n4. Pontos de destaque\n5. Áreas que precisam de atenção\n6. Recomendações para família\n7. Síntese do período${ANTI}\nDADOS:\n[INSIRA: nome do aluno, ano, disciplina, observações e notas do professor]`},
+// ENGENHARIA
+{titulo:'Especificação Técnica de Materiais',area:'engenharia',nivel:'avancado',tag:'Especificação',desc:'Especificação técnica detalhada para compras e execução de obras. Elimina ambiguidade e garante qualidade na construção.',preview:'PERSONA: Você é engenheiro(a) civil sênior com CREA ativo.\nTAREFA: Elaborar especificação técnica de materiais.\nBASE: ABNT NBR aplicável...',prompt:`PERSONA: Você é engenheiro(a) civil sênior com CREA ativo.\nTAREFA: Elaborar especificação técnica de materiais para obra.\nBASE: ABNT NBR aplicáveis.\nESTRUTURA:\n1. Objeto e escopo\n2. Referências normativas\n3. Materiais especificados (nome, norma, características)\n4. Requisitos de qualidade e inspeção\n5. Critérios de aceitação e rejeição\n6. Armazenamento e manuseio\n7. Responsabilidades técnicas${ANTI}\nDADOS:\n[INSIRA: tipo de obra, materiais, normas específicas e requisitos de qualidade]`},
+{titulo:'Memorial Descritivo de Obra',area:'engenharia',nivel:'avancado',tag:'Memorial',desc:'Memorial descritivo completo para projetos e aprovação em prefeitura. Obrigatório para licenciamento e execução de obras.',preview:'PERSONA: Você é engenheiro(a) civil com CREA ativo.\nTAREFA: Elaborar memorial descritivo de obra.\nBASE: NBR e legislação municipal...',prompt:`PERSONA: Você é engenheiro(a) civil com CREA ativo.\nTAREFA: Elaborar memorial descritivo completo de obra.\nBASE: NBR e legislação municipal vigente.\nESTRUTURA:\n1. Identificação do empreendimento e proprietário\n2. Localização e características do terreno\n3. Descrição do projeto (área, pavimentos, usos)\n4. Sistemas construtivos e materiais\n5. Instalações (elétrica, hidráulica, SPDA)\n6. Acessibilidade (NBR 9050)\n7. Tabela de áreas\n8. Assinatura e ART${ANTI}\nDADOS:\n[INSIRA: endereço, proprietário, tipo de obra e características construtivas]`},
+// TI
+{titulo:'Política de Segurança da Informação',area:'ti',nivel:'premium',tag:'Segurança',desc:'PSI completa com diretrizes, responsabilidades e penalidades. Para empresas que precisam estar em conformidade com LGPD e ISO 27001.',preview:'PERSONA: Você é especialista em segurança da informação com CISSP.\nTAREFA: Elaborar Política de Segurança da Informação.\nBASE: ISO 27001 e LGPD...',prompt:`PERSONA: Você é especialista em segurança da informação com CISSP e 20 anos de experiência.\nTAREFA: Elaborar Política de Segurança da Informação (PSI) completa.\nBASE: ISO 27001, LGPD (Lei 13.709/18) e boas práticas.\nESTRUTURA:\n1. Objetivo e escopo\n2. Definições e conceitos\n3. Princípios de segurança da informação\n4. Responsabilidades (gestão, colaboradores, TI)\n5. Diretrizes de uso de sistemas e dispositivos\n6. Controle de acesso e senhas\n7. Incidentes de segurança e resposta\n8. Penalidades e sanções\n9. Revisão e vigência${ANTI}\nDADOS:\n[INSIRA: empresa, porte, sistemas utilizados e nível de criticidade dos dados]`},
+{titulo:'User Story com Critérios de Aceitação',area:'ti',nivel:'intermediario',tag:'Ágil',desc:'User stories no formato correto com critérios de aceitação e definição de pronto. Para times ágeis que querem clareza no backlog.',preview:'PERSONA: Você é Product Owner sênior com experiência em metodologias ágeis.\nTAREFA: Escrever user stories completas.\nFORMATO: "Como [persona], quero [ação], para [benefício]"...',prompt:`PERSONA: Você é Product Owner sênior com experiência em metodologias ágeis (Scrum/Kanban).\nTAREFA: Escrever user stories completas e bem definidas.\nFORMATO: "Como [persona], quero [ação], para [benefício/valor]".\nCOMPOSIÇÃO DE CADA STORY:\n1. Título da funcionalidade\n2. User story no formato padrão\n3. Contexto e motivação\n4. Critérios de Aceitação (Given/When/Then)\n5. Definição de Pronto (DoD)\n6. Estimativa de complexidade\n7. Dependências e riscos${ANTI}\nDADOS:\n[INSIRA: persona, funcionalidade desejada, contexto do produto e regras de negócio]`},
+{titulo:'Plano de Testes de Software',area:'ti',nivel:'avancado',tag:'QA',desc:'Plano de testes com casos de teste, critérios e cobertura. Para equipes de QA que precisam de documentação profissional.',preview:'PERSONA: Você é QA Engineer sênior com expertise em testes de software.\nTAREFA: Elaborar plano de testes completo.\nBASE: ISTQB e boas práticas...',prompt:`PERSONA: Você é QA Engineer sênior com expertise em testes de software.\nTAREFA: Elaborar plano de testes completo.\nBASE: ISTQB e boas práticas de qualidade.\nESTRUTURA:\n1. Escopo e objetivos dos testes\n2. Tipos de testes (funcional, regressão, integração, performance)\n3. Ambiente e ferramentas de teste\n4. Critérios de entrada e saída\n5. Casos de teste (ID, descrição, pré-condição, passos, resultado esperado)\n6. Matriz de rastreabilidade\n7. Critérios de sucesso e falha\n8. Responsabilidades e cronograma${ANTI}\nDADOS:\n[INSIRA: sistema, funcionalidades, ambiente e requisitos]`},
+// OUTRO
+{titulo:'Carta de Apresentação Profissional',area:'outro',nivel:'basico',tag:'Carreira',desc:'Carta de apresentação personalizada que destaca pontos fortes e encanta recrutadores. Para quem quer se diferenciar em processos seletivos.',preview:'PERSONA: Você é especialista em recursos humanos e desenvolvimento de carreira.\nTAREFA: Redigir carta de apresentação profissional impactante...',prompt:`PERSONA: Você é especialista em recursos humanos e desenvolvimento de carreira.\nTAREFA: Redigir carta de apresentação profissional impactante.\nESTRUTURA:\n1. Abertura marcante (gancho que prende atenção)\n2. Por que me interesso pela empresa e vaga\n3. Principais conquistas e diferenciais (3 pontos)\n4. Habilidades alinhadas à vaga\n5. Proposta de valor para a empresa\n6. Encerramento com CTA (pedir entrevista)${ANTI}\nDADOS:\n[INSIRA: nome, cargo desejado, empresa, experiências e habilidades principais]`},
+{titulo:'Currículo Profissional Impactante',area:'outro',nivel:'basico',tag:'Carreira',desc:'Currículo estruturado no padrão ATS e visualmente profissional. Para quem quer passar nos filtros de RH e impressionar recrutadores.',preview:'PERSONA: Você é especialista em recrutamento e seleção com 20 anos de experiência.\nTAREFA: Redigir currículo profissional completo.\nFORMATO: ATS-friendly e impactante...',prompt:`PERSONA: Você é especialista em recrutamento e seleção com 20 anos de experiência.\nTAREFA: Redigir currículo profissional completo.\nFORMATO: ATS-friendly (compatível com sistemas de triagem automática).\nESTRUTURA:\n1. Cabeçalho (nome, contatos, LinkedIn)\n2. Resumo profissional (3-4 linhas de impacto)\n3. Experiência profissional (cargo, empresa, período, resultados em números)\n4. Formação acadêmica\n5. Cursos e certificações relevantes\n6. Competências técnicas e soft skills\n7. Idiomas\n8. Projetos e publicações (se aplicável)${ANTI}\nDADOS:\n[INSIRA: nome, experiências, formação, habilidades e vaga desejada]`},
+{titulo:'Plano de Comunicação em Crise',area:'outro',nivel:'premium',tag:'Gestão de Crise',desc:'Manual de resposta a crise com comunicados, porta-voz e timeline. Para empresas que precisam proteger reputação em situações críticas.',preview:'PERSONA: Você é especialista em gestão de crises e relações públicas.\nTAREFA: Elaborar plano de comunicação em crise.\nESTRUTURA: Mapeamento → Resposta → Comunicados...',prompt:`PERSONA: Você é especialista em gestão de crises e relações públicas com 20 anos de experiência.\nTAREFA: Elaborar plano de comunicação em crise completo.\nESTRUTURA:\n1. Mapeamento de riscos e cenários de crise\n2. Definição do comitê de crise e responsabilidades\n3. Fluxo de decisão e escalonamento\n4. Diretrizes de comunicação (tom, velocidade, canais)\n5. Templates de comunicados por tipo de crise\n6. Orientações para porta-voz\n7. Monitoramento e controle de narrativa\n8. Avaliação pós-crise${ANTI}\nDADOS:\n[INSIRA: empresa, tipo de crise, stakeholders e canais de comunicação]`},
+{titulo:'Descrição de Cargo e Perfil Profissional',area:'negocios',nivel:'basico',tag:'RH',desc:'Job description atrativo que filtra candidatos certos e afasta os errados. Para RH e gestores que querem contratar com eficiência.',preview:'PERSONA: Você é especialista em atração e seleção de talentos.\nTAREFA: Redigir descrição de cargo completa e atrativa.\nESTRUTURA:\n1. Título e nível...',prompt:`PERSONA: Você é especialista em atração e seleção de talentos.\nTAREFA: Redigir descrição de cargo completa e atrativa.\nESTRUTURA:\n1. Título e nível do cargo\n2. Sobre a empresa (3 linhas de cultura)\n3. Missão do cargo (para que existe)\n4. Responsabilidades e atividades principais\n5. Requisitos obrigatórios\n6. Requisitos desejáveis\n7. Soft skills valorizadas\n8. Benefícios e condições\n9. Localização e modelo de trabalho (presencial/híbrido/remoto)${ANTI}\nDADOS:\n[INSIRA: empresa, cargo, área, responsabilidades e requisitos]`},
+{titulo:'Política de Privacidade LGPD',area:'juridico',nivel:'avancado',tag:'LGPD',desc:'Política de privacidade conforme LGPD para sites e apps. Para empresas que precisam estar em conformidade e evitar multas da ANPD.',preview:'PERSONA: Você é advogado(a) especialista em direito digital e LGPD.\nTAREFA: Redigir Política de Privacidade conforme LGPD.\nBASE: Lei 13.709/2018...',prompt:`PERSONA: Você é advogado(a) especialista em direito digital e LGPD.\nTAREFA: Redigir Política de Privacidade completa e conforme LGPD.\nBASE: Lei 13.709/2018 e regulamentos da ANPD.\nESTRUTURA:\n1. Identificação do controlador de dados\n2. Quais dados são coletados\n3. Finalidade do tratamento de dados\n4. Base legal para tratamento\n5. Compartilhamento com terceiros\n6. Retenção e descarte dos dados\n7. Direitos do titular (acesso, correção, exclusão)\n8. Segurança das informações\n9. Cookies e tecnologias similares\n10. Contato do DPO e canal de atendimento${ANTI}\nDADOS:\n[INSIRA: empresa, site/app, tipos de dados coletados e finalidades]`},
+{titulo:'Diagnóstico Nutricional e Plano Alimentar',area:'medico',nivel:'premium',tag:'Nutrição',desc:'Diagnóstico nutricional completo e plano alimentar individualizado. Para nutricionistas que querem agilidade sem perder a qualidade técnica.',preview:'PERSONA: Você é nutricionista com CRN ativo e 15 anos de experiência clínica.\nTAREFA: Elaborar diagnóstico nutricional e plano alimentar.\nBASE: DRIs e diretrizes CFN...',prompt:`PERSONA: Você é nutricionista com CRN ativo e 15 anos de experiência clínica.\nTAREFA: Elaborar diagnóstico nutricional completo e plano alimentar individualizado.\nBASE: DRIs, TACO e diretrizes do CFN.\nESTRUTURA:\n1. Identificação e dados antropométricos (peso, altura, IMC)\n2. Anamnese alimentar e estilo de vida\n3. Diagnóstico nutricional\n4. Objetivos do tratamento nutricional\n5. Necessidades energéticas e distribuição de macronutrientes\n6. Plano alimentar (café, lanche, almoço, lanche, jantar)\n7. Orientações gerais e restrições\n8. Metas e retorno${ANTI}\nDADOS:\n[INSIRA: paciente, peso, altura, objetivo, restrições e hábitos alimentares]`},
+{titulo:'Nota Técnica de Engenharia',area:'engenharia',nivel:'intermediario',tag:'Nota Técnica',desc:'Nota técnica para resposta a questionamentos, esclarecimentos ou embasamento de decisões. Para engenheiros em fiscalizações ou projetos.',preview:'PERSONA: Você é engenheiro(a) com CREA ativo.\nTAREFA: Elaborar nota técnica.\nESTRUTURA:\n1. Objeto e finalidade\n2. Fundamentação técnica...',prompt:`PERSONA: Você é engenheiro(a) com CREA ativo.\nTAREFA: Elaborar nota técnica completa e fundamentada.\nESTRUTURA:\n1. Identificação (emitente, destinatário, data, número)\n2. Objeto e finalidade da nota\n3. Contexto e histórico\n4. Análise técnica\n5. Fundamentação (normas, cálculos, referências)\n6. Conclusões\n7. Recomendações\n8. Assinatura e ART${ANTI}\nDADOS:\n[INSIRA: engenheiro, objeto, contexto técnico e normas aplicáveis]`},
+{titulo:'Storytelling de Marca (Brand Story)',area:'marketing',nivel:'intermediario',tag:'Branding',desc:'História da marca que conecta emocionalmente com o público e cria identidade. Para empreendedores que querem uma marca que as pessoas amam.',preview:'PERSONA: Você é estrategista de branding e especialista em storytelling.\nTAREFA: Criar a história da marca (brand story).\nESTRUTURA: Origem → Conflito → Missão → Transformação...',prompt:`PERSONA: Você é estrategista de branding e especialista em storytelling.\nTAREFA: Criar a história da marca (brand story) completa e emocionalmente conectada.\nESTRUTURA:\n1. A origem (por que surgiu a marca?)\n2. O fundador e sua jornada\n3. O problema que a marca resolve\n4. A virada e o momento de clareza\n5. A missão, visão e valores\n6. O impacto esperado no mundo\n7. A promessa para o cliente\n8. Tom de voz e personalidade da marca${ANTI}\nDADOS:\n[INSIRA: nome da marca, fundador, produto/serviço, história de origem e valores]`},
+];
+
+const TODOS_PROMPTS_INICIAIS = [...PROMPTS_ORIGINAIS, ...PROMPTS_NOVOS];
+
 // ── ESTADO ──
 let todosPrompts = [];
 let areaAtiva = 'todos';
@@ -509,11 +570,10 @@ let pedidoAdminAtual = null;
 function carregarPrompts() {
     db.ref('promptus_prompts').once('value').then(snap => {
         if (!snap.exists()) {
-            // Popula com prompts iniciais
-            PROMPTS_INICIAIS.forEach(p => {
+            TODOS_PROMPTS_INICIAIS.forEach(p => {
                 db.ref('promptus_prompts').push({ ...p, criadoEm: Date.now() });
             });
-            setTimeout(carregarPrompts, 1500);
+            setTimeout(carregarPrompts, 2500);
             return;
         }
         todosPrompts = [];
@@ -554,7 +614,7 @@ function renderPrompts() {
     });
 
     const areaLabel = AREAS.find(a => a.key === areaAtiva);
-    if (lbl) lbl.childNodes[0] && (lbl.innerHTML = (areaAtiva === 'todos' ? 'Todos os Prompts' : areaLabel?.label) + ' <span style="opacity:0.4;font-size:10px;">(' + lista.length + ')</span>');
+    if (lbl) lbl.innerHTML = (areaAtiva === 'todos' ? 'Todos os Prompts' : (areaLabel?.emoji + ' ' + areaLabel?.label)) + ' <span style="opacity:0.4;font-size:10px;">(' + lista.length + ')</span>';
 
     grid.innerHTML = '';
     if (lista.length === 0) { grid.innerHTML = '<div class="vazio">Nenhum prompt encontrado.</div>'; return; }
@@ -566,7 +626,7 @@ function renderPrompts() {
         const areaInfo = AREAS.find(a => a.key === p.area);
         const card = document.createElement('div');
         card.className = 'pcard';
-        card.style.animationDelay = (i * 0.04) + 's';
+        card.style.animationDelay = (i * 0.03) + 's';
         card.innerHTML = `
             <div class="pcard-top">
                 <div class="pcard-area">${areaInfo?.emoji || ''} ${areaInfo?.label || ''}</div>
@@ -629,6 +689,15 @@ function irParaPix() {
     const entregaTexto = entregaOpc === 'email' ? 'E-mail' : entregaOpc === 'whats' ? 'WhatsApp' : 'E-mail e WhatsApp';
     document.getElementById('s2-entrega').innerText = entregaTexto;
     mostrarStep('step2');
+}
+
+function abrirWhatsComprovante(e) {
+    e.preventDefault();
+    const nome = document.getElementById('s1-nome').value.trim() || 'Cliente';
+    const prompt = pedidoAtual?.titulo || 'Prompt';
+    const preco = PRECOS_LABEL[pedidoAtual?.nivel] || '';
+    const msg = encodeURIComponent(`Olá! Acabei de fazer o pagamento via Pix.\n\nNome: ${nome}\nPrompt comprado: ${prompt}\nValor: ${preco}\n\nSegue o comprovante em anexo. 📎`);
+    window.open(`https://wa.me/${WHATS_COMPROVANTE}?text=${msg}`, '_blank');
 }
 
 function confirmarPagamento() {
@@ -776,7 +845,6 @@ function marcarEntregue() {
     });
 }
 
-// SALVAR PROMPT
 function salvarPrompt() {
     const titulo = document.getElementById('f-titulo').value.trim();
     const area = document.getElementById('f-area').value;
