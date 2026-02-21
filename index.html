@@ -685,9 +685,11 @@ function salvar(){
 function showPg(id){document.querySelectorAll('.page').forEach(p=>{p.classList.remove('ativa');p.style.display='none';});const pg=document.getElementById(id);pg.style.display='block';pg.classList.add('ativa');window.scrollTo(0,0);}
 function fb(t,cb){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');cb();}catch(e){}document.body.removeChild(ta);}
 function showToast(msg){const t=document.getElementById('toast');t.innerText=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
-document.getElementById('ov-compra').addEventListener('click',e=>{if(e.target===document.getElementById('ov-compra'))fecharCompra();});
-document.getElementById('ov-ped').addEventListener('click',e=>{if(e.target===document.getElementById('ov-ped'))document.getElementById('ov-ped').classList.remove('show');});
-carregarPrompts();
+document.addEventListener('DOMContentLoaded', function(){
+    document.getElementById('ov-compra').addEventListener('click',e=>{if(e.target===document.getElementById('ov-compra'))fecharCompra();});
+    document.getElementById('ov-ped').addEventListener('click',e=>{if(e.target===document.getElementById('ov-ped'))document.getElementById('ov-ped').classList.remove('show');});
+    carregarPrompts();
+});
 
 </script>
 </body>
