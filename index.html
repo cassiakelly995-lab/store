@@ -121,10 +121,22 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opac
 .fgrid .full{grid-column:1/-1;}
 textarea.inp{resize:vertical;min-height:120px;}
 select.inp{appearance:none;cursor:pointer;}
-#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--grad);color:#000;padding:14px 28px;border-radius:3px;font-size:9px;font-weight:900;letter-spacing:4px;text-transform:uppercase;opacity:0;transition:.3s;z-index:9999;pointer-events:none;white-space:nowrap;}
+.filtro-ped{background:var(--card);border:1px solid var(--bs);border-radius:6px;padding:8px 16px;font-size:10px;font-weight:700;color:var(--sub);cursor:pointer;transition:.3s;text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;gap:8px;}
+.filtro-ped:hover{border-color:var(--gc);color:var(--gc);}
+.filtro-ped.ativo{border-color:var(--gc);color:var(--gc);background:rgba(191,149,63,.08);}
+.fp-badge{background:rgba(255,255,255,.08);border-radius:20px;padding:2px 8px;font-size:9px;font-weight:900;}
+.fp-badge.novo{background:rgba(231,76,60,.15);color:#e74c3c;}
+.fp-badge.pend{background:rgba(243,156,18,.15);color:#f39c12;}
+.fp-badge.ent{background:rgba(39,174,96,.15);color:var(--green);}
+.p-card.novo-ped{border-color:rgba(231,76,60,.4);box-shadow:0 0 20px rgba(231,76,60,.08);}
+.p-card.novo-ped::before{content:"NOVO";position:absolute;top:14px;right:14px;background:#e74c3c;color:#fff;font-size:7px;font-weight:900;letter-spacing:2px;padding:3px 8px;border-radius:20px;}
+.p-card{position:relative;}
+@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+#toast{position:fixed;#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--grad);color:#000;padding:14px 28px;border-radius:3px;font-size:9px;font-weight:900;letter-spacing:4px;text-transform:uppercase;opacity:0;transition:.3s;z-index:9999;pointer-events:none;white-space:nowrap;}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .vazio{grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--sub);font-size:12px;letter-spacing:3px;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulse2{0%,100%{opacity:1;}50%{opacity:.4;}}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
 @media(max-width:640px){
   .navbar,.hero,.busca-wrap,.filtros-wrap,.grid-section{padding-left:20px;padding-right:20px;}
@@ -260,9 +272,22 @@ select.inp{appearance:none;cursor:pointer;}
   </div>
   <div class="acontent">
     <div class="apanel ativo" id="panel-pedidos">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;">
-        <div style="font-size:12px;color:var(--sub);font-weight:300;">Clique em <b style="color:#fff;">VER / ENTREGAR</b> para copiar o prompt e enviar ao cliente.</div>
-        <button class="nav-btn" onclick="carregarPeds()">🔄 Atualizar</button>
+      <!-- BARRA SUPERIOR -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div id="sync-dot" style="width:8px;height:8px;border-radius:50%;background:#f39c12;transition:.3s;"></div>
+          <span id="sync-txt" style="font-size:10px;color:var(--sub);letter-spacing:1px;font-weight:600;">Conectando...</span>
+        </div>
+        <button id="btn-refresh" onclick="refreshManual()" style="display:flex;align-items:center;gap:8px;background:none;border:1px solid var(--border);color:var(--gc);padding:9px 20px;border-radius:3px;font-family:Inter,sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:.3s;text-transform:uppercase;">
+          <span id="refresh-ic" style="display:inline-block;transition:.3s;">↻</span> ATUALIZAR
+        </button>
+      </div>
+      <!-- FILTROS DE STATUS -->
+      <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+        <button class="filtro-ped ativo" id="fp-todos" onclick="filtrarPeds('todos',this)">📋 Todos <span id="ct-todos" class="fp-badge">0</span></button>
+        <button class="filtro-ped" id="fp-novo" onclick="filtrarPeds('novo',this)">🔴 Novos <span id="ct-novo" class="fp-badge novo">0</span></button>
+        <button class="filtro-ped" id="fp-pendente" onclick="filtrarPeds('pendente',this)">⏳ Pendentes <span id="ct-pend" class="fp-badge pend">0</span></button>
+        <button class="filtro-ped" id="fp-entregue" onclick="filtrarPeds('entregue',this)">✅ Entregues <span id="ct-ent" class="fp-badge ent">0</span></button>
       </div>
       <div class="ped-list" id="ped-list"><div style="text-align:center;padding:40px;color:var(--sub);">Carregando...</div></div>
     </div>
@@ -469,7 +494,7 @@ function irAdmLogin(){showPg('page-admin-login');}
 function irLoja(){showPg('page-loja');}
 function loginA(){
     const s=document.getElementById('a-senha').value;
-    if(s===SENHA){document.getElementById('a-erro').innerText='';showPg('page-admin');carregarPeds();}
+    if(s===SENHA){document.getElementById('a-erro').innerText='';showPg('page-admin');carregarPeds();iniciarAutoRefresh();}
     else document.getElementById('a-erro').innerText='SENHA INCORRETA';
 }
 function abaTab(t,el){
@@ -478,34 +503,127 @@ function abaTab(t,el){
     el.classList.add('ativo');document.getElementById('panel-'+t).classList.add('ativo');
     if(t==='pedidos')carregarPeds();
 }
-function carregarPeds(){
-    // Busca do Firebase via REST API
-    const fbUrl='https://cassia-v9-default-rtdb.firebaseio.com/ps_pedidos.json?orderBy=%22criadoEm%22';
-    fetch(fbUrl).then(r=>r.json()).then(data=>{
-        const list=document.getElementById('ped-list');if(!list)return;
-        let arr=[];
-        // Pedidos do Firebase
-        if(data && typeof data==='object'){
-            Object.entries(data).forEach(([k,v])=>{if(v && v.criadoEm)arr.push({id:k,...v});});
-        }
-        // Merge com backup local
-        try{
-            const local=JSON.parse(localStorage.getItem('ps_pedidos_bkp')||'[]');
-            local.forEach(p=>{if(!arr.find(a=>a.fbKey===p.fbKey||a.id===p.fbKey))arr.push(p);});
-        }catch(e){}
-        arr.sort((a,b)=>b.criadoEm-a.criadoEm);
-        if(!arr.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--sub);">Nenhum pedido ainda. 🚀</div>';atuStats([]);return;}
-        atuStats(arr);list.innerHTML='';
-        arr.forEach(p=>{
-            const data=new Date(p.criadoEm).toLocaleString('pt-BR');
-            const isPend=p.status==='pendente';
-            const cli=p.cliente||{};
-            const div=document.createElement('div');div.className='p-card';
-            div.innerHTML='<div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:10px;"><div><div class="p-titulo">'+p.promptTitulo+'</div><div class="p-meta"><span>👤 '+( cli.nome||'-')+'</span><span>📧 '+(cli.email||'-')+'</span><span>💬 '+(cli.tel||'-')+'</span><span>📦 '+p.entrega+'</span><span>🕐 '+data+'</span></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;"><span class="p-preco">'+p.preco+'</span><span class="bdg '+(isPend?'bdg-p':'bdg-ok')+'">'+(isPend?'⏳ Pendente':'✅ Entregue')+'</span></div></div><button class="btn-sm" onclick=\'abrirPedAdmin('+JSON.stringify(p).replace(/'/g,"&apos;")+')\'>VER / ENTREGAR →</button>';
-            list.appendChild(div);
-        });
+let todosOsPeds=[], filtroAtivo='todos', autoRefreshTimer=null;
+
+function setSyncStatus(status){
+    const dot=document.getElementById('sync-dot');
+    const txt=document.getElementById('sync-txt');
+    if(!dot||!txt)return;
+    if(status==='ok'){dot.style.background='#27ae60';txt.innerText='Atualizado agora';}
+    else if(status==='loading'){dot.style.background='#f39c12';txt.innerText='Atualizando...';}
+    else{dot.style.background='#e74c3c';txt.innerText='Erro de conexão';}
+}
+
+function refreshManual(){
+    const ic=document.getElementById('refresh-ic');
+    if(ic){ic.style.animation='spin .6s linear infinite';}
+    setSyncStatus('loading');
+    carregarPeds(()=>{if(ic)ic.style.animation='none';});
+}
+
+function iniciarAutoRefresh(){
+    if(autoRefreshTimer)clearInterval(autoRefreshTimer);
+    autoRefreshTimer=setInterval(()=>{
+        setSyncStatus('loading');
+        carregarPeds();
+    },30000); // atualiza a cada 30s
+}
+
+function filtrarPeds(filtro, el){
+    filtroAtivo=filtro;
+    document.querySelectorAll('.filtro-ped').forEach(b=>b.classList.remove('ativo'));
+    if(el)el.classList.add('ativo');
+    renderPeds();
+}
+
+function renderPeds(){
+    const list=document.getElementById('ped-list');if(!list)return;
+    const agora=Date.now();
+    const NOVO_LIMITE=3600000; // 1 hora = novo pedido
+    let lista=todosOsPeds;
+    if(filtroAtivo==='novo') lista=todosOsPeds.filter(p=>p.status==='pendente'&&(agora-p.criadoEm)<NOVO_LIMITE);
+    else if(filtroAtivo==='pendente') lista=todosOsPeds.filter(p=>p.status==='pendente');
+    else if(filtroAtivo==='entregue') lista=todosOsPeds.filter(p=>p.status==='entregue');
+    if(!lista.length){
+        const msgs={todos:'Nenhum pedido ainda. 🚀',novo:'Nenhum pedido novo.',pendente:'Nenhum pedido pendente. ✅',entregue:'Nenhum pedido entregue ainda.'};
+        list.innerHTML='<div style="text-align:center;padding:40px;color:var(--sub);font-size:12px;letter-spacing:2px;">'+(msgs[filtroAtivo]||'')+'</div>';
+        return;
+    }
+    list.innerHTML='';
+    lista.forEach(p=>{
+        const agora2=Date.now();
+        const isNovo=p.status==='pendente'&&(agora2-p.criadoEm)<NOVO_LIMITE;
+        const isPend=p.status==='pendente';
+        const dataStr=new Date(p.criadoEm).toLocaleString('pt-BR');
+        const tempoStr=calcTempo(p.criadoEm);
+        const cli=p.cliente||{};
+        const div=document.createElement('div');
+        div.className='p-card'+(isNovo?' novo-ped':'');
+        div.innerHTML='<div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:12px;"><div style="flex:1;min-width:0;"><div class="p-titulo">'+p.promptTitulo+'</div><div class="p-meta" style="margin-top:6px;"><span>👤 '+(cli.nome||'-')+'</span><span>📧 '+(cli.email||'-')+'</span><span>💬 '+(cli.tel||'-')+'</span><span>📦 '+p.entrega+'</span></div><div style="font-size:10px;color:var(--sub);margin-top:6px;opacity:.6;">🕐 '+dataStr+' · '+tempoStr+'</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;"><span class="p-preco">'+p.preco+'</span><span class="bdg '+(isPend?'bdg-p':'bdg-ok')+'">'+(isNovo?'🔴 NOVO':isPend?'⏳ Pendente':'✅ Entregue')+'</span></div></div><button class="btn-sm" onclick='abrirPedAdmin('+JSON.stringify(p).replace(/'/g,"&apos;")+')'>VER / ENTREGAR →</button>';
+        list.appendChild(div);
     });
 }
+
+function calcTempo(ts){
+    const diff=Date.now()-ts;
+    const min=Math.floor(diff/60000);
+    const h=Math.floor(min/60);
+    const d=Math.floor(h/24);
+    if(d>0)return 'há '+d+' dia'+(d>1?'s':'');
+    if(h>0)return 'há '+h+'h';
+    if(min>0)return 'há '+min+'min';
+    return 'agora mesmo';
+}
+
+function atualizarContadores(arr){
+    const agora=Date.now();
+    const NOVO_LIMITE=3600000;
+    const novos=arr.filter(p=>p.status==='pendente'&&(agora-p.criadoEm)<NOVO_LIMITE).length;
+    const pend=arr.filter(p=>p.status==='pendente').length;
+    const ent=arr.filter(p=>p.status==='entregue').length;
+    const setEl=(id,v)=>{const el=document.getElementById(id);if(el)el.innerText=v;};
+    setEl('ct-todos',arr.length);
+    setEl('ct-novo',novos);
+    setEl('ct-pend',pend);
+    setEl('ct-ent',ent);
+    // pisca badge de novos se tiver
+    const badgeNovo=document.getElementById('ct-novo');
+    if(badgeNovo)badgeNovo.style.animation=novos>0?'pulse2 1.5s infinite':'none';
+}
+
+function carregarPeds(cb){
+    const fbUrl='https://cassia-v9-default-rtdb.firebaseio.com/ps_pedidos.json';
+    fetch(fbUrl).then(r=>r.json()).then(data=>{
+        let arr=[];
+        if(data&&typeof data==='object'){
+            Object.entries(data).forEach(([k,v])=>{if(v&&v.criadoEm)arr.push({id:k,...v});});
+        }
+        try{
+            const local=JSON.parse(localStorage.getItem('ps_pedidos_bkp')||'[]');
+            local.forEach(p=>{if(!arr.find(a=>a.id===p.fbKey||a.fbKey===p.fbKey))arr.push(p);});
+        }catch(e){}
+        arr.sort((a,b)=>b.criadoEm-a.criadoEm);
+        todosOsPeds=arr;
+        atuStats(arr);
+        atualizarContadores(arr);
+        renderPeds();
+        setSyncStatus('ok');
+        if(cb)cb();
+    }).catch(()=>{
+        // fallback local
+        try{
+            const local=JSON.parse(localStorage.getItem('ps_pedidos_bkp')||'[]');
+            local.sort((a,b)=>b.criadoEm-a.criadoEm);
+            todosOsPeds=local;
+            atuStats(local);
+            atualizarContadores(local);
+            renderPeds();
+        }catch(e){}
+        setSyncStatus('error');
+        if(cb)cb();
+    });
+}
+
 function atuStats(arr){
     const el=id=>document.getElementById(id);
     if(el('st-total'))el('st-total').innerText=arr.length;
