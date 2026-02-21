@@ -1,202 +1,155 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>PROMPTUS Store - Prompts Profissionais</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <style>
-        *{box-sizing:border-box;margin:0;padding:0}
-        :root{--bg:#050505;--card:#0d0d0d;--brd:rgba(191,149,63,.22);--gold:#bf953f;--grad:linear-gradient(135deg,#bf953f,#fcf6ba 50%,#b38728);--txt:#f0ebe0;--sub:rgba(240,235,224,.38);--grn:#2ecc71;--red:#e74c3c}
-        body{background:var(--bg);color:var(--txt);font-family:"DM Sans",sans-serif;min-height:100vh;font-size:17px;line-height:1.6}
-        body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse 80% 40% at 50% -5%,rgba(191,149,63,.06),transparent);pointer-events:none;z-index:0}
-        .pg{display:none;position:relative;z-index:1}.pg.on{display:block}
-        nav{display:flex;align-items:center;justify-content:space-between;padding:20px 40px;border-bottom:1px solid var(--brd);background:rgba(5,5,5,.96);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100}
-        .logo{font-family:"Cormorant Garamond",serif;font-size:32px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:6px;cursor:pointer}
-        .logo-s{font-size:12px;letter-spacing:5px;color:var(--sub);text-transform:uppercase}
-        .btn{background:none;border:1px solid var(--brd);color:var(--sub);padding:10px 20px;border-radius:3px;font-family:"DM Sans",sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:.2s;text-transform:uppercase}
-        .btn:hover{border-color:var(--gold);color:var(--gold)}
-        .bgold{background:var(--grad);color:#000;border:none;padding:16px 26px;border-radius:3px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:14px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:.2s;width:100%;display:block;text-align:center;margin-bottom:12px}
-        .bwa{background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border:none;padding:16px;border-radius:3px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:14px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;width:100%;display:block;text-align:center;text-decoration:none;margin-bottom:12px}
-        .bok{background:rgba(46,204,113,.09);color:var(--grn);border:1px solid rgba(46,204,113,.28);padding:15px;border-radius:3px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;width:100%;margin-top:10px}
-        .hero{text-align:center;padding:80px 20px 45px;max-width:1100px;margin:0 auto}
-        .htag{font-size:12px;font-weight:700;letter-spacing:6px;color:var(--gold);text-transform:uppercase;margin-bottom:20px}
-        .hero h1{font-family:"Cormorant Garamond",serif;font-size:clamp(52px,9vw,92px);font-weight:900;line-height:1.02;margin-bottom:18px}
-        .hero h1 em{font-style:italic;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .hero p{font-size:19px;color:var(--sub);max-width:550px;margin:0 auto 20px;font-weight:300}
-        .sw{max-width:1100px;margin:0 auto;padding:0 30px 18px}
-        .sw input{width:100%;background:var(--card);border:1px solid var(--brd);border-radius:4px;padding:18px 22px;color:var(--txt);font-family:"DM Sans",sans-serif;font-size:17px;outline:none}
-        .fw{max-width:1100px;margin:0 auto;padding:0 30px 26px;display:flex;gap:9px;flex-wrap:wrap}
-        .ft{background:var(--card);border:1px solid rgba(191,149,63,.1);border-radius:30px;padding:9px 18px;font-size:13px;font-weight:700;color:var(--sub);cursor:pointer;text-transform:uppercase}
-        .ft.on{background:var(--grad);color:#000;border-color:transparent}
-        .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;max-width:1100px;margin:0 auto;padding:0 30px 80px}
-        .card{background:var(--card);border:1px solid rgba(191,149,63,.09);border-radius:8px;overflow:hidden;transition:.22s}
-        .card:hover{border-color:var(--brd);transform:translateY(-2px)}
-        .ct{padding:24px}
-        .ca{font-size:11px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px}
-        .cn{font-family:"Cormorant Garamond",serif;font-size:23px;font-weight:700;margin-bottom:8px}
-        .cd{font-size:15px;color:var(--sub);font-weight:300}
-        .cpv{background:#000;border:1px solid rgba(191,149,63,.09);margin:0 24px 12px;padding:12px;border-radius:4px;position:relative}
-        .pvt{font-family:"Courier New",monospace;font-size:11px;color:rgba(191,149,63,.3);max-height:60px;overflow:hidden}
-        .cb{padding:18px 24px;border-top:1px solid rgba(191,149,63,.07);display:flex;justify-content:space-between;align-items:center}
-        .preco{font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .ov{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
-        .ov.on{display:flex}
-        .modal{background:var(--card);border:1px solid var(--brd);padding:35px;max-width:480px;width:100%;border-radius:8px;position:relative}
-        .mx{position:absolute;top:15px;right:20px;background:none;border:none;color:var(--sub);font-size:28px;cursor:pointer}
-        .inp{width:100%;background:rgba(255,255,255,.02);border:1px solid var(--brd);border-radius:4px;padding:15px;color:#fff;margin-bottom:12px;outline:none}
-        .err{color:var(--red);font-size:13px;margin-bottom:10px;font-weight:700}
-        .pixbox{background:#000;padding:20px;border:1px solid var(--brd);text-align:center;border-radius:6px;margin-bottom:15px}
-        .pk{font-family:"Cormorant Garamond",serif;font-size:26px;font-weight:700;margin:10px 0}
-        #toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--grad);color:#000;padding:12px 25px;border-radius:4px;font-weight:900;font-size:12px;letter-spacing:2px;z-index:9999;opacity:0;transition:.3s;pointer-events:none}
-        #toast.on{opacity:1}
-        footer{padding:40px;text-align:center;border-top:1px solid var(--brd);font-size:12px;color:var(--sub);letter-spacing:1px}
-        @media(max-width:600px){.grid{grid-template-columns:1fr;padding:0 20px}.hero h1{font-size:42px}nav{padding:15px 20px}}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>PROMPTUS Store | Prompts Profissionais</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#050505;--card:#0d0d0d;--brd:rgba(191,149,63,.22);--gold:#bf953f;--grad:linear-gradient(135deg,#bf953f,#fcf6ba 50%,#b38728);--txt:#f0ebe0;--sub:rgba(240,235,224,.38);--grn:#2ecc71;--red:#e74c3c}
+body{background:var(--bg);color:var(--txt);font-family:"DM Sans",sans-serif;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse 80% 40% at 50% -5%,rgba(191,149,63,.06),transparent);pointer-events:none;z-index:0}
+.pg{display:none;position:relative;z-index:1}.pg.on{display:block}
+nav{display:flex;align-items:center;justify-content:space-between;padding:15px 36px;border-bottom:1px solid var(--brd);background:rgba(5,5,5,.96);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px}
+.logo{font-family:"Cormorant Garamond",serif;font-size:23px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:6px;cursor:pointer}
+.logo-s{font-size:8px;letter-spacing:5px;color:var(--sub);text-transform:uppercase}
+.btn{background:none;border:1px solid var(--brd);color:var(--sub);padding:7px 15px;border-radius:3px;font-family:"DM Sans",sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:.2s;text-transform:uppercase}
+.btn:hover{border-color:var(--gold);color:var(--gold)}
+.bgold{background:var(--grad);color:#000;border:none;padding:13px 20px;border-radius:3px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:10px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:.2s;width:100%;display:block;text-align:center;margin-bottom:8px}
+.bgold:hover{filter:brightness(1.1)}
+.bwa{background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border:none;padding:13px;border-radius:3px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;width:100%;display:block;text-align:center;text-decoration:none;margin-bottom:8px}
+.bok{background:rgba(46,204,113,.09);color:var(--grn);border:1px solid rgba(46,204,113,.28);padding:12px;border-radius:3px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;width:100%;margin-top:6px}
+.hero{text-align:center;padding:64px 20px 36px;max-width:960px;margin:0 auto}
+.htag{font-size:9px;font-weight:700;letter-spacing:6px;color:var(--gold);text-transform:uppercase;margin-bottom:16px}
+.hero h1{font-family:"Cormorant Garamond",serif;font-size:clamp(42px,7vw,78px);font-weight:900;line-height:1.02;margin-bottom:14px}
+.hero h1 em{font-style:italic;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:15px;color:var(--sub);max-width:440px;margin:0 auto 16px;line-height:1.8;font-weight:300}
+.hbadge{display:inline-flex;align-items:center;gap:7px;background:rgba(46,204,113,.07);border:1px solid rgba(46,204,113,.22);border-radius:20px;padding:6px 15px;font-size:9px;font-weight:700;color:var(--grn);letter-spacing:3px;text-transform:uppercase}
+.sw{max-width:960px;margin:0 auto;padding:0 30px 14px}
+.sw input{width:100%;background:var(--card);border:1px solid var(--brd);border-radius:4px;padding:13px 18px;color:var(--txt);font-family:"DM Sans",sans-serif;font-size:14px;outline:none;transition:.2s}
+.sw input:focus{border-color:var(--gold)}.sw input::placeholder{color:var(--sub)}
+.fw{max-width:960px;margin:0 auto;padding:0 30px 20px;display:flex;gap:7px;flex-wrap:wrap}
+.ft{background:var(--card);border:1px solid rgba(191,149,63,.1);border-radius:30px;padding:6px 14px;font-size:10px;font-weight:700;color:var(--sub);cursor:pointer;transition:.2s;text-transform:uppercase;letter-spacing:1px}
+.ft:hover,.ft.on{background:var(--grad);color:#000;border-color:transparent}
+.gw{max-width:960px;margin:0 auto;padding:0 30px 60px}
+.glbl{font-size:9px;font-weight:700;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.glbl::after{content:"";flex:1;height:1px;background:rgba(191,149,63,.08)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid rgba(191,149,63,.09);border-radius:8px;overflow:hidden;transition:all .22s;animation:up .3s ease both}
+.card:hover{border-color:var(--brd);transform:translateY(-2px);box-shadow:0 14px 44px rgba(0,0,0,.7)}
+.ct{padding:19px 19px 11px}
+.ca{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:7px}
+.cn{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:700;margin-bottom:6px;line-height:1.3}
+.cd{font-size:12px;color:var(--sub);line-height:1.7;font-weight:300}
+.cpv{position:relative;background:#000;border:1px solid rgba(191,149,63,.09);border-radius:4px;margin:9px 19px;overflow:hidden}
+.pvt{font-family:"Courier New",monospace;font-size:9px;color:rgba(191,149,63,.28);line-height:1.7;padding:11px 13px;white-space:pre-wrap;max-height:68px;overflow:hidden}
+.pvb{position:absolute;bottom:0;left:0;right:0;height:46px;background:linear-gradient(transparent,#000);display:flex;align-items:flex-end;justify-content:center;padding-bottom:7px}
+.lk{font-size:8px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;background:rgba(191,149,63,.07);border:1px solid rgba(191,149,63,.18);border-radius:20px;padding:3px 11px}
+.cb{padding:10px 19px;border-top:1px solid rgba(191,149,63,.07);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:7px}
+.tags{display:flex;gap:5px;flex-wrap:wrap}
+.tag{font-size:8px;font-weight:700;padding:3px 8px;border-radius:20px;border:1px solid rgba(255,255,255,.07);color:var(--sub);text-transform:uppercase}
+.lb{color:#3498db;border-color:rgba(52,152,219,.22)!important;background:rgba(52,152,219,.05)!important}
+.li{color:#f39c12;border-color:rgba(243,156,18,.22)!important;background:rgba(243,156,18,.05)!important}
+.la{color:#e74c3c;border-color:rgba(231,76,60,.22)!important;background:rgba(231,76,60,.05)!important}
+.lp{color:var(--gold);border-color:rgba(191,149,63,.22)!important;background:rgba(191,149,63,.05)!important}
+.preco{font-family:"Cormorant Garamond",serif;font-size:21px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.bcmp{background:var(--grad);color:#000;border:none;padding:8px 16px;border-radius:3px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.2s}
+.bcmp:hover{filter:brightness(1.1)}
+.empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--sub);font-size:12px;letter-spacing:3px}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+.ov.on{display:flex}
+.modal{background:var(--card);border:1px solid var(--brd);border-radius:8px;padding:30px;max-width:430px;width:100%;max-height:90vh;overflow-y:auto;position:relative}
+.modal::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);border-radius:8px 8px 0 0}
+.mx{position:absolute;top:10px;right:13px;background:none;border:none;color:var(--sub);font-size:22px;cursor:pointer;line-height:1}
+.st{display:none}.st.on{display:block}
+.mk{font-size:9px;font-weight:700;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:7px}
+.mt{font-family:"Cormorant Garamond",serif;font-size:23px;font-weight:700;margin-bottom:7px}
+.ms{font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:16px;font-weight:300}
+.inp{width:100%;background:rgba(255,255,255,.02);border:1px solid var(--brd);border-radius:4px;padding:12px 14px;color:var(--txt);font-family:"DM Sans",sans-serif;font-size:14px;outline:none;transition:.2s;margin-bottom:9px}
+.inp:focus{border-color:var(--gold)}.inp::placeholder{color:var(--sub)}
+.rg{display:flex;gap:8px;margin-bottom:13px}
+.ro{flex:1;border:1px solid rgba(191,149,63,.11);border-radius:4px;padding:11px 5px;cursor:pointer;text-align:center;transition:.2s}
+.ro.on{border-color:var(--gold);background:rgba(191,149,63,.05)}
+.ro-l{font-size:10px;font-weight:700;color:var(--sub);letter-spacing:1px;margin-top:4px}
+.ro.on .ro-l{color:var(--gold)}
+.err{font-size:11px;color:var(--red);min-height:14px;margin-bottom:7px;font-weight:600}
+.pixbox{background:#000;border:1px solid rgba(191,149,63,.18);border-radius:6px;padding:16px;text-align:center;margin-bottom:11px}
+.pk{font-family:"Cormorant Garamond",serif;font-size:21px;font-weight:700;margin:6px 0 3px;letter-spacing:2px}
+.rsbox{background:#000;border:1px solid rgba(191,149,63,.09);border-radius:6px;padding:13px;margin-bottom:14px}
+.rs-n{font-family:"Cormorant Garamond",serif;font-size:16px;font-weight:700;margin-bottom:3px}
+.rs-p{font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.av{font-size:12px;color:var(--sub);line-height:1.8;text-align:center;margin:9px 0;font-weight:300}
+.av b{color:var(--gold)}
+.ag{text-align:center;padding:16px 0}
+.ag-i{font-size:48px;margin-bottom:12px;animation:pu 2s infinite}
+.ag-t{font-family:"Cormorant Garamond",serif;font-size:25px;font-weight:700;margin-bottom:9px}
+.ag-s{font-size:13px;color:var(--sub);line-height:1.8;font-weight:300}
+#pg-al{display:flex;align-items:center;justify-content:center;min-height:100vh}
+.alb{background:var(--card);border:1px solid var(--brd);border-radius:8px;padding:38px;max-width:310px;width:100%;text-align:center;position:relative}
+.alb::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad)}
+.anav{display:flex;align-items:center;justify-content:space-between;padding:15px 34px;border-bottom:1px solid var(--brd);background:rgba(5,5,5,.96);backdrop-filter:blur(20px);flex-wrap:wrap;gap:8px}
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:9px;padding:18px 34px}
+.sc{background:var(--card);border:1px solid rgba(191,149,63,.09);border-radius:6px;padding:15px}
+.sn{font-family:"Cormorant Garamond",serif;font-size:30px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:3px}
+.sl{font-size:9px;color:var(--sub);letter-spacing:2px;text-transform:uppercase;font-weight:700}
+.atabs{display:flex;padding:0 34px;border-bottom:1px solid rgba(191,149,63,.09)}
+.atab{background:none;border:none;border-bottom:2px solid transparent;padding:10px 16px;font-family:"DM Sans",sans-serif;font-size:10px;font-weight:700;color:var(--sub);cursor:pointer;letter-spacing:2px;text-transform:uppercase;transition:.2s;margin-bottom:-1px}
+.atab.on{color:var(--gold);border-bottom-color:var(--gold)}
+.ac{padding:20px 34px}
+.ap{display:none}.ap.on{display:block}
+.pbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.sync{display:flex;align-items:center;gap:7px}
+.dot{width:7px;height:7px;border-radius:50%;background:#f39c12;transition:.4s}
+.dot.ok{background:var(--grn)}.dot.err{background:var(--red)}
+.stxt{font-size:10px;color:var(--sub);font-weight:600}
+.bref{display:flex;align-items:center;gap:6px;background:none;border:1px solid var(--brd);color:var(--gold);padding:8px 15px;border-radius:3px;font-family:"DM Sans",sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:.2s;text-transform:uppercase}
+.bref:hover{background:rgba(191,149,63,.07)}
+.spin{display:inline-block}.spin.go{animation:gr .6s linear infinite}
+.ftabs{display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap}
+.fpt{background:var(--card);border:1px solid rgba(191,149,63,.11);border-radius:6px;padding:7px 13px;font-size:10px;font-weight:700;color:var(--sub);cursor:pointer;transition:.2s;text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;gap:5px}
+.fpt:hover,.fpt.on{border-color:var(--gold);color:var(--gold);background:rgba(191,149,63,.05)}
+.fpb{background:rgba(255,255,255,.07);border-radius:20px;padding:2px 7px;font-size:9px;font-weight:900}
+.fpb.nv{background:rgba(231,76,60,.14);color:var(--red)}
+.fpb.pd{background:rgba(243,156,18,.14);color:#f39c12}
+.fpb.ok{background:rgba(46,204,113,.14);color:var(--grn)}
+.pl{display:flex;flex-direction:column;gap:9px}
+.pc{background:var(--card);border:1px solid rgba(191,149,63,.09);border-radius:7px;padding:15px;transition:.2s;position:relative}
+.pc:hover{border-color:var(--brd)}
+.pc.nv{border-color:rgba(231,76,60,.32);box-shadow:0 0 16px rgba(231,76,60,.06)}
+.pct{font-family:"Cormorant Garamond",serif;font-size:17px;font-weight:700;margin-bottom:5px}
+.pcm{font-size:11px;color:var(--sub);display:flex;gap:10px;flex-wrap:wrap;font-weight:300}
+.pcp{font-family:"Cormorant Garamond",serif;font-size:19px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.bdg{font-size:8px;font-weight:700;letter-spacing:2px;padding:4px 9px;border-radius:20px;text-transform:uppercase;white-space:nowrap}
+.bdg-p{background:rgba(243,156,18,.09);border:1px solid rgba(243,156,18,.28);color:#f39c12}
+.bdg-ok{background:rgba(46,204,113,.09);border:1px solid rgba(46,204,113,.28);color:var(--grn)}
+.bdg-nv{background:rgba(231,76,60,.09);border:1px solid rgba(231,76,60,.28);color:var(--red)}
+.bsm{background:none;color:var(--gold);border:1px solid rgba(191,149,63,.22);padding:7px 13px;border-radius:3px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.2s;margin-top:9px}
+.bsm:hover{background:rgba(191,149,63,.06)}
+.ilbl{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--sub);text-transform:uppercase;margin-bottom:5px;display:block}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fg .full{grid-column:1/-1}
+textarea.inp{resize:vertical;min-height:95px}
+select.inp{cursor:pointer}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(18px);background:var(--grad);color:#000;padding:11px 22px;border-radius:3px;font-size:9px;font-weight:900;letter-spacing:4px;text-transform:uppercase;opacity:0;transition:.3s;z-index:9999;pointer-events:none;white-space:nowrap}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@keyframes up{from{opacity:0;transform:translateY(11px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pu{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes gr{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@media(max-width:560px){nav,.hero,.sw,.fw,.gw{padding-left:14px;padding-right:14px}.grid{grid-template-columns:1fr}.modal{padding:20px 13px}.anav,.ac,.stats,.atabs{padding-left:12px;padding-right:12px}.fg{grid-template-columns:1fr}.rg{flex-direction:column}}
+</style>
 </head>
 <body>
-    <div id="toast"></div>
-
-    <div id="pg-lj" class="pg on">
-        <nav>
-            <div><div class="logo">PROMPTUS</div><div class="logo-s">Store</div></div>
-            <button class="btn" onclick="goAL()">Painel Admin</button>
-        </nav>
-        <div class="hero">
-            <div class="htag">V9 God Mode - Elite</div>
-            <h1>Prompts que <em>funcionam.</em></h1>
-            <p>Engenharia de prompt avançada para profissionais de alto nível.</p>
-        </div>
-        <div class="sw"><input type="text" id="busca" placeholder="Buscar prompt..." oninput="render()"></div>
-        <div class="fw" id="fw"></div>
-        <div class="grid" id="grid"></div>
-        <footer>
-            O programa apenas gera o prompt. A responsabilidade pelo uso é inteiramente do usuário.<br>
-            Cássia Prompt © 2026
-        </footer>
-    </div>
-
-    <div id="pg-al" class="pg" style="display:none; height:100vh; align-items:center; justify-content:center;">
-        <div class="modal" style="text-align:center">
-            <div class="logo">ADMIN</div>
-            <input class="inp" type="password" id="a-pw" placeholder="Senha de acesso" style="margin-top:20px">
-            <div class="err" id="a-err"></div>
-            <button class="bgold" onclick="login()">ENTRAR</button>
-            <div style="cursor:pointer; color:var(--sub); font-size:12px" onclick="location.reload()">Voltar</div>
-        </div>
-    </div>
-
-    <div class="ov" id="ov-c">
-        <div class="modal">
-            <button class="mx" onclick="fC()">×</button>
-            <div id="s1" class="st on">
-                <div class="ca">Desbloquear Agora</div>
-                <div class="cn" id="s1t" style="margin-bottom:20px"></div>
-                <input class="inp" id="f-nm" placeholder="Nome Completo">
-                <input class="inp" id="f-em" placeholder="Seu melhor e-mail">
-                <input class="inp" id="f-wt" placeholder="WhatsApp com DDD">
-                <div class="err" id="s1e"></div>
-                <button class="bgold" onclick="goP()">GERAR PIX</button>
-            </div>
-            <div id="s2" class="st" style="display:none">
-                <div class="ca">Pagamento Pix</div>
-                <div class="pixbox">
-                    <div style="font-size:10px; color:var(--gold)">CHAVE PIX CPF</div>
-                    <div class="pk">39521484829</div>
-                    <div style="font-size:12px">Cassia Kelly Lins Reis</div>
-                </div>
-                <button class="bgold" onclick="cpPix()">COPIAR CHAVE PIX</button>
-                <a id="b-wa" class="bwa" target="_blank">ENVIAR COMPROVANTE</a>
-                <button class="bok" onclick="conf()">JÁ PAGUEI</button>
-            </div>
-            <div id="s3" class="st" style="display:none; text-align:center; padding:20px">
-                <div style="font-size:50px">✅</div>
-                <div class="cn">Pedido Recebido!</div>
-                <p>Verificamos seu pagamento em até 1 hora.</p>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script>
-        var WA="5511978857415", SENHA="cassia2025", FB="https://cassia-v9-default-rtdb.firebaseio.com";
-        var PRECOS={basico:"R$9,90",intermediario:"R$19,90",avancado:"R$29,90",premium:"R$49,90"};
-        var AREAS=[{k:"all",l:"Todos"},{k:"juridico",l:"Jurídico"},{k:"medico",l:"Médico"},{k:"negocios",l:"Negócios"},{k:"marketing",l:"Marketing"}];
-        var BASE=[
-            {titulo:"Petição Trabalhista Completa", area:"juridico", nivel:"avancado", tag:"Petição", preview:"PERSONA: Advogado trabalhista...", prompt:"PERSONA: Advogado trabalhista sênior.\nTAREFA: Petição inicial completa..."},
-            {titulo:"Contrato de Prestação de Serviços", area:"juridico", nivel:"intermediario", tag:"Contrato", preview:"PERSONA: Advogado civilista...", prompt:"PERSONA: Advogado civilista.\nTAREFA: Contrato completo..."},
-            {titulo:"Laudo Médico Completo", area:"medico", nivel:"avancado", tag:"Laudo", preview:"PERSONA: Médico especialista...", prompt:"PERSONA: Médico especialista.\nTAREFA: Laudo médico..."},
-            {titulo:"Copy Página de Vendas", area:"marketing", nivel:"avancado", tag:"Copy", preview:"PERSONA: Copywriter sênior...", prompt:"PERSONA: Copywriter.\nTAREFA: Copy de alta conversão..."}
-            // Adicione os outros 30 prompts aqui seguindo o padrão
-        ];
-
-        var aA="all", pedA=null;
-
-        function init(){
-            if(!firebase.apps.length) firebase.initializeApp({databaseURL:FB});
-            mkF(); render();
-        }
-
-        function mkF(){
-            var w=document.getElementById("fw"); w.innerHTML="";
-            AREAS.forEach(a=>{
-                var b=document.createElement("button");
-                b.className="ft"+(a.k===aA?" on":"");
-                b.textContent=a.l;
-                b.onclick=()=>{aA=a.k; mkF(); render();};
-                w.appendChild(b);
-            });
-        }
-
-        function render(){
-            var q=document.getElementById("busca").value.toLowerCase();
-            var g=document.getElementById("grid"); g.innerHTML="";
-            var lista=BASE.filter(p=>(aA==="all"||p.area===aA) && (p.titulo.toLowerCase().includes(q)));
-            
-            lista.forEach((p,idx)=>{
-                var d=document.createElement("div"); d.className="card";
-                d.innerHTML=`<div class="ct"><div class="ca">${p.area}</div><div class="cn">${p.titulo}</div></div>
-                             <div class="cpv"><div class="pvt">${p.preview}</div></div>
-                             <div class="cb"><span class="preco">${PRECOS[p.nivel]}</span>
-                             <button class="btn" style="border-color:var(--gold); color:var(--gold)" onclick="abrC(${BASE.indexOf(p)})">COMPRAR</button></div>`;
-                g.appendChild(d);
-            });
-        }
-
-        function abrC(i){
-            pedA=BASE[i]; document.getElementById("s1t").textContent=pedA.titulo;
-            document.getElementById("ov-c").classList.add("on");
-        }
-
-        function goP(){
-            var nm=document.getElementById("f-nm").value;
-            if(!nm){document.getElementById("s1e").textContent="Preencha o nome"; return;}
-            document.getElementById("s1").style.display="none";
-            document.getElementById("s2").style.display="block";
-            var msg = `Olá Cássia! Fiz o pedido do prompt: ${pedA.titulo}. Nome: ${nm}`;
-            document.getElementById("b-wa").href = "https://wa.me/"+WA+"?text="+encodeURIComponent(msg);
-        }
-
-        function conf(){
-            var ped={titulo:pedA.titulo, prompt:pedA.prompt, cliente:document.getElementById("f-nm").value, data:Date.now(), status:"pendente"};
-            fetch(FB+"/pedidos.json",{method:"POST", body:JSON.stringify(ped)}).then(()=>{
-                document.getElementById("s2").style.display="none";
-                document.getElementById("s3").style.display="block";
-            });
-        }
-
-        function cpPix(){
-            navigator.clipboard.writeText("39521484829");
-            toast("PIX COPIADO!");
-        }
-
-        function fC(){document.getElementById("ov-c").classList.remove("on");}
-        function toast(m){var t=document.getElementById("toast"); t.textContent=m; t.classList.add("on"); setTimeout(()=>t.classList.remove("on"),2000);}
-        function goAL(){document.getElementById("pg-lj").style.display="none"; document.getElementById("pg-al").style.display="flex";}
-        function login(){if(document.getElementById("a-pw").value===SENHA) alert("Acesso Autorizado! Carregando Banco..."); else document.getElementById("a-err").textContent="Senha incorreta";}
-
-        init();
-    </script>
+<div id="toast"></div>
+<div class="ov" id="ov-c"><div class="modal"><button class="mx" onclick="fC()">×</button><div class="st on" id="s1"><div class="mk">Desbloqueie o prompt</div><div class="mt" id="s1t"></div><div class="ms">Preencha para receber o prompt após o pagamento.</div><input class="inp" type="text" id="f-nm" placeholder="Seu nome completo"><input class="inp" type="email" id="f-em" placeholder="Seu e-mail"><input class="inp" type="tel" id="f-wt" placeholder="WhatsApp com DDD (ex: 11999990000)"><div style="font-size:9px;font-weight:700;letter-spacing:2px;color:var(--sub);text-transform:uppercase;margin-bottom:8px">Receber por:</div><div class="rg"><div class="ro on" id="ro-e" onclick="sE('e')"><div style="font-size:16px">@</div><div class="ro-l">E-mail</div></div><div class="ro" id="ro-w" onclick="sE('w')"><div style="font-size:16px">W</div><div class="ro-l">WhatsApp</div></div><div class="ro" id="ro-a" onclick="sE('a')"><div style="font-size:16px">+</div><div class="ro-l">Os dois</div></div></div><div class="err" id="s1e"></div><button class="bgold" onclick="goP()">CONTINUAR PARA PAGAMENTO</button></div><div class="st" id="s2"><div class="mk">Pague com Pix</div><div class="mt">Quase lá!</div><div class="rsbox"><div class="rs-n" id="s2n"></div><div class="rs-p" id="s2p"></div></div><div class="pixbox"><div style="font-size:8px;font-weight:700;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:9px">Chave Pix CPF</div><div class="pk">39521484829</div><div style="font-size:11px;color:var(--sub)">Cassia Kelly Lins Reis</div></div><button class="bgold" id="b-cp" onclick="cpPix()">COPIAR CHAVE PIX</button><div class="av">Após o Pix, envie o comprovante para:<br><b style="font-size:17px;display:block;margin:5px 0;font-family:'Cormorant Garamond',serif">(11) 97885-7415</b></div><a id="b-wa" class="bwa" href="#" target="_blank">ENVIAR COMPROVANTE NO WHATSAPP</a><div class="av">Você receberá via <b><span id="s2e"></span></b> após confirmação.</div><button class="bok" onclick="conf()">JÁ ENVIEI O COMPROVANTE</button></div><div class="st" id="s3"><div class="ag"><div class="ag-i">⏳</div><div class="ag-t">Pedido registrado!</div><div class="ag-s">Assim que confirmarmos o comprovante você receberá o prompt via <b id="s3e" style="color:var(--gold)"></b>.<br><br>Tempo médio: <b style="color:var(--gold)">até 1 hora.</b></div></div></div></div></div>
+<div class="ov" id="ov-p"><div class="modal" style="max-width:490px"><button class="mx" onclick="fP()">×</button><div class="mk">Pedido</div><div class="mt" id="ap-t"></div><div style="background:#000;border:1px solid rgba(191,149,63,.09);border-radius:6px;padding:12px;margin:9px 0;font-size:12px;color:var(--sub);line-height:2.1;font-weight:300"><div>Cliente: <span id="ap-nm" style="color:var(--txt);font-weight:500"></span></div><div>E-mail: <span id="ap-em" style="color:var(--txt)"></span></div><div>WhatsApp: <span id="ap-wt" style="color:var(--txt)"></span></div><div>Entrega: <span id="ap-ent" style="color:var(--txt)"></span></div><div>Valor: <span id="ap-pr" style="color:var(--gold);font-weight:700"></span></div><div>Data: <span id="ap-dt" style="color:var(--txt)"></span></div></div><span class="ilbl">Prompt completo - copie e envie:</span><div id="ap-pm" style="background:#000;border:1px solid rgba(191,149,63,.09);border-radius:4px;padding:12px;font-family:'Courier New',monospace;font-size:10px;color:#fcf6ba;line-height:1.7;white-space:pre-wrap;max-height:175px;overflow-y:auto;margin-bottom:11px"></div><button class="bgold" id="b-cpa" onclick="cpAdm()">COPIAR PROMPT</button><a id="b-wae" class="bwa" href="#" target="_blank">WHATSAPP DO CLIENTE</a><button id="b-mk" class="bok" onclick="mkOk()">MARCAR COMO ENTREGUE</button></div></div>
+<div id="pg-lj" class="pg on"><nav><div><div class="logo" onclick="goLj()">PROMPTUS</div><div class="logo-s">Store</div></div><button class="btn" onclick="goAL()">Admin</button></nav><div class="hero"><div class="htag">Prompts Profissionais - Mercado Brasileiro</div><h1>Prompts que resolvem<br><em>dores reais.</em></h1><p>Criados por especialista, testados contra alucinações, calibrados para o mercado brasileiro.</p><span class="hbadge">✓ Anti-alucinação · Anti-mentira · Uso universal</span></div><div class="sw"><input type="text" id="busca" placeholder="Buscar... ex: petição, laudo, contrato, proposta" oninput="render()"></div><div class="fw" id="fw"></div><div class="gw"><div class="glbl" id="glbl">Todos os Prompts</div><div class="grid" id="grid"></div></div><div style="text-align:center;padding:20px;font-size:10px;color:var(--sub);border-top:1px solid var(--brd)">A responsabilidade é de quem está usando; o programa apenas gera o prompt.</div></div>
+<div id="pg-al" class="pg" style="display:none"><div class="alb"><div style="font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:6px;margin-bottom:4px">PROMPTUS</div><div style="font-size:9px;letter-spacing:4px;color:var(--sub);text-transform:uppercase;margin-bottom:24px">Admin</div><input class="inp" type="password" id="a-pw" placeholder="Senha" onkeydown="if(event.key==='Enter')login()"><div class="err" id="a-err"></div><button class="bgold" onclick="login()">ENTRAR</button><div style="margin-top:11px;font-size:11px;color:var(--sub);cursor:pointer" onclick="goLj()">← Voltar à loja</div></div></div>
+<div id="pg-adm" class="pg" style="display:none"><nav class="anav"><div><div class="logo">PROMPTUS</div><div class="logo-s">Admin</div></div><div style="display:flex;gap:7px"><button class="btn" onclick="goLj()">Loja</button><button class="btn" onclick="goAL()">Sair</button></div></nav><div class="stats"><div class="sc"><div class="sn" id="st-t">0</div><div class="sl">Pedidos</div></div><div class="sc"><div class="sn" id="st-p">0</div><div class="sl">Pendentes</div></div><div class="sc"><div class="sn" id="st-n">0</div><div class="sl">Novos</div></div><div class="sc"><div class="sn" id="st-r">R$0</div><div class="sl">Receita</div></div></div><div class="atabs"><button class="atab on" onclick="aTab('pd',this)">Pedidos</button><button class="atab" onclick="aTab('ad',this)">Novo Prompt</button></div><div class="ac"><div class="ap on" id="ap-pd"><div class="pbar"><div class="sync"><div class="dot" id="dot"></div><span class="stxt" id="stxt">Conectando...</span></div><button class="bref" onclick="rfM()"><span class="spin" id="rfic">↻</span> ATUALIZAR</button></div><div class="ftabs"><button class="fpt on" id="fp-all" onclick="filtP('all',this)">Todos <span class="fpb" id="ct-a">0</span></button><button class="fpt" id="fp-nv" onclick="filtP('nv',this)">Novos <span class="fpb nv" id="ct-n">0</span></button><button class="fpt" id="fp-pd" onclick="filtP('pd',this)">Pendentes <span class="fpb pd" id="ct-p">0</span></button><button class="fpt" id="fp-ok" onclick="filtP('ok',this)">Entregues <span class="fpb ok" id="ct-o">0</span></button></div><div class="pl" id="ped-list"><div style="text-align:center;padding:40px;color:var(--sub)">Carregando...</div></div></div><div class="ap" id="ap-ad"><div style="max-width:620px"><div class="fg"><div><label class="ilbl">Título</label><input class="inp" id="f-ti" placeholder="Ex: Petição Trabalhista"></div><div><label class="ilbl">Área</label><select class="inp" id="f-ar"><option value="juridico">Jurídico</option><option value="medico">Médico</option><option value="negocios">Negócios</option><option value="marketing">Marketing</option><option value="contabil">Contábil</option><option value="psicologia">Psicologia</option><option value="educacao">Educação</option><option value="engenharia">Engenharia</option><option value="ti">TI</option></select></div><div><label class="ilbl">Nível</label><select class="inp" id="f-nv"><option value="basico">Básico R$9,90</option><option value="intermediario">Intermediário R$19,90</option><option value="avancado">Avançado R$29,90</option><option value="premium">Premium R$49,90</option></select></div><div><label class="ilbl">Tag</label><input class="inp" id="f-tg" placeholder="Ex: Petição"></div><div class="full"><label class="ilbl">Descrição</label><textarea class="inp" id="f-ds" rows="2"></textarea></div><div class="full"><label class="ilbl">Preview</label><textarea class="inp" id="f-pv" rows="3"></textarea></div><div class="full"><label class="ilbl">Prompt completo</label><textarea class="inp" id="f-pm" rows="9"></textarea></div></div><div class="err" id="f-err" style="margin-top:7px"></div><button class="bgold" onclick="salvar()">SALVAR NA LOJA</button></div></div></div></div>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script>
+var WA="5511978857415",SENHA="cassia2025",FB="https://cassia-v9-default-rtdb.firebaseio.com";var aA="all",pedA=null,entO="e",allP=[],filtP2="all",arT=null,pedAdm=null;var PL={basico:"R$9,90",intermediario:"R$19,90",avancado:"R$29,90",premium:"R$49,90"};var NL={basico:"Básico",intermediario:"Intermediário",avancado:"Avançado",premium:"Premium"};var NT={basico:"lb",intermediario:"li",avancado:"la",premium:"lp"};var AREAS=[{k:"all",l:"Todos"},{k:"juridico",l:"Jurídico"},{k:"medico",l:"Médico"},{k:"negocios",l:"Negócios"},{k:"marketing",l:"Marketing"},{k:"contabil",l:"Contábil"},{k:"psicologia",l:"Psicologia"},{k:"educacao",l:"Educação"},{k:"engenharia",l:"Engenharia"},{k:"ti",l:"TI"}];var BASE=[{titulo:"Petição Inicial Trabalhista",area:"juridico",nivel:"avancado",tag:"Petição",desc:"Petição completa com CLT e Súmulas TST. Para advogados que perdem horas formatando peças.",preview:"PERSONA: Advogado trabalhista sênior 20 anos TRT\nTAREFA: Petição inicial completa\nESTRUTURA: 1. Qualificação 2. Fatos 3. Direito 4. Pedidos",prompt:"PERSONA: Você é advogado trabalhista sênior com 20 anos de TRT.\nTAREFA: Petição inicial trabalhista completa.\nESTRUTURA:\n1. QUALIFICAÇÃO DAS PARTES\n2. DOS FATOS (cronológico)\n3. DO DIREITO (CLT e Súmulas TST)\n4. DOS PEDIDOS (com valores)\n5. DO VALOR DA CAUSA\n\nREGRAS OBRIGATÓRIAS:\nNÃO invente dados não fornecidos.\nNÃO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMAÇÕES]"},{titulo:"Contrato de Prestação de Serviços",area:"juridico",nivel:"intermediario",tag:"Contrato",desc:"Contrato com cláusulas protetivas. Para se proteger juridicamente sem pagar caro.",preview:"PERSONA: Advogado civilista especialista em contratos\nTAREFA: Contrato de prestação de serviços\nBASE: CC arts 593-609",prompt:"PERSONA: Você é advogado civilista especialista em contratos.\nTAREFA: Contrato de prestação de serviços completo.\nBASE: CC arts. 593 a 609.\nESTRUTURA:\n1. QUALIFICAÇÃO DAS PARTES\n2. DO OBJETO\n3. DO PRAZO\n4. DO VALOR E PAGAMENTO\n5. DAS OBRIGAÇÕES\n6. DA RESCISÃO E MULTA\n7. DO FORO\n\nREGRAS OBRIGATÓRIAS:\nNÃO invente dados não fornecidos.\nNÃO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMAÇÕES]"},{titulo:"Laudo Médico Completo",area:"medico",nivel:"avancado",tag:"Laudo",desc:"Laudo com anamnese, CID-10 e conduta. Para médicos que precisam de documentação impecável.",preview:"PERSONA: Médico especialista com 20 anos\nTAREFA: Laudo médico completo\nESTRUTURA: 1. Identificação 2. Queixa 3. Exame 4. CID 5. Conduta",prompt:"PERSONA: Você é médico especialista com 20 anos de experiência clínica.\nTAREFA: Laudo médico completo.\nESTRUTURA:\n1. IDENTIFICAÇÃO DO PACIENTE\n2. QUEIXA PRINCIPAL E HMA\n3. ANTECEDENTES\n4. EXAME FÍSICO\n5. EXAMES COMPLEMENTARES\n6. DIAGNÓSTICO E CID-10\n7. CONDUTA\n\nREGRAS OBRIGATÓRIAS:\nNÃO invente dados não fornecidos.\nNÃO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMAÇÕES]"},{titulo:"Proposta Comercial de Alto Impacto",area:"negocios",nivel:"intermediario",tag:"Vendas",desc:"Proposta focada em valor e ROI. Para empresários que perdem contratos por propostas fracas.",preview:"PERSONA: Consultor comercial sênior B2B\nTAREFA: Proposta comercial persuasiva\nESTRUTURA: 1. Diagnóstico 2. Solução 3. ROI",prompt:"PERSONA: Você é consultor comercial sênior com 20 anos em B2B.\nTAREFA: Proposta comercial profissional e persuasiva.\nESTRUTURA:\n1. DIAGNÓSTICO DO PROBLEMA\n2. SOLUÇÃO PROPOSTA\n3. METODOLOGIA\n4. BENEFÍCIOS E ROI\n5. DIFERENCIAIS\n6. INVESTIMENTO E CONDIÇÕES\n7. PRÓXIMOS PASSOS\n\nREGRAS OBRIGATÓRIAS:\nNÃO invente dados não fornecidos.\nNÃO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMAÇÕES]"},{titulo:"Copy para Página de Vendas",area:"marketing",nivel:"avancado",tag:"Copywriting",desc:"Copy de alta conversão com gatilhos. Para vender muito mais sem pagar agência.",preview:"PERSONA: Copywriter sênior especialista em alta conversão\nTAREFA: Copy completa para página de vendas",prompt:"PERSONA: Você é copywriter sênior especialista em alta conversão.\nTAREFA: Copy completa para página de vendas.\nESTRUTURA:\n1. HEADLINE 3 opções\n2. SUBHEADLINE\n3. IDENTIFICAÇÃO DA DOR\n4. AGITAÇÃO\n5. SOLUÇÃO\n6. BENEFÍCIOS\n7. PROVA SOCIAL\n8. OFERTA E BÔNUS\n9. GARANTIA\n10. CTA COM URGÊNCIA\n\nREGRAS OBRIGATÓRIAS:\nNÃO invente dados não fornecidos.\nNÃO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMAÇÕES]"}];function init(){try{if(!firebase.apps.length)firebase.initializeApp({databaseURL:FB});}catch(e){}mkF();render();}function goLj(){sP("pg-lj");}function goAL(){sP("pg-al");}function sP(id){document.querySelectorAll(".pg").forEach(function(p){p.classList.remove("on");p.style.display="none";});var e=document.getElementById(id);if(e){e.style.display="block";e.classList.add("on");window.scrollTo(0,0);}}function mkF(){var w=document.getElementById("fw");if(!w)return;w.innerHTML="";AREAS.forEach(function(a){var b=document.createElement("button");b.className="ft"+(a.k===aA?" on":"");b.textContent=a.l;b.onclick=function(){aA=a.k;mkF();render();};w.appendChild(b);});}function render(){var q=(document.getElementById("busca")||{value:""}).value.toLowerCase();var g=document.getElementById("grid"),lbl=document.getElementById("glbl");if(!g)return;var lista=BASE.filter(function(p){var mA=aA==="all"||p.area===aA;var mB=!q||p.titulo.toLowerCase().indexOf(q)>=0||p.desc.toLowerCase().indexOf(q)>=0||p.tag.toLowerCase().indexOf(q)>=0;return mA&&mB;});var ai=AREAS.filter(function(a){return a.k===aA;})[0];if(lbl)lbl.textContent=(aA==="all"?"Todos os Prompts":(ai?ai.l:""))+" ("+lista.length+")";g.innerHTML="";if(!lista.length){g.innerHTML="<div class='empty'>Nenhum prompt encontrado.</div>";return;}lista.forEach(function(p,i){var pr=PL[p.nivel]||"R$19,90";var ai2=AREAS.filter(function(a){return a.k===p.area;})[0];var d=document.createElement("div");d.className="card";d.style.animationDelay=(i*0.022)+"s";var idx=BASE.indexOf(p);d.innerHTML="<div class='ct'><div class='ca'>"+(ai2?ai2.l:"")+"</div><div class='cn'>"+esc(p.titulo)+"</div><div class='cd'>"+esc(p.desc)+"</div></div>"+"<div class='cpv'><div class='pvt'>"+esc(p.preview)+"</div><div class='pvb'><span class='lk'>🔒 Bloqueado</span></div></div>"+"<div class='cb'><div class='tags'><span class='tag "+(NT[p.nivel]||"")+"'>"+(NL[p.nivel]||"")+"</span><span class='tag'>"+esc(p.tag)+"</span></div>"+"<div style='display:flex;align-items:center;gap:7px'><span class='preco'>"+pr+"</span><button class='bcmp' onclick='abrC("+idx+")'>COMPRAR</button></div></div>";g.appendChild(d);});}function esc(s){return(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}function abrC(idx){var p=BASE[idx];pedA=p;document.getElementById("s1t").textContent=p.titulo;document.getElementById("s1e").textContent="";["f-nm","f-em","f-wt"].forEach(function(id){var el=document.getElementById(id);if(el)el.value="";});sE("e");sS("s1");document.getElementById("ov-c").classList.add("on");}function sE(t){entO=t;["e","w","a"].forEach(function(x){var el=document.getElementById("ro-"+x);if(el)el.classList.toggle("on",x===t);});}function goP(){var nm=document.getElementById("f-nm").value.trim();var em=document.getElementById("f-em").value.trim();var wt=document.getElementById("f-wt").value.trim();var er=document.getElementById("s1e");if(!nm){er.textContent="❌ INFORME SEU NOME";return;}if(!em||em.indexOf("@")<0){er.textContent="❌ E-MAIL INVÁLIDO";return;}if(!wt||wt.replace(/\D/g,"").length<10){er.textContent="❌ WHATSAPP INVÁLIDO";return;}var pr=PL[pedA.nivel]||"R$19,90";var ent=entO==="e"?"E-mail":entO==="w"?"WhatsApp":"E-mail e WhatsApp";document.getElementById("s2n").textContent=pedA.titulo;document.getElementById("s2p").textContent=pr;document.getElementById("s2e").textContent=ent;var msg=encodeURIComponent("Olá Cássia! Comprei o prompt "+pedA.titulo+" ("+pr+"). Segue comprovante. Nome: "+nm+" Tel: "+wt);document.getElementById("b-wa").href="https://wa.me/"+WA+"?text="+msg;sS("s2");}function conf(){var nm=document.getElementById("f-nm").value.trim();var em=document.getElementById("f-em").value.trim();var wt=document.getElementById("f-wt").value.trim();var ent=entO==="e"?"E-mail":entO==="w"?"WhatsApp":"E-mail e WhatsApp";var pr=PL[pedA.nivel]||"R$19,90";var ped={promptTitulo:pedA.titulo,promptArea:pedA.area,promptNivel:pedA.nivel,promptCompleto:pedA.prompt,cliente:{nome:nm,email:em,tel:wt},entrega:ent,preco:pr,status:"pendente",criadoEm:Date.now()};fetch(FB+"/ps_pedidos.json",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(ped)}).then(function(){bkp(ped);document.getElementById("s3e").textContent=ent;sS("s3");toast("✅ PEDIDO REGISTRADO!");}).catch(function(){bkp(ped);document.getElementById("s3e").textContent=ent;sS("s3");toast("✅ PEDIDO SALVO!");});}function bkp(p){try{var l=JSON.parse(localStorage.getItem("ps_bkp")||"[]");l.push(p);localStorage.setItem("ps_bkp",JSON.stringify(l));}catch(e){}}function cpPix(){var b=document.getElementById("b-cp");var ok=function(){b.textContent="✅ COPIADO!";toast("✅ PIX COPIADO!");setTimeout(function(){b.textContent="COPIAR CHAVE PIX";},3000);};if(navigator.clipboard)navigator.clipboard.writeText("39521484829").then(ok).catch(function(){fb2("39521484829",ok);});else fb2("39521484829",ok);}function fC(){document.getElementById("ov-c").classList.remove("on");setTimeout(function(){sS("s1");},250);}function sS(id){["s1","s2","s3"].forEach(function(s){var el=document.getElementById(s);if(el)el.classList.toggle("on",s===id);});}function login(){var pw=document.getElementById("a-pw").value;if(pw===SENHA){document.getElementById("a-err").textContent="";sP("pg-adm");carP();stAR();}else{document.getElementById("a-err").textContent="❌ SENHA INCORRETA";}}function aTab(t,el){document.querySelectorAll(".atab").forEach(function(x){x.classList.remove("on");});document.querySelectorAll(".ap").forEach(function(x){x.classList.remove("on");});el.classList.add("on");var ap=document.getElementById("ap-"+t);if(ap)ap.classList.add("on");if(t==="pd")carP();}function setSt(s){var d=document.getElementById("dot"),t=document.getElementById("stxt");if(!d||!t)return;if(s==="ok"){d.className="dot ok";t.textContent="✓ Atualizado";}else if(s==="ld"){d.className="dot";t.textContent="⟳ Atualizando...";}else{d.className="dot err";t.textContent="✗ Erro";}}function rfM(){var ic=document.getElementById("rfic");if(ic)ic.classList.add("go");setSt("ld");carP(function(){if(ic)ic.classList.remove("go");});}function stAR(){if(arT)clearInterval(arT);arT=setInterval(function(){setSt("ld");carP();},30000);}function filtP(f,el){filtP2=f;document.querySelectorAll(".fpt").forEach(function(b){b.classList.remove("on");});if(el)el.classList.add("on");renderP();}function tmp(ts){var d=Date.now()-ts,m=Math.floor(d/60000),h=Math.floor(m/60),dy=Math.floor(h/24);if(dy>0)return"há "+dy+"d";if(h>0)return"há "+h+"h";if(m>0)return"há "+m+"min";return"agora";}function renderP(){var list=document.getElementById("ped-list");if(!list)return;var NV=3600000,now=Date.now(),lista=allP;if(filtP2==="nv")lista=allP.filter(function(p){return p.status==="pendente"&&(now-p.criadoEm)<NV;});else if(filtP2==="pd")lista=allP.filter(function(p){return p.status==="pendente";});else if(filtP2==="ok")lista=allP.filter(function(p){return p.status==="entregue";});if(!lista.length){list.innerHTML="<div style='text-align:center;padding:46px;color:var(--sub);font-size:12px;letter-spacing:2px'>Nenhum pedido aqui.</div>";return;}list.innerHTML="";lista.forEach(function(p){var n2=Date.now(),iN=p.status==="pendente"&&(n2-p.criadoEm)<NV,iP=p.status==="pendente";var cli=p.cliente||{};var dt=new Date(p.criadoEm).toLocaleString("pt-BR");var div=document.createElement("div");div.className="pc"+(iN?" nv":"");var pi=allP.indexOf(p);div.innerHTML="<div style='display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:7px;margin-bottom:7px'><div><div class='pct'>"+esc(p.promptTitulo)+"</div><div class='pcm' style='margin-top:3px'><span>"+esc(cli.nome||"-")+"</span><span>"+esc(cli.email||"-")+"</span><span>"+esc(cli.tel||"-")+"</span><span>"+esc(p.entrega)+"</span></div><div style='font-size:10px;color:var(--sub);margin-top:3px;opacity:.5'>"+dt+" · "+tmp(p.criadoEm)+"</div></div><div style='display:flex;flex-direction:column;align-items:flex-end;gap:5px'><span class='pcp'>"+p.preco+"</span><span class='bdg "+(iN?"bdg-nv":iP?"bdg-p":"bdg-ok")+"'>"+(iN?"🔥 NOVO":iP?"⏳ Pendente":"✓ Entregue")+"</span></div></div><button class='bsm' onclick='abrP("+pi+")'>VER / ENTREGAR</button>";list.appendChild(div);});}function atuSt(arr){var now=Date.now(),NV=3600000;var nv=arr.filter(function(p){return p.status==="pendente"&&(now-p.criadoEm)<NV;}).length;var pd=arr.filter(function(p){return p.status==="pendente";}).length;var ok=arr.filter(function(p){return p.status==="entregue";}).length;var r=arr.reduce(function(a,p){return a+parseFloat((p.preco||"0").replace("R$","").replace(",",".")||0);},0);function se(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}se("st-t",arr.length);se("st-p",pd);se("st-n",nv);se("st-r","R$"+r.toFixed(2).replace(".",","));se("ct-a",arr.length);se("ct-n",nv);se("ct-p",pd);se("ct-o",ok);}function carP(cb){fetch(FB+"/ps_pedidos.json").then(function(r){return r.json();}).then(function(data){var arr=[];if(data&&typeof data==="object")Object.entries(data).forEach(function(e){var k=e[0],v=e[1];if(v&&v.criadoEm)arr.push(Object.assign({id:k},v));});try{var loc=JSON.parse(localStorage.getItem("ps_bkp")||"[]");loc.forEach(function(p){var dup=arr.some(function(a){return a.promptTitulo===p.promptTitulo&&Math.abs((a.criadoEm||0)-(p.criadoEm||0))<5000;});if(!dup)arr.push(p);});}catch(e){}arr.sort(function(a,b){return b.criadoEm-a.criadoEm;});allP=arr;atuSt(arr);renderP();setSt("ok");if(cb)cb();}).catch(function(){try{var loc=JSON.parse(localStorage.getItem("ps_bkp")||"[]");loc.sort(function(a,b){return b.criadoEm-a.criadoEm;});allP=loc;atuSt(loc);renderP();}catch(e){}setSt("err");if(cb)cb();});}function abrP(idx){var p=allP[idx];if(!p)return;pedAdm=p;var cli=p.cliente||{};document.getElementById("ap-t").textContent=p.promptTitulo;document.getElementById("ap-nm").textContent=cli.nome||"-";document.getElementById("ap-em").textContent=cli.email||"-";document.getElementById("ap-wt").textContent=cli.tel||"-";document.getElementById("ap-ent").textContent=p.entrega||"-";document.getElementById("ap-pr").textContent=p.preco||"-";document.getElementById("ap-dt").textContent=new Date(p.criadoEm).toLocaleString("pt-BR");document.getElementById("ap-pm").textContent=p.promptCompleto||"Prompt não encontrado.";var wn=(cli.tel||"").replace(/\D/g,"");var msg=encodeURIComponent("Olá "+(cli.nome||"")+"! Aqui está seu prompt "+p.promptTitulo+" da PROMPTUS Store!\n\n"+(p.promptCompleto||""));document.getElementById("b-wae").href="https://wa.me/55"+wn+"?text="+msg;document.getElementById("b-mk").style.display=p.status==="entregue"?"none":"block";document.getElementById("ov-p").classList.add("on");}function fP(){document.getElementById("ov-p").classList.remove("on");}function cpAdm(){var txt=document.getElementById("ap-pm").textContent;var b=document.getElementById("b-cpa");var ok=function(){b.textContent="✅ COPIADO!";toast("✅ PROMPT COPIADO!");setTimeout(function(){b.textContent="COPIAR PROMPT";},4000);};if(navigator.clipboard)navigator.clipboard.writeText(txt).then(ok).catch(function(){fb2(txt,ok);});else fb2(txt,ok);}function mkOk(){if(!pedAdm)return;fetch(FB+"/ps_pedidos/"+(pedAdm.id||"")+".json",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({status:"entregue"})}).then(function(){toast("✅ ENTREGUE!");fP();carP();}).catch(function(){toast("❌ ERRO");});}function salvar(){var ti=document.getElementById("f-ti").value.trim(),ar=document.getElementById("f-ar").value;var nv=document.getElementById("f-nv").value,tg=document.getElementById("f-tg").value.trim();var ds=document.getElementById("f-ds").value.trim(),pv=document.getElementById("f-pv").value.trim();var pm=document.getElementById("f-pm").value.trim();var er=document.getElementById("f-err");if(!ti||!tg||!ds||!pv||!pm){er.textContent="❌ PREENCHA TODOS OS CAMPOS";return;}fetch(FB+"/ps_prompts_extra.json",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({titulo:ti,area:ar,nivel:nv,tag:tg,desc:ds,preview:pv,prompt:pm,criadoEm:Date.now()})}).then(function(){toast("✅ PROMPT SALVO!");er.textContent="";["f-ti","f-tg","f-ds","f-pv","f-pm"].forEach(function(id){var el=document.getElementById(id);if(el)el.value="";});}).catch(function(){er.textContent="❌ ERRO AO SALVAR.";});}function fb2(t,cb){var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");cb();}catch(e){}document.body.removeChild(ta);}function toast(msg){var t=document.getElementById("toast");if(!t)return;t.textContent=msg;t.classList.add("on");setTimeout(function(){t.classList.remove("on");},3000);}document.getElementById("ov-c").addEventListener("click",function(e){if(e.target===document.getElementById("ov-c"))fC();});document.getElementById("ov-p").addEventListener("click",function(e){if(e.target===document.getElementById("ov-p"))fP();});init();
+</script>
 </body>
 </html>
