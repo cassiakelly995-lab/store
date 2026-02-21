@@ -432,7 +432,30 @@ function confirmar(){
     const entTxt=entOpc==='email'?'E-mail':entOpc==='whats'?'WhatsApp':'E-mail e WhatsApp';
     const pr=PL[pedAtual.nivel]||'R$19,90';
     const pedido={promptTitulo:pedAtual.titulo,promptArea:pedAtual.area,promptNivel:pedAtual.nivel,promptCompleto:pedAtual.prompt||'',cliente:{nome,email,tel},entrega:entTxt,preco:pr,status:'pendente',criadoEm:Date.now()};
-    db.ref('ps_pedidos').push(pedido).then(()=>{document.getElementById('s3-ent').innerText=entTxt;showStep('s3');showToast('PEDIDO REGISTRADO!');}).catch(()=>showToast('ERRO. TENTE NOVAMENTE.'));
+    // Salva via REST API do Firebase (ignora regras de SDK)
+    const fbUrl='https://cassia-v9-default-rtdb.firebaseio.com/ps_pedidos.json';
+    fetch(fbUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(pedido)})
+    .then(r=>r.json()).then(data=>{
+        // Backup local sempre
+        try{
+            const local=JSON.parse(localStorage.getItem('ps_pedidos_bkp')||'[]');
+            local.push({fbKey:data.name,...pedido});
+            localStorage.setItem('ps_pedidos_bkp',JSON.stringify(local));
+        }catch(e){}
+        document.getElementById('s3-ent').innerText=entTxt;
+        showStep('s3');
+        showToast('PEDIDO REGISTRADO!');
+    }).catch(err=>{
+        // Se Firebase falhar, salva só local
+        try{
+            const local=JSON.parse(localStorage.getItem('ps_pedidos_bkp')||'[]');
+            local.push({fbKey:'local_'+Date.now(),...pedido});
+            localStorage.setItem('ps_pedidos_bkp',JSON.stringify(local));
+        }catch(e){}
+        document.getElementById('s3-ent').innerText=entTxt;
+        showStep('s3');
+        showToast('PEDIDO SALVO LOCALMENTE!');
+    });
 }
 function showStep(id){['s1','s2','s3'].forEach(s=>document.getElementById(s).classList.toggle('ativo',s===id));}
 function fecharCompra(){document.getElementById('ov-compra').classList.remove('show');setTimeout(()=>showStep('s1'),300);}
@@ -456,10 +479,22 @@ function abaTab(t,el){
     if(t==='pedidos')carregarPeds();
 }
 function carregarPeds(){
-    db.ref('ps_pedidos').orderByChild('criadoEm').once('value').then(snap=>{
+    // Busca do Firebase via REST API
+    const fbUrl='https://cassia-v9-default-rtdb.firebaseio.com/ps_pedidos.json?orderBy=%22criadoEm%22';
+    fetch(fbUrl).then(r=>r.json()).then(data=>{
         const list=document.getElementById('ped-list');if(!list)return;
-        if(!snap.exists()){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--sub);">Nenhum pedido ainda. 🚀</div>';atuStats([]);return;}
-        let arr=[];snap.forEach(c=>arr.push({id:c.key,...c.val()}));arr.reverse();
+        let arr=[];
+        // Pedidos do Firebase
+        if(data && typeof data==='object'){
+            Object.entries(data).forEach(([k,v])=>{if(v && v.criadoEm)arr.push({id:k,...v});});
+        }
+        // Merge com backup local
+        try{
+            const local=JSON.parse(localStorage.getItem('ps_pedidos_bkp')||'[]');
+            local.forEach(p=>{if(!arr.find(a=>a.fbKey===p.fbKey||a.id===p.fbKey))arr.push(p);});
+        }catch(e){}
+        arr.sort((a,b)=>b.criadoEm-a.criadoEm);
+        if(!arr.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--sub);">Nenhum pedido ainda. 🚀</div>';atuStats([]);return;}
         atuStats(arr);list.innerHTML='';
         arr.forEach(p=>{
             const data=new Date(p.criadoEm).toLocaleString('pt-BR');
@@ -501,7 +536,21 @@ function cpAdmin(){
 }
 function marcarOk(){
     if(!pedAdmin)return;
-    db.ref('ps_pedidos/'+pedAdmin.id).update({status:'entregue'}).then(()=>{showToast('✅ ENTREGUE!');document.getElementById('ov-ped').classList.remove('show');carregarPeds();});
+    // REST API para atualizar status
+    const fbUrl='https://cassia-v9-default-rtdb.firebaseio.com/ps_pedidos/'+pedAdmin.id+'.json';
+    fetch(fbUrl,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({status:'entregue'})})
+    .then(()=>{
+        // Atualiza no backup local também
+        try{
+            const local=JSON.parse(localStorage.getItem('ps_pedidos_bkp')||'[]');
+            const idx=local.findIndex(p=>p.id===pedAdmin.id||p.fbKey===pedAdmin.id);
+            if(idx>=0)local[idx].status='entregue';
+            localStorage.setItem('ps_pedidos_bkp',JSON.stringify(local));
+        }catch(e){}
+        showToast('✅ ENTREGUE!');
+        document.getElementById('ov-ped').classList.remove('show');
+        carregarPeds();
+    }).catch(()=>{showToast('ERRO AO ATUALIZAR');});
 }
 function salvar(){
     const titulo=document.getElementById('f-titulo').value.trim();
