@@ -4,564 +4,528 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>PROMPTUS Store</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Cormorant+Garamond:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
-:root{--bg:#050505;--card:rgba(12,12,12,0.98);--gc:#bf953f;--grad:linear-gradient(135deg,#bf953f,#fcf6ba 45%,#b38728 70%,#fbf5b7);--border:rgba(191,149,63,0.3);--bs:rgba(191,149,63,0.1);--text:#fff;--sub:rgba(255,255,255,0.45);--green:#27ae60;--red:#e74c3c;}
-body{background:var(--bg);color:var(--text);font-family:Inter,sans-serif;min-height:100vh;overflow-x:hidden;}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(191,149,63,0.05),transparent 70%);}
-.pg{display:none;position:relative;z-index:1;min-height:100vh;}.pg.on{display:block;}
-nav{display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-bottom:1px solid var(--border);background:rgba(5,5,5,0.96);backdrop-filter:blur(30px);position:sticky;top:0;z-index:200;flex-wrap:wrap;gap:12px;}
-.logo{font-family:"Cormorant Garamond",serif;font-size:26px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:5px;cursor:pointer;}
-.logo-sub{font-size:9px;letter-spacing:4px;color:var(--sub);text-transform:uppercase;}
-.nbtn{background:none;border:1px solid var(--border);color:var(--sub);padding:8px 18px;border-radius:3px;font-family:Inter,sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:.3s;text-transform:uppercase;}
-.nbtn:hover{border-color:var(--gc);color:var(--gc);}
-.hero{padding:70px 40px 40px;max-width:1100px;margin:0 auto;text-align:center;}
-.hero h1{font-family:"Cormorant Garamond",serif;font-size:clamp(40px,6vw,72px);font-weight:900;line-height:1.05;margin-bottom:16px;}
-.hero h1 em{font-style:italic;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.hero p{font-size:15px;color:var(--sub);max-width:480px;margin:0 auto 16px;line-height:1.8;font-weight:300;}
-.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(39,174,96,0.08);border:1px solid rgba(39,174,96,0.3);border-radius:20px;padding:7px 18px;font-size:9px;font-weight:700;color:var(--green);letter-spacing:3px;text-transform:uppercase;}
-.bwrap{max-width:1100px;margin:0 auto;padding:0 40px 18px;}
-.bwrap input{width:100%;background:var(--card);border:1px solid var(--border);border-radius:4px;padding:15px 20px;color:var(--text);font-family:Inter,sans-serif;font-size:14px;outline:none;}
-.bwrap input::placeholder{color:var(--sub);}
-.bwrap input:focus{border-color:var(--gc);}
-.fwrap{max-width:1100px;margin:0 auto;padding:0 40px 24px;display:flex;gap:8px;flex-wrap:wrap;}
-.ft{background:var(--card);border:1px solid var(--bs);border-radius:30px;padding:7px 16px;font-size:10px;font-weight:700;color:var(--sub);cursor:pointer;transition:.3s;text-transform:uppercase;letter-spacing:1px;}
-.ft:hover,.ft.on{background:var(--grad);color:#000;border-color:transparent;}
-.gwrap{max-width:1100px;margin:0 auto;padding:0 40px 80px;}
-.glbl{font-size:9px;font-weight:700;letter-spacing:4px;color:var(--gc);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
-.glbl::after{content:"";flex:1;height:1px;background:var(--bs);}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
-.card{background:var(--card);border:1px solid var(--bs);border-radius:8px;overflow:hidden;transition:all .3s;position:relative;animation:fu .4s ease both;}
-.card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);transform:scaleX(0);transition:.3s;transform-origin:left;}
-.card:hover{border-color:var(--border);transform:translateY(-3px);box-shadow:0 20px 60px rgba(0,0,0,0.8);}
-.card:hover::before{transform:scaleX(1);}
-.ct{padding:22px 22px 12px;}
-.ca{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--gc);text-transform:uppercase;margin-bottom:8px;}
-.cn{font-family:"Cormorant Garamond",serif;font-size:19px;font-weight:700;margin-bottom:7px;line-height:1.3;}
-.cd{font-size:12px;color:var(--sub);line-height:1.7;font-weight:300;}
-.cpv{position:relative;background:#000;border:1px solid var(--bs);border-radius:4px;margin:12px 22px;overflow:hidden;}
-.pvt{font-family:"Courier New",monospace;font-size:10px;color:rgba(191,149,63,0.35);line-height:1.7;padding:12px 14px;white-space:pre-wrap;max-height:75px;overflow:hidden;}
-.pvb{position:absolute;bottom:0;left:0;right:0;height:50px;background:linear-gradient(transparent,#000);display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;}
-.lk{display:flex;align-items:center;gap:5px;background:rgba(191,149,63,0.07);border:1px solid rgba(191,149,63,0.25);border-radius:20px;padding:4px 12px;font-size:8px;font-weight:700;color:var(--gc);letter-spacing:2px;text-transform:uppercase;}
-.cb{padding:12px 22px;border-top:1px solid var(--bs);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
-.tags{display:flex;gap:5px;flex-wrap:wrap;}
-.tag{font-size:8px;font-weight:700;padding:3px 9px;border-radius:20px;background:rgba(255,255,255,0.03);border:1px solid var(--bs);color:var(--sub);text-transform:uppercase;}
-.nb{color:#3498db!important;border-color:rgba(52,152,219,0.25)!important;background:rgba(52,152,219,0.06)!important;}
-.ni{color:#f39c12!important;border-color:rgba(243,156,18,0.25)!important;background:rgba(243,156,18,0.06)!important;}
-.na{color:#e74c3c!important;border-color:rgba(231,76,60,0.25)!important;background:rgba(231,76,60,0.06)!important;}
-.np{color:var(--gc)!important;border-color:rgba(191,149,63,0.25)!important;background:rgba(191,149,63,0.06)!important;}
-.preco{font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.bcmp{background:var(--grad);color:#000;border:none;padding:10px 20px;border-radius:3px;font-family:Inter,sans-serif;font-weight:900;font-size:9px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:.3s;}
-.bcmp:hover{filter:brightness(1.15);}
-.ov{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;}
-.ov.on{display:flex;}
-.modal{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:36px;max-width:460px;width:100%;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 40px 120px #000;}
-.modal::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);border-radius:8px 8px 0 0;}
-.mx{position:absolute;top:12px;right:16px;background:none;border:none;color:var(--sub);font-size:22px;cursor:pointer;line-height:1;}
-.ms{display:none;}.ms.on{display:block;}
-.mk{font-size:9px;font-weight:700;letter-spacing:4px;color:var(--gc);text-transform:uppercase;margin-bottom:8px;}
-.mt{font-family:"Cormorant Garamond",serif;font-size:25px;font-weight:700;margin-bottom:8px;}
-.msub{font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:20px;font-weight:300;}
-.inp{width:100%;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:4px;padding:14px 16px;color:var(--text);font-family:Inter,sans-serif;font-size:14px;outline:none;transition:.3s;margin-bottom:10px;}
-.inp::placeholder{color:var(--sub);}.inp:focus{border-color:var(--gc);}
-.rg{display:flex;gap:8px;margin-bottom:16px;}
-.ro{flex:1;border:1px solid var(--bs);border-radius:4px;padding:12px 8px;cursor:pointer;text-align:center;transition:.3s;}
-.ro.on{border-color:var(--gc);background:rgba(191,149,63,0.06);}
-.ro-ic{font-size:20px;margin-bottom:4px;}
-.ro-lb{font-size:10px;font-weight:700;color:var(--sub);letter-spacing:1px;}
-.ro.on .ro-lb{color:var(--gc);}
-.err{font-size:11px;color:var(--red);min-height:16px;margin-bottom:8px;font-weight:600;}
-.bf{width:100%;background:var(--grad);color:#000;border:none;padding:17px;border-radius:3px;font-family:Inter,sans-serif;font-weight:900;font-size:10px;letter-spacing:4px;text-transform:uppercase;cursor:pointer;transition:.3s;margin-top:4px;display:block;text-align:center;text-decoration:none;}
-.bf:hover{filter:brightness(1.15);}
-.bwa{width:100%;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border:none;padding:15px;border-radius:3px;font-family:Inter,sans-serif;font-weight:900;font-size:10px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:.3s;display:block;text-align:center;text-decoration:none;margin-bottom:8px;}
-.bok{width:100%;background:rgba(39,174,96,0.1);color:var(--green);border:1px solid rgba(39,174,96,0.3);padding:15px;border-radius:3px;font-family:Inter,sans-serif;font-weight:900;font-size:10px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;margin-top:8px;}
-.pixb{background:#000;border:1px solid rgba(191,149,63,0.2);border-radius:6px;padding:18px;text-align:center;margin-bottom:12px;}
-.pl{font-size:8px;font-weight:700;letter-spacing:4px;color:var(--gc);text-transform:uppercase;margin-bottom:10px;}
-.pk{font-size:22px;font-weight:700;letter-spacing:2px;font-family:"Cormorant Garamond",serif;margin-bottom:4px;}
-.pn{font-size:11px;color:var(--sub);}
-.rsb{background:#000;border:1px solid var(--bs);border-radius:6px;padding:16px;margin-bottom:18px;}
-.rn{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:700;margin-bottom:3px;}
-.rp{font-size:28px;font-family:"Cormorant Garamond",serif;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.av{font-size:12px;color:var(--sub);line-height:1.8;text-align:center;margin:10px 0;font-weight:300;}
-.av strong{color:var(--gc);}
-.ag{text-align:center;padding:20px 0;}
-.ag-ic{font-size:52px;margin-bottom:16px;animation:pulse 2s infinite;}
-.ag-t{font-family:"Cormorant Garamond",serif;font-size:26px;font-weight:700;margin-bottom:10px;}
-.ag-s{font-size:13px;color:var(--sub);line-height:1.8;font-weight:300;}
-/* ADMIN */
-#pg-al{display:flex;align-items:center;justify-content:center;min-height:100vh;}
-.alb{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:40px;width:100%;max-width:340px;text-align:center;position:relative;box-shadow:0 40px 120px #000;}
-.alb::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);}
-.anav{display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-bottom:1px solid var(--border);background:rgba(5,5,5,0.96);backdrop-filter:blur(30px);flex-wrap:wrap;gap:12px;}
-.srow{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;padding:20px 40px;}
-.sc{background:var(--card);border:1px solid var(--bs);border-radius:6px;padding:18px;}
-.sn{font-family:"Cormorant Garamond",serif;font-size:34px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:4px;}
-.sl{font-size:9px;color:var(--sub);letter-spacing:2px;text-transform:uppercase;font-weight:700;}
-.atabs{display:flex;padding:0 40px;border-bottom:1px solid var(--bs);}
-.atab{background:none;border:none;border-bottom:2px solid transparent;padding:12px 20px;font-family:Inter,sans-serif;font-size:10px;font-weight:700;color:var(--sub);cursor:pointer;letter-spacing:2px;text-transform:uppercase;transition:.3s;margin-bottom:-1px;}
-.atab.on{color:var(--gc);border-bottom-color:var(--gc);}
-.ac{padding:24px 40px;}
-.ap{display:none;}.ap.on{display:block;}
-/* FILTROS PEDIDOS */
-.pbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;}
-.sync{display:flex;align-items:center;gap:8px;}
-.dot{width:8px;height:8px;border-radius:50%;background:#f39c12;transition:.5s;}
-.dot.ok{background:#27ae60;}.dot.err{background:#e74c3c;}
-.stxt{font-size:10px;color:var(--sub);letter-spacing:1px;font-weight:600;}
-.bref{display:flex;align-items:center;gap:8px;background:none;border:1px solid var(--border);color:var(--gc);padding:9px 18px;border-radius:3px;font-family:Inter,sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:.3s;text-transform:uppercase;}
-.bref:hover{background:rgba(191,149,63,0.08);}
-.spin{display:inline-block;}.spin.go{animation:gira .6s linear infinite;}
-.ftabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
-.fpt{background:var(--card);border:1px solid var(--bs);border-radius:6px;padding:8px 15px;font-size:10px;font-weight:700;color:var(--sub);cursor:pointer;transition:.3s;text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;gap:7px;}
-.fpt:hover,.fpt.on{border-color:var(--gc);color:var(--gc);background:rgba(191,149,63,0.06);}
-.fpbdg{background:rgba(255,255,255,0.08);border-radius:20px;padding:2px 8px;font-size:9px;font-weight:900;}
-.fpbdg.nv{background:rgba(231,76,60,0.15);color:#e74c3c;}
-.fpbdg.pd{background:rgba(243,156,18,0.15);color:#f39c12;}
-.fpbdg.ok{background:rgba(39,174,96,0.15);color:var(--green);}
-.pl{display:flex;flex-direction:column;gap:12px;}
-.pc{background:var(--card);border:1px solid var(--bs);border-radius:8px;padding:18px;transition:.3s;position:relative;}
-.pc:hover{border-color:var(--border);}
-.pc.nv{border-color:rgba(231,76,60,0.4);box-shadow:0 0 20px rgba(231,76,60,0.08);}
-.pct{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:700;margin-bottom:6px;}
-.pcm{font-size:11px;color:var(--sub);display:flex;gap:12px;flex-wrap:wrap;font-weight:300;}
-.pcp{font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.bdg{font-size:8px;font-weight:700;letter-spacing:2px;padding:5px 10px;border-radius:20px;text-transform:uppercase;white-space:nowrap;}
-.bdg-p{background:rgba(243,156,18,0.1);border:1px solid rgba(243,156,18,0.3);color:#f39c12;}
-.bdg-ok{background:rgba(39,174,96,0.1);border:1px solid rgba(39,174,96,0.3);color:var(--green);}
-.bdg-nv{background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);color:#e74c3c;}
-.bsm{background:none;color:var(--gc);border:1px solid rgba(191,149,63,0.3);padding:8px 16px;border-radius:3px;font-family:Inter,sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.3s;margin-top:12px;}
-.bsm:hover{background:rgba(191,149,63,0.08);}
-.ilbl{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--sub);text-transform:uppercase;margin-bottom:6px;display:block;}
-.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.fg .full{grid-column:1/-1;}
-textarea.inp{resize:vertical;min-height:110px;}
-select.inp{cursor:pointer;}
-#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--grad);color:#000;padding:13px 26px;border-radius:3px;font-size:9px;font-weight:900;letter-spacing:4px;text-transform:uppercase;opacity:0;transition:.3s;z-index:9999;pointer-events:none;white-space:nowrap;}
-#toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
-.vz{grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--sub);font-size:12px;letter-spacing:3px;}
-@keyframes fu{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
-@keyframes gira{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
-@media(max-width:600px){
-  nav,.hero,.bwrap,.fwrap,.gwrap{padding-left:18px;padding-right:18px;}
-  .grid{grid-template-columns:1fr;}
-  .modal{padding:24px 16px;}
-  .anav,.ac,.srow,.atabs{padding-left:14px;padding-right:14px;}
-  .fg{grid-template-columns:1fr;}
-  .rg{flex-direction:column;}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#050505;--card:#0d0d0d;--brd:rgba(191,149,63,.22);--gold:#bf953f;--grad:linear-gradient(135deg,#bf953f,#fcf6ba 50%,#b38728);--txt:#f0ebe0;--sub:rgba(240,235,224,.38);--grn:#2ecc71;--red:#e74c3c}
+body{background:var(--bg);color:var(--txt);font-family:"DM Sans",sans-serif;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse 80% 40% at 50% -5%,rgba(191,149,63,.06),transparent);pointer-events:none;z-index:0}
+.pg{display:none;position:relative;z-index:1}.pg.on{display:block}
+nav{display:flex;align-items:center;justify-content:space-between;padding:15px 36px;border-bottom:1px solid var(--brd);background:rgba(5,5,5,.96);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px}
+.logo{font-family:"Cormorant Garamond",serif;font-size:23px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:6px;cursor:pointer}
+.logo-s{font-size:8px;letter-spacing:5px;color:var(--sub);text-transform:uppercase}
+.btn{background:none;border:1px solid var(--brd);color:var(--sub);padding:7px 15px;border-radius:3px;font-family:"DM Sans",sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:.2s;text-transform:uppercase}
+.btn:hover{border-color:var(--gold);color:var(--gold)}
+.bgold{background:var(--grad);color:#000;border:none;padding:13px 20px;border-radius:3px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:10px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:.2s;width:100%;display:block;text-align:center;margin-bottom:8px}
+.bgold:hover{filter:brightness(1.1)}
+.bwa{background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border:none;padding:13px;border-radius:3px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;width:100%;display:block;text-align:center;text-decoration:none;margin-bottom:8px}
+.bok{background:rgba(46,204,113,.09);color:var(--grn);border:1px solid rgba(46,204,113,.28);padding:12px;border-radius:3px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;width:100%;margin-top:6px}
+.hero{text-align:center;padding:64px 20px 36px;max-width:960px;margin:0 auto}
+.htag{font-size:9px;font-weight:700;letter-spacing:6px;color:var(--gold);text-transform:uppercase;margin-bottom:16px}
+.hero h1{font-family:"Cormorant Garamond",serif;font-size:clamp(42px,7vw,78px);font-weight:900;line-height:1.02;margin-bottom:14px}
+.hero h1 em{font-style:italic;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:15px;color:var(--sub);max-width:440px;margin:0 auto 16px;line-height:1.8;font-weight:300}
+.hbadge{display:inline-flex;align-items:center;gap:7px;background:rgba(46,204,113,.07);border:1px solid rgba(46,204,113,.22);border-radius:20px;padding:6px 15px;font-size:9px;font-weight:700;color:var(--grn);letter-spacing:3px;text-transform:uppercase}
+.sw{max-width:960px;margin:0 auto;padding:0 30px 14px}
+.sw input{width:100%;background:var(--card);border:1px solid var(--brd);border-radius:4px;padding:13px 18px;color:var(--txt);font-family:"DM Sans",sans-serif;font-size:14px;outline:none;transition:.2s}
+.sw input:focus{border-color:var(--gold)}.sw input::placeholder{color:var(--sub)}
+.fw{max-width:960px;margin:0 auto;padding:0 30px 20px;display:flex;gap:7px;flex-wrap:wrap}
+.ft{background:var(--card);border:1px solid rgba(191,149,63,.1);border-radius:30px;padding:6px 14px;font-size:10px;font-weight:700;color:var(--sub);cursor:pointer;transition:.2s;text-transform:uppercase;letter-spacing:1px}
+.ft:hover,.ft.on{background:var(--grad);color:#000;border-color:transparent}
+.gw{max-width:960px;margin:0 auto;padding:0 30px 60px}
+.glbl{font-size:9px;font-weight:700;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.glbl::after{content:"";flex:1;height:1px;background:rgba(191,149,63,.08)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid rgba(191,149,63,.09);border-radius:8px;overflow:hidden;transition:all .22s;animation:up .3s ease both}
+.card:hover{border-color:var(--brd);transform:translateY(-2px);box-shadow:0 14px 44px rgba(0,0,0,.7)}
+.ct{padding:19px 19px 11px}
+.ca{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:7px}
+.cn{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:700;margin-bottom:6px;line-height:1.3}
+.cd{font-size:12px;color:var(--sub);line-height:1.7;font-weight:300}
+.cpv{position:relative;background:#000;border:1px solid rgba(191,149,63,.09);border-radius:4px;margin:9px 19px;overflow:hidden}
+.pvt{font-family:"Courier New",monospace;font-size:9px;color:rgba(191,149,63,.28);line-height:1.7;padding:11px 13px;white-space:pre-wrap;max-height:68px;overflow:hidden}
+.pvb{position:absolute;bottom:0;left:0;right:0;height:46px;background:linear-gradient(transparent,#000);display:flex;align-items:flex-end;justify-content:center;padding-bottom:7px}
+.lk{font-size:8px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;background:rgba(191,149,63,.07);border:1px solid rgba(191,149,63,.18);border-radius:20px;padding:3px 11px}
+.cb{padding:10px 19px;border-top:1px solid rgba(191,149,63,.07);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:7px}
+.tags{display:flex;gap:5px;flex-wrap:wrap}
+.tag{font-size:8px;font-weight:700;padding:3px 8px;border-radius:20px;border:1px solid rgba(255,255,255,.07);color:var(--sub);text-transform:uppercase}
+.lb{color:#3498db;border-color:rgba(52,152,219,.22)!important;background:rgba(52,152,219,.05)!important}
+.li{color:#f39c12;border-color:rgba(243,156,18,.22)!important;background:rgba(243,156,18,.05)!important}
+.la{color:#e74c3c;border-color:rgba(231,76,60,.22)!important;background:rgba(231,76,60,.05)!important}
+.lp{color:var(--gold);border-color:rgba(191,149,63,.22)!important;background:rgba(191,149,63,.05)!important}
+.preco{font-family:"Cormorant Garamond",serif;font-size:21px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.bcmp{background:var(--grad);color:#000;border:none;padding:8px 16px;border-radius:3px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.2s}
+.bcmp:hover{filter:brightness(1.1)}
+.empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--sub);font-size:12px;letter-spacing:3px}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+.ov.on{display:flex}
+.modal{background:var(--card);border:1px solid var(--brd);border-radius:8px;padding:30px;max-width:430px;width:100%;max-height:90vh;overflow-y:auto;position:relative}
+.modal::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);border-radius:8px 8px 0 0}
+.mx{position:absolute;top:10px;right:13px;background:none;border:none;color:var(--sub);font-size:22px;cursor:pointer;line-height:1}
+.st{display:none}.st.on{display:block}
+.mk{font-size:9px;font-weight:700;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:7px}
+.mt{font-family:"Cormorant Garamond",serif;font-size:23px;font-weight:700;margin-bottom:7px}
+.ms{font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:16px;font-weight:300}
+.inp{width:100%;background:rgba(255,255,255,.02);border:1px solid var(--brd);border-radius:4px;padding:12px 14px;color:var(--txt);font-family:"DM Sans",sans-serif;font-size:14px;outline:none;transition:.2s;margin-bottom:9px}
+.inp:focus{border-color:var(--gold)}.inp::placeholder{color:var(--sub)}
+.rg{display:flex;gap:8px;margin-bottom:13px}
+.ro{flex:1;border:1px solid rgba(191,149,63,.11);border-radius:4px;padding:11px 5px;cursor:pointer;text-align:center;transition:.2s}
+.ro.on{border-color:var(--gold);background:rgba(191,149,63,.05)}
+.ro-l{font-size:10px;font-weight:700;color:var(--sub);letter-spacing:1px;margin-top:4px}
+.ro.on .ro-l{color:var(--gold)}
+.err{font-size:11px;color:var(--red);min-height:14px;margin-bottom:7px;font-weight:600}
+.pixbox{background:#000;border:1px solid rgba(191,149,63,.18);border-radius:6px;padding:16px;text-align:center;margin-bottom:11px}
+.pk{font-family:"Cormorant Garamond",serif;font-size:21px;font-weight:700;margin:6px 0 3px;letter-spacing:2px}
+.rsbox{background:#000;border:1px solid rgba(191,149,63,.09);border-radius:6px;padding:13px;margin-bottom:14px}
+.rs-n{font-family:"Cormorant Garamond",serif;font-size:16px;font-weight:700;margin-bottom:3px}
+.rs-p{font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.av{font-size:12px;color:var(--sub);line-height:1.8;text-align:center;margin:9px 0;font-weight:300}
+.av b{color:var(--gold)}
+.ag{text-align:center;padding:16px 0}
+.ag-i{font-size:48px;margin-bottom:12px;animation:pu 2s infinite}
+.ag-t{font-family:"Cormorant Garamond",serif;font-size:25px;font-weight:700;margin-bottom:9px}
+.ag-s{font-size:13px;color:var(--sub);line-height:1.8;font-weight:300}
+#pg-al{display:flex;align-items:center;justify-content:center;min-height:100vh}
+.alb{background:var(--card);border:1px solid var(--brd);border-radius:8px;padding:38px;max-width:310px;width:100%;text-align:center;position:relative}
+.alb::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad)}
+.anav{display:flex;align-items:center;justify-content:space-between;padding:15px 34px;border-bottom:1px solid var(--brd);background:rgba(5,5,5,.96);backdrop-filter:blur(20px);flex-wrap:wrap;gap:8px}
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:9px;padding:18px 34px}
+.sc{background:var(--card);border:1px solid rgba(191,149,63,.09);border-radius:6px;padding:15px}
+.sn{font-family:"Cormorant Garamond",serif;font-size:30px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:3px}
+.sl{font-size:9px;color:var(--sub);letter-spacing:2px;text-transform:uppercase;font-weight:700}
+.atabs{display:flex;padding:0 34px;border-bottom:1px solid rgba(191,149,63,.09)}
+.atab{background:none;border:none;border-bottom:2px solid transparent;padding:10px 16px;font-family:"DM Sans",sans-serif;font-size:10px;font-weight:700;color:var(--sub);cursor:pointer;letter-spacing:2px;text-transform:uppercase;transition:.2s;margin-bottom:-1px}
+.atab.on{color:var(--gold);border-bottom-color:var(--gold)}
+.ac{padding:20px 34px}
+.ap{display:none}.ap.on{display:block}
+.pbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.sync{display:flex;align-items:center;gap:7px}
+.dot{width:7px;height:7px;border-radius:50%;background:#f39c12;transition:.4s}
+.dot.ok{background:var(--grn)}.dot.err{background:var(--red)}
+.stxt{font-size:10px;color:var(--sub);font-weight:600}
+.bref{display:flex;align-items:center;gap:6px;background:none;border:1px solid var(--brd);color:var(--gold);padding:8px 15px;border-radius:3px;font-family:"DM Sans",sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:.2s;text-transform:uppercase}
+.bref:hover{background:rgba(191,149,63,.07)}
+.spin{display:inline-block}.spin.go{animation:gr .6s linear infinite}
+.ftabs{display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap}
+.fpt{background:var(--card);border:1px solid rgba(191,149,63,.11);border-radius:6px;padding:7px 13px;font-size:10px;font-weight:700;color:var(--sub);cursor:pointer;transition:.2s;text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;gap:5px}
+.fpt:hover,.fpt.on{border-color:var(--gold);color:var(--gold);background:rgba(191,149,63,.05)}
+.fpb{background:rgba(255,255,255,.07);border-radius:20px;padding:2px 7px;font-size:9px;font-weight:900}
+.fpb.nv{background:rgba(231,76,60,.14);color:var(--red)}
+.fpb.pd{background:rgba(243,156,18,.14);color:#f39c12}
+.fpb.ok{background:rgba(46,204,113,.14);color:var(--grn)}
+.pl{display:flex;flex-direction:column;gap:9px}
+.pc{background:var(--card);border:1px solid rgba(191,149,63,.09);border-radius:7px;padding:15px;transition:.2s;position:relative}
+.pc:hover{border-color:var(--brd)}
+.pc.nv{border-color:rgba(231,76,60,.32);box-shadow:0 0 16px rgba(231,76,60,.06)}
+.pct{font-family:"Cormorant Garamond",serif;font-size:17px;font-weight:700;margin-bottom:5px}
+.pcm{font-size:11px;color:var(--sub);display:flex;gap:10px;flex-wrap:wrap;font-weight:300}
+.pcp{font-family:"Cormorant Garamond",serif;font-size:19px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.bdg{font-size:8px;font-weight:700;letter-spacing:2px;padding:4px 9px;border-radius:20px;text-transform:uppercase;white-space:nowrap}
+.bdg-p{background:rgba(243,156,18,.09);border:1px solid rgba(243,156,18,.28);color:#f39c12}
+.bdg-ok{background:rgba(46,204,113,.09);border:1px solid rgba(46,204,113,.28);color:var(--grn)}
+.bdg-nv{background:rgba(231,76,60,.09);border:1px solid rgba(231,76,60,.28);color:var(--red)}
+.bsm{background:none;color:var(--gold);border:1px solid rgba(191,149,63,.22);padding:7px 13px;border-radius:3px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.2s;margin-top:9px}
+.bsm:hover{background:rgba(191,149,63,.06)}
+.ilbl{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--sub);text-transform:uppercase;margin-bottom:5px;display:block}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fg .full{grid-column:1/-1}
+textarea.inp{resize:vertical;min-height:95px}
+select.inp{cursor:pointer}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(18px);background:var(--grad);color:#000;padding:11px 22px;border-radius:3px;font-size:9px;font-weight:900;letter-spacing:4px;text-transform:uppercase;opacity:0;transition:.3s;z-index:9999;pointer-events:none;white-space:nowrap}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@keyframes up{from{opacity:0;transform:translateY(11px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pu{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes gr{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@media(max-width:560px){
+  nav,.hero,.sw,.fw,.gw{padding-left:14px;padding-right:14px}
+  .grid{grid-template-columns:1fr}
+  .modal{padding:20px 13px}
+  .anav,.ac,.stats,.atabs{padding-left:12px;padding-right:12px}
+  .fg{grid-template-columns:1fr}
+  .rg{flex-direction:column}
 }
 </style>
 </head>
 <body>
 <div id="toast"></div>
-
-<!-- MODAL COMPRA -->
 <div class="ov" id="ov-c">
 <div class="modal">
-  <button class="mx" onclick="fC()">×</button>
-  <div class="ms on" id="s1">
+  <button class="mx" onclick="fC()">x</button>
+  <div class="st on" id="s1">
     <div class="mk">Desbloqueie o prompt</div>
     <div class="mt" id="s1t"></div>
-    <div class="msub">Preencha para receber o prompt após o pagamento.</div>
+    <div class="ms">Preencha para receber o prompt apos o pagamento.</div>
     <input class="inp" type="text" id="f-nm" placeholder="Seu nome completo">
     <input class="inp" type="email" id="f-em" placeholder="Seu e-mail">
     <input class="inp" type="tel" id="f-wt" placeholder="WhatsApp com DDD  ex: 11999990000">
-    <div style="font-size:9px;font-weight:700;letter-spacing:2px;color:var(--sub);text-transform:uppercase;margin-bottom:8px;">Receber o prompt por:</div>
+    <div style="font-size:9px;font-weight:700;letter-spacing:2px;color:var(--sub);text-transform:uppercase;margin-bottom:8px">Receber por:</div>
     <div class="rg">
-      <div class="ro on" id="ro-e" onclick="sE('e')"><div class="ro-ic">📧</div><div class="ro-lb">E-mail</div></div>
-      <div class="ro" id="ro-w" onclick="sE('w')"><div class="ro-ic">💬</div><div class="ro-lb">WhatsApp</div></div>
-      <div class="ro" id="ro-a" onclick="sE('a')"><div class="ro-ic">✅</div><div class="ro-lb">Os dois</div></div>
+      <div class="ro on" id="ro-e" onclick="sE('e')"><div style="font-size:16px">@</div><div class="ro-l">E-mail</div></div>
+      <div class="ro" id="ro-w" onclick="sE('w')"><div style="font-size:16px">W</div><div class="ro-l">WhatsApp</div></div>
+      <div class="ro" id="ro-a" onclick="sE('a')"><div style="font-size:16px">+</div><div class="ro-l">Os dois</div></div>
     </div>
     <div class="err" id="s1e"></div>
-    <button class="bf" onclick="goP()">CONTINUAR PARA PAGAMENTO →</button>
+    <button class="bgold" onclick="goP()">CONTINUAR PARA PAGAMENTO</button>
   </div>
-  <div class="ms" id="s2">
+  <div class="st" id="s2">
     <div class="mk">Pague com Pix</div>
-    <div class="mt">Quase lá!</div>
-    <div class="rsb"><div class="rn" id="s2n"></div><div class="rp" id="s2p"></div></div>
-    <div class="pixb">
-      <div class="pl">Chave Pix — CPF</div>
+    <div class="mt">Quase la!</div>
+    <div class="rsbox"><div class="rs-n" id="s2n"></div><div class="rs-p" id="s2p"></div></div>
+    <div class="pixbox">
+      <div style="font-size:8px;font-weight:700;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:9px">Chave Pix CPF</div>
       <div class="pk">39521484829</div>
-      <div class="pn">Cássia Kelly Lins Reis</div>
+      <div style="font-size:11px;color:var(--sub)">Cassia Kelly Lins Reis</div>
     </div>
-    <button class="bf" id="b-cp" onclick="cpPix()" style="margin-bottom:12px;">📋 COPIAR CHAVE PIX</button>
-    <div class="av">Após o Pix, envie o comprovante para:<br><strong style="font-size:19px;display:block;margin:7px 0;font-family:'Cormorant Garamond',serif;">📲 (11) 97885-7415</strong></div>
-    <a id="b-wa" class="bwa" href="" target="_blank">💬 ENVIAR COMPROVANTE NO WHATSAPP</a>
-    <div class="av">Você receberá via <strong><span id="s2ent"></span></strong> após confirmação.</div>
-    <button class="bok" onclick="conf()">✅ JÁ ENVIEI O COMPROVANTE</button>
+    <button class="bgold" id="b-cp" onclick="cpPix()">COPIAR CHAVE PIX</button>
+    <div class="av">Apos o Pix, envie o comprovante para:<br><b style="font-size:17px;display:block;margin:5px 0;font-family:'Cormorant Garamond',serif">(11) 97885-7415</b></div>
+    <a id="b-wa" class="bwa" href="" target="_blank">ENVIAR COMPROVANTE NO WHATSAPP</a>
+    <div class="av">Voce recebera via <b><span id="s2e"></span></b> apos confirmacao.</div>
+    <button class="bok" onclick="conf()">JA ENVIEI O COMPROVANTE</button>
   </div>
-  <div class="ms" id="s3">
+  <div class="st" id="s3">
     <div class="ag">
-      <div class="ag-ic">⏳</div>
+      <div class="ag-i">&#9203;</div>
       <div class="ag-t">Pedido registrado!</div>
-      <div class="ag-s">Assim que confirmarmos o comprovante você receberá o prompt via <strong id="s3e" style="color:var(--gc);"></strong>.<br><br>Tempo médio: <strong style="color:var(--gc);">até 1 hora.</strong></div>
+      <div class="ag-s">Assim que confirmarmos o comprovante voce recebera o prompt via <b id="s3e" style="color:var(--gold)"></b>.<br><br>Tempo medio: <b style="color:var(--gold)">ate 1 hora.</b></div>
     </div>
   </div>
 </div>
 </div>
-
-<!-- MODAL ADMIN PEDIDO -->
 <div class="ov" id="ov-p">
-<div class="modal" style="max-width:520px;">
-  <button class="mx" onclick="fecharP()">×</button>
+<div class="modal" style="max-width:490px">
+  <button class="mx" onclick="fP()">x</button>
   <div class="mk">Pedido</div>
   <div class="mt" id="ap-t"></div>
-  <div style="background:#000;border:1px solid var(--bs);border-radius:6px;padding:14px;margin:12px 0;font-size:12px;color:var(--sub);line-height:2.2;font-weight:300;">
-    <div>👤 <b style="color:#fff;">Cliente:</b> <span id="ap-nm"></span></div>
-    <div>📧 <b style="color:#fff;">E-mail:</b> <span id="ap-em"></span></div>
-    <div>💬 <b style="color:#fff;">WhatsApp:</b> <span id="ap-wt"></span></div>
-    <div>📦 <b style="color:#fff;">Entrega:</b> <span id="ap-ent"></span></div>
-    <div>💰 <b style="color:#fff;">Valor:</b> <span id="ap-pr"></span></div>
-    <div>🕐 <b style="color:#fff;">Data:</b> <span id="ap-dt"></span></div>
+  <div style="background:#000;border:1px solid rgba(191,149,63,.09);border-radius:6px;padding:12px;margin:9px 0;font-size:12px;color:var(--sub);line-height:2.1;font-weight:300">
+    <div>Cliente: <span id="ap-nm" style="color:var(--txt);font-weight:500"></span></div>
+    <div>E-mail: <span id="ap-em" style="color:var(--txt)"></span></div>
+    <div>WhatsApp: <span id="ap-wt" style="color:var(--txt)"></span></div>
+    <div>Entrega: <span id="ap-ent" style="color:var(--txt)"></span></div>
+    <div>Valor: <span id="ap-pr" style="color:var(--gold);font-weight:700"></span></div>
+    <div>Data: <span id="ap-dt" style="color:var(--txt)"></span></div>
   </div>
-  <span class="ilbl" style="margin-bottom:6px;">Prompt completo — copie e envie:</span>
-  <div id="ap-pm" style="background:#000;border:1px solid var(--bs);border-radius:4px;padding:14px;font-family:'Courier New',monospace;font-size:10px;color:#fcf6ba;line-height:1.7;white-space:pre-wrap;max-height:200px;overflow-y:auto;margin-bottom:12px;"></div>
-  <button class="bf" id="b-cpa" onclick="cpAdm()" style="margin-bottom:10px;">📋 COPIAR PROMPT</button>
-  <a id="b-wae" class="bwa" href="" target="_blank">💬 ABRIR WHATSAPP DO CLIENTE</a>
-  <button id="b-mk" class="bok" onclick="mkOk()">✅ MARCAR COMO ENTREGUE</button>
+  <span class="ilbl">Prompt completo - copie e envie:</span>
+  <div id="ap-pm" style="background:#000;border:1px solid rgba(191,149,63,.09);border-radius:4px;padding:12px;font-family:'Courier New',monospace;font-size:10px;color:#fcf6ba;line-height:1.7;white-space:pre-wrap;max-height:175px;overflow-y:auto;margin-bottom:11px"></div>
+  <button class="bgold" id="b-cpa" onclick="cpAdm()">COPIAR PROMPT</button>
+  <a id="b-wae" class="bwa" href="" target="_blank">WHATSAPP DO CLIENTE</a>
+  <button id="b-mk" class="bok" onclick="mkOk()">MARCAR COMO ENTREGUE</button>
 </div>
 </div>
-
-<!-- LOJA -->
 <div id="pg-lj" class="pg on">
   <nav>
-    <div><div class="logo" onclick="goLj()">PROMPTUS</div><div class="logo-sub">Store</div></div>
-    <button class="nbtn" onclick="goAL()">🔐 Admin</button>
+    <div><div class="logo" onclick="goLj()">PROMPTUS</div><div class="logo-s">Store</div></div>
+    <button class="btn" onclick="goAL()">Admin</button>
   </nav>
   <div class="hero">
-    <p style="font-size:9px;font-weight:700;letter-spacing:6px;color:var(--gc);text-transform:uppercase;margin-bottom:18px;">Prompts Profissionais · Mercado Brasileiro</p>
+    <div class="htag">Prompts Profissionais - Mercado Brasileiro</div>
     <h1>Prompts que resolvem<br><em>dores reais.</em></h1>
-    <p>Criados por especialista, testados contra alucinações, calibrados para o mercado brasileiro. Compre só o que precisa.</p>
-    <span class="badge">🛡️ Anti-alucinação · Anti-mentira · Uso universal</span>
+    <p>Criados por especialista, testados contra alucinacoes, calibrados para o mercado brasileiro.</p>
+    <span class="hbadge">Anti-alucinacao - Anti-mentira - Uso universal</span>
   </div>
-  <div class="bwrap"><input type="text" id="busca" placeholder="🔍  Buscar... ex: petição, laudo, contrato" oninput="render()"></div>
-  <div class="fwrap" id="fwrap"></div>
-  <div class="gwrap">
+  <div class="sw"><input type="text" id="busca" placeholder="Buscar... ex: peticao, laudo, contrato, proposta" oninput="render()"></div>
+  <div class="fw" id="fw"></div>
+  <div class="gw">
     <div class="glbl" id="glbl">Todos os Prompts</div>
     <div class="grid" id="grid"></div>
   </div>
 </div>
-
-<!-- ADMIN LOGIN -->
-<div id="pg-al" class="pg" style="display:none;">
+<div id="pg-al" class="pg" style="display:none">
   <div class="alb">
-    <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:6px;margin-bottom:6px;">PROMPTUS</div>
-    <div style="font-size:9px;letter-spacing:4px;color:var(--sub);text-transform:uppercase;margin-bottom:28px;">Admin</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:6px;margin-bottom:4px">PROMPTUS</div>
+    <div style="font-size:9px;letter-spacing:4px;color:var(--sub);text-transform:uppercase;margin-bottom:24px">Admin</div>
     <input class="inp" type="password" id="a-pw" placeholder="Senha" onkeydown="if(event.key==='Enter')login()">
     <div class="err" id="a-err"></div>
-    <button class="bf" onclick="login()">ENTRAR</button>
-    <div style="margin-top:14px;font-size:11px;color:var(--sub);cursor:pointer;" onclick="goLj()">← Voltar à loja</div>
+    <button class="bgold" onclick="login()">ENTRAR</button>
+    <div style="margin-top:11px;font-size:11px;color:var(--sub);cursor:pointer" onclick="goLj()">Voltar a loja</div>
   </div>
 </div>
-
-<!-- ADMIN PAINEL -->
-<div id="pg-adm" class="pg" style="display:none;">
+<div id="pg-adm" class="pg" style="display:none">
   <nav class="anav">
-    <div><div class="logo">PROMPTUS</div><div class="logo-sub">Admin</div></div>
-    <div style="display:flex;gap:10px;">
-      <button class="nbtn" onclick="goLj()">← Loja</button>
-      <button class="nbtn" onclick="goAL()">Sair</button>
+    <div><div class="logo">PROMPTUS</div><div class="logo-s">Admin</div></div>
+    <div style="display:flex;gap:7px">
+      <button class="btn" onclick="goLj()">Loja</button>
+      <button class="btn" onclick="goAL()">Sair</button>
     </div>
   </nav>
-  <div class="srow">
+  <div class="stats">
     <div class="sc"><div class="sn" id="st-t">0</div><div class="sl">Pedidos</div></div>
     <div class="sc"><div class="sn" id="st-p">0</div><div class="sl">Pendentes</div></div>
-    <div class="sc"><div class="sn" id="st-r">R$0</div><div class="sl">Receita</div></div>
     <div class="sc"><div class="sn" id="st-n">0</div><div class="sl">Novos</div></div>
+    <div class="sc"><div class="sn" id="st-r">R$0</div><div class="sl">Receita</div></div>
   </div>
   <div class="atabs">
-    <button class="atab on" onclick="aTab('pd',this)">📦 Pedidos</button>
-    <button class="atab" onclick="aTab('ad',this)">➕ Novo Prompt</button>
+    <button class="atab on" onclick="aTab('pd',this)">Pedidos</button>
+    <button class="atab" onclick="aTab('ad',this)">Novo Prompt</button>
   </div>
   <div class="ac">
     <div class="ap on" id="ap-pd">
       <div class="pbar">
         <div class="sync"><div class="dot" id="dot"></div><span class="stxt" id="stxt">Conectando...</span></div>
-        <button class="bref" onclick="rfManual()"><span class="spin" id="rfic">↻</span> ATUALIZAR</button>
+        <button class="bref" onclick="rfM()"><span class="spin" id="rfic">R</span> ATUALIZAR</button>
       </div>
       <div class="ftabs">
-        <button class="fpt on" id="fp-all" onclick="filtP('all',this)">📋 Todos <span class="fpbdg" id="ct-all">0</span></button>
-        <button class="fpt" id="fp-nv" onclick="filtP('nv',this)">🔴 Novos <span class="fpbdg nv" id="ct-nv">0</span></button>
-        <button class="fpt" id="fp-pd" onclick="filtP('pd',this)">⏳ Pendentes <span class="fpbdg pd" id="ct-pd">0</span></button>
-        <button class="fpt" id="fp-ok" onclick="filtP('ok',this)">✅ Entregues <span class="fpbdg ok" id="ct-ok">0</span></button>
+        <button class="fpt on" id="fp-all" onclick="filtP('all',this)">Todos <span class="fpb" id="ct-a">0</span></button>
+        <button class="fpt" id="fp-nv" onclick="filtP('nv',this)">Novos <span class="fpb nv" id="ct-n">0</span></button>
+        <button class="fpt" id="fp-pd" onclick="filtP('pd',this)">Pendentes <span class="fpb pd" id="ct-p">0</span></button>
+        <button class="fpt" id="fp-ok" onclick="filtP('ok',this)">Entregues <span class="fpb ok" id="ct-o">0</span></button>
       </div>
-      <div class="pl" id="ped-list"><div style="text-align:center;padding:40px;color:var(--sub);">Carregando...</div></div>
+      <div class="pl" id="ped-list"><div style="text-align:center;padding:40px;color:var(--sub)">Carregando...</div></div>
     </div>
     <div class="ap" id="ap-ad">
-      <div style="max-width:660px;">
+      <div style="max-width:620px">
         <div class="fg">
-          <div><label class="ilbl">Título</label><input class="inp" id="f-ti" placeholder="Ex: Petição Trabalhista"></div>
-          <div><label class="ilbl">Área</label><select class="inp" id="f-ar">
-            <option value="juridico">⚖️ Jurídico</option><option value="medico">🏥 Médico</option>
-            <option value="negocios">💼 Negócios</option><option value="marketing">📣 Marketing</option>
-            <option value="contabil">📊 Contábil</option><option value="psicologia">🧠 Psicologia</option>
-            <option value="educacao">📚 Educação</option><option value="engenharia">🔧 Engenharia</option>
-            <option value="ti">💻 TI</option><option value="outro">✳️ Outro</option>
+          <div><label class="ilbl">Titulo</label><input class="inp" id="f-ti" placeholder="Ex: Peticao Trabalhista"></div>
+          <div><label class="ilbl">Area</label><select class="inp" id="f-ar">
+            <option value="juridico">Juridico</option><option value="medico">Medico</option>
+            <option value="negocios">Negocios</option><option value="marketing">Marketing</option>
+            <option value="contabil">Contabil</option><option value="psicologia">Psicologia</option>
+            <option value="educacao">Educacao</option><option value="engenharia">Engenharia</option>
+            <option value="ti">TI</option>
           </select></div>
-          <div><label class="ilbl">Nível</label><select class="inp" id="f-nv">
-            <option value="basico">Básico — R$9,90</option><option value="intermediario">Intermediário — R$19,90</option>
-            <option value="avancado">Avançado — R$29,90</option><option value="premium">Premium — R$49,90</option>
+          <div><label class="ilbl">Nivel</label><select class="inp" id="f-nv">
+            <option value="basico">Basico R$9,90</option><option value="intermediario">Intermediario R$19,90</option>
+            <option value="avancado">Avancado R$29,90</option><option value="premium">Premium R$49,90</option>
           </select></div>
-          <div><label class="ilbl">Tag</label><input class="inp" id="f-tg" placeholder="Ex: Petição"></div>
-          <div class="full"><label class="ilbl">Descrição (qual dor resolve?)</label><textarea class="inp" id="f-ds" rows="3"></textarea></div>
-          <div class="full"><label class="ilbl">Preview (primeiras linhas visíveis)</label><textarea class="inp" id="f-pv" rows="3"></textarea></div>
-          <div class="full"><label class="ilbl">Prompt completo</label><textarea class="inp" id="f-pm" rows="10"></textarea></div>
+          <div><label class="ilbl">Tag</label><input class="inp" id="f-tg" placeholder="Ex: Peticao"></div>
+          <div class="full"><label class="ilbl">Descricao</label><textarea class="inp" id="f-ds" rows="2"></textarea></div>
+          <div class="full"><label class="ilbl">Preview</label><textarea class="inp" id="f-pv" rows="3"></textarea></div>
+          <div class="full"><label class="ilbl">Prompt completo</label><textarea class="inp" id="f-pm" rows="9"></textarea></div>
         </div>
-        <div class="err" id="f-err" style="margin-top:8px;"></div>
-        <button class="bf" onclick="salvar()">✅ SALVAR NA LOJA</button>
+        <div class="err" id="f-err" style="margin-top:7px"></div>
+        <button class="bgold" onclick="salvar()">SALVAR NA LOJA</button>
       </div>
     </div>
   </div>
 </div>
-
 <script>
-const BASE = [{"titulo": "Petição Inicial Trabalhista", "area": "juridico", "nivel": "avancado", "tag": "Petição", "desc": "Petição completa com CLT e Súmulas TST. Para advogados que perdem horas formatando peças.", "preview": "PERSONA: Advogado(a) trabalhista sênior 20 anos TRT.\nTAREFA: Petição inicial trabalhista completa.\nESTRUTURA: 1. Qualificação 2. Fatos 3. Direito 4. Pedidos", "prompt": "PERSONA: Você é advogado(a) trabalhista sênior com 20 anos de TRT.\nTAREFA: Petição inicial trabalhista completa e impecável.\nESTRUTURA:\n1. QUALIFICAÇÃO DAS PARTES\n2. DOS FATOS (cronológico)\n3. DO DIREITO (CLT e Súmulas TST)\n4. DOS PEDIDOS (itemizado com valores)\n5. DO VALOR DA CAUSA\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Contrato de Prestação de Serviços", "area": "juridico", "nivel": "intermediario", "tag": "Contrato", "desc": "Contrato com cláusulas protetivas e base no Código Civil. Para se proteger sem pagar caro.", "preview": "PERSONA: Advogado(a) civilista especialista em contratos.\nTAREFA: Contrato de prestação de serviços.\nBASE: CC arts 593-609", "prompt": "PERSONA: Você é advogado(a) civilista especialista em contratos.\nTAREFA: Contrato de prestação de serviços completo.\nBASE: CC arts. 593 a 609.\nESTRUTURA:\n1. QUALIFICAÇÃO DAS PARTES\n2. DO OBJETO\n3. DO PRAZO\n4. DO VALOR E PAGAMENTO\n5. DAS OBRIGAÇÕES\n6. DA RESCISÃO E MULTA\n7. DO FORO\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Notificação Extrajudicial", "area": "juridico", "nivel": "intermediario", "tag": "Notificação", "desc": "Notificação com validade jurídica para cobranças. Para se proteger sem ir ao judiciário.", "preview": "PERSONA: Advogado(a) especialista em notificações.\nTAREFA: Notificação extrajudicial.\nESTRUTURA: 1. Identificação 2. Fatos 3. Base legal", "prompt": "PERSONA: Você é advogado(a) especialista em notificações.\nTAREFA: Notificação extrajudicial com plena validade.\nESTRUTURA:\n1. IDENTIFICAÇÃO DAS PARTES\n2. DOS FATOS E OBRIGAÇÃO\n3. DA BASE LEGAL\n4. DO PRAZO\n5. DAS CONSEQUÊNCIAS\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "NDA - Acordo de Confidencialidade", "area": "juridico", "nivel": "intermediario", "tag": "Contrato", "desc": "NDA completo para proteger informações sigilosas. Indispensável antes de qualquer parceria.", "preview": "PERSONA: Advogado(a) especialista em contratos empresariais.\nTAREFA: NDA completo e robusto.\nESTRUTURA: 1. Partes 2. Informações 3. Obrigações", "prompt": "PERSONA: Você é advogado(a) especialista em contratos empresariais.\nTAREFA: NDA completo e robusto.\nESTRUTURA:\n1. QUALIFICAÇÃO DAS PARTES\n2. INFORMAÇÕES CONFIDENCIAIS\n3. OBRIGAÇÕES DE SIGILO\n4. EXCEÇÕES\n5. PRAZO E PENALIDADES\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Ação de Indenização por Dano Moral", "area": "juridico", "nivel": "avancado", "tag": "Petição", "desc": "Petição de dano moral com fundamentos sólidos. Para quem foi prejudicado e não sabe agir.", "preview": "PERSONA: Advogado(a) cível especialista em responsabilidade civil.\nTAREFA: Petição de dano moral.\nBASE: CC arts 186, 927", "prompt": "PERSONA: Você é advogado(a) cível especialista em responsabilidade civil.\nTAREFA: Petição de dano moral completa.\nBASE: CC arts. 186, 187, 927.\nESTRUTURA:\n1. QUALIFICAÇÃO DAS PARTES\n2. DOS FATOS E DO DANO\n3. DO NEXO CAUSAL\n4. DA QUANTIFICAÇÃO\n5. DOS PEDIDOS\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Habeas Corpus", "area": "juridico", "nivel": "premium", "tag": "Petição", "desc": "HC com fundamentos constitucionais. Para advogados criminalistas que precisam agir rápido.", "preview": "PERSONA: Advogado(a) criminalista especialista em HC.\nTAREFA: Habeas corpus fundamentado.\nBASE: CF art 5 LXVIII", "prompt": "PERSONA: Você é advogado(a) criminalista com 20 anos em HC.\nTAREFA: Petição de HC completa e urgente.\nBASE: CF art. 5 LXVIII; CPP arts. 647-667.\nESTRUTURA:\n1. PACIENTE E AUTORIDADE COATORA\n2. DA ILEGALIDADE\n3. DOS FUNDAMENTOS\n4. DO PEDIDO LIMINAR\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Divórcio Consensual Completo", "area": "juridico", "nivel": "avancado", "tag": "Petição", "desc": "Petição com partilha, guarda e alimentos. Para casais que querem encerrar com dignidade.", "preview": "PERSONA: Advogado(a) de família experiente.\nTAREFA: Petição de divórcio consensual.\nBASE: CC arts 1571-1582", "prompt": "PERSONA: Você é advogado(a) de família com 20 anos de experiência.\nTAREFA: Petição de divórcio consensual completa.\nBASE: CC arts. 1.571 a 1.582.\nESTRUTURA:\n1. QUALIFICAÇÃO DAS PARTES\n2. DO CASAMENTO\n3. DA PARTILHA DE BENS\n4. DA GUARDA E ALIMENTOS\n5. DO PEDIDO\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Recurso Administrativo de Multa", "area": "juridico", "nivel": "intermediario", "tag": "Recurso", "desc": "Recurso para contestar multas de trânsito, fiscais e sanitárias. Para quem recebe auto injusto.", "preview": "PERSONA: Advogado(a) especialista em direito administrativo.\nTAREFA: Recurso administrativo completo.\nESTRUTURA: 1. Identificação 2. Fatos 3. Argumentos", "prompt": "PERSONA: Você é advogado(a) especialista em recursos administrativos.\nTAREFA: Recurso administrativo completo.\nESTRUTURA:\n1. IDENTIFICAÇÃO E AUTUAÇÃO\n2. DOS FATOS\n3. DOS ARGUMENTOS\n4. DAS PROVAS\n5. DO PEDIDO\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Sequência de Cartas de Cobrança", "area": "juridico", "nivel": "intermediario", "tag": "Cobrança", "desc": "3 cartas escalonadas: amigável, formal e pré-judicial. Para cobrar dívidas com força legal.", "preview": "PERSONA: Especialista em cobrança extrajudicial.\nTAREFA: 3 cartas escalonadas.\nCarta 1 amigável, Carta 2 formal, Carta 3 pré-judicial", "prompt": "PERSONA: Você é especialista em cobrança extrajudicial.\nTAREFA: Sequência de 3 cartas escalonadas.\nCARTA 1 - AMIGÁVEL (tom cordial)\nCARTA 2 - FORMAL (tom firme, prazo peremptório)\nCARTA 3 - PRÉ-JUDICIAL (anuncia ação)\nCada carta: identificação, valor, prazo e consequências.\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Laudo Médico Completo", "area": "medico", "nivel": "avancado", "tag": "Laudo", "desc": "Laudo com anamnese, CID-10 e conduta. Para médicos que precisam de documentação impecável.", "preview": "PERSONA: Médico(a) especialista com 20 anos de experiência.\nTAREFA: Laudo médico completo.\nESTRUTURA: 1. Identificação 2. Queixa 3. Antecedentes", "prompt": "PERSONA: Você é médico(a) especialista com 20 anos de experiência clínica.\nTAREFA: Laudo médico completo.\nESTRUTURA:\n1. IDENTIFICAÇÃO DO PACIENTE\n2. QUEIXA PRINCIPAL E HMA\n3. ANTECEDENTES\n4. EXAME FÍSICO\n5. EXAMES COMPLEMENTARES\n6. DIAGNÓSTICO E CID-10\n7. CONDUTA\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Relatório Médico para Plano de Saúde", "area": "medico", "nivel": "intermediario", "tag": "Relatório", "desc": "Justifica procedimentos negados pelo plano. Para médicos que defendem seus pacientes.", "preview": "PERSONA: Médico(a) assistente com CRM ativo.\nTAREFA: Relatório para reverter negativa do plano.\nESTRUTURA: 1. Identificação 2. Diagnóstico 3. Justificativa", "prompt": "PERSONA: Você é médico(a) assistente com CRM ativo.\nTAREFA: Relatório para autorização de procedimento pelo plano.\nESTRUTURA:\n1. IDENTIFICAÇÃO E BENEFICIÁRIO\n2. DIAGNÓSTICO E CID-10\n3. HISTÓRICO DO CASO\n4. JUSTIFICATIVA CLÍNICA\n5. ALTERNATIVAS JÁ TENTADAS\n6. URGÊNCIA\n7. CONSEQUÊNCIAS DO NÃO ATENDIMENTO\n8. FUNDAMENTAÇÃO (ANS e CF)\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Laudo de Incapacidade INSS", "area": "medico", "nivel": "premium", "tag": "Laudo Pericial", "desc": "Laudo de incapacidade para benefício previdenciário. Para garantir o direito dos pacientes.", "preview": "PERSONA: Médico(a) especialista em perícias previdenciárias.\nTAREFA: Laudo de incapacidade para INSS.\nBASE: Lei 8.213/91", "prompt": "PERSONA: Você é médico(a) especialista em perícias previdenciárias.\nTAREFA: Laudo de incapacidade laboral para INSS.\nBASE: Lei 8.213/91 arts. 59-63.\nESTRUTURA:\n1. IDENTIFICAÇÃO E FUNÇÃO\n2. ANAMNESE\n3. HISTÓRICO DE TRATAMENTOS\n4. EXAME FÍSICO\n5. DIAGNÓSTICO E CID-10\n6. CAPACIDADE LABORATIVA\n7. CONCLUSÃO E PRAZO\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Atestado Médico com Validade Legal", "area": "medico", "nivel": "basico", "tag": "Atestado", "desc": "Atestado conforme Resolução CFM. Para médicos que precisam de documentação rápida e correta.", "preview": "PERSONA: Médico(a) com CRM ativo.\nTAREFA: Atestado médico com plena validade.\nBASE: Resolução CFM 1.658/2002", "prompt": "PERSONA: Você é médico(a) com CRM ativo.\nTAREFA: Atestado médico com plena validade legal.\nBASE: Resolução CFM 1.658/2002.\nESTRUTURA:\n1. IDENTIFICAÇÃO DO PACIENTE\n2. CID-10 (se autorizado)\n3. PERÍODO DE AFASTAMENTO\n4. RECOMENDAÇÕES\n5. IDENTIFICAÇÃO DO MÉDICO E CRM\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Evolução de Prontuário SOAP", "area": "medico", "nivel": "basico", "tag": "Prontuário", "desc": "Registro SOAP completo e seguro juridicamente. Para médicos que precisam de prontuário rápido.", "preview": "PERSONA: Médico(a) com CRM ativo.\nTAREFA: Evolução de prontuário SOAP.\nS-Subjetivo O-Objetivo A-Avaliação P-Plano", "prompt": "PERSONA: Você é médico(a) com CRM ativo.\nTAREFA: Evolução de prontuário método SOAP.\nS - SUBJETIVO: queixas e relato\nO - OBJETIVO: exame e resultados\nA - AVALIAÇÃO: diagnóstico e raciocínio\nP - PLANO: conduta e medicações\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Laudo Psiquiátrico Forense", "area": "medico", "nivel": "premium", "tag": "Laudo Pericial", "desc": "Laudo para processos criminais e interdição. Para psiquiatras que atuam no campo jurídico.", "preview": "PERSONA: Psiquiatra forense com CRM ativo.\nTAREFA: Laudo psiquiátrico forense.\nESTRUTURA: 1. Identificação 2. Quesitos 3. Anamnese", "prompt": "PERSONA: Você é psiquiatra forense com CRM ativo.\nTAREFA: Laudo psiquiátrico forense completo.\nESTRUTURA:\n1. IDENTIFICAÇÃO E PROCESSO\n2. QUESITOS FORMULADOS\n3. ANAMNESE PSIQUIÁTRICA\n4. EXAME DO ESTADO MENTAL\n5. DIAGNÓSTICO (CID-10 e DSM-5)\n6. RESPOSTAS AOS QUESITOS\n7. CONCLUSÃO\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Laudo para Cirurgia Bariátrica", "area": "medico", "nivel": "premium", "tag": "Laudo", "desc": "Laudo de indicação conforme CFM 2.131/2015. Para médicos que precisam documentar a indicação.", "preview": "PERSONA: Médico(a) especialista em bariátrica.\nTAREFA: Laudo de indicação cirúrgica.\nBASE: Resolução CFM 2.131/2015", "prompt": "PERSONA: Você é médico(a) especialista em cirurgia bariátrica.\nTAREFA: Laudo de indicação para cirurgia bariátrica.\nBASE: Resolução CFM 2.131/2015.\nESTRUTURA:\n1. IDENTIFICAÇÃO (nome, idade, peso, IMC)\n2. HISTÓRICO DE PESO\n3. COMORBIDADES\n4. TRATAMENTOS ANTERIORES\n5. ELEGIBILIDADE CONFORME CFM\n6. CONCLUSÃO E INDICAÇÃO\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Proposta Comercial de Alto Impacto", "area": "negocios", "nivel": "intermediario", "tag": "Vendas", "desc": "Proposta focada em valor e ROI. Para empresários que perdem contratos por propostas fracas.", "preview": "PERSONA: Consultor(a) comercial sênior B2B.\nTAREFA: Proposta comercial persuasiva.\nESTRUTURA: 1. Diagnóstico 2. Solução 3. ROI", "prompt": "PERSONA: Você é consultor(a) comercial sênior com 20 anos em B2B.\nTAREFA: Proposta comercial profissional e persuasiva.\nESTRUTURA:\n1. DIAGNÓSTICO DO PROBLEMA\n2. SOLUÇÃO PROPOSTA\n3. METODOLOGIA\n4. BENEFÍCIOS E ROI\n5. DIFERENCIAIS\n6. INVESTIMENTO E CONDIÇÕES\n7. PRÓXIMOS PASSOS\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Plano de Demissão Humanizada", "area": "negocios", "nivel": "avancado", "tag": "RH", "desc": "Roteiro completo com script e checklist. Para gestores que precisam demitir sem trauma.", "preview": "PERSONA: Consultor(a) sênior de RH especialista em desligamentos.\nTAREFA: Plano de demissão humanizada.\nESTRUTURA: 1. Script 2. Comunicado 3. Checklist", "prompt": "PERSONA: Você é consultor(a) sênior de RH especialista em desligamentos humanizados.\nTAREFA: Plano completo de demissão humanizada.\nESTRUTURA:\n1. ROTEIRO DA CONVERSA (script completo)\n2. COMUNICADO AO COLABORADOR\n3. CHECKLIST DE RH\n4. COMUNICAÇÃO À EQUIPE\n5. OFFBOARDING\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Análise SWOT com Plano de Ação", "area": "negocios", "nivel": "intermediario", "tag": "Estratégia", "desc": "SWOT com cruzamento estratégico e prioridades. Para gestores que precisam de visão clara.", "preview": "PERSONA: Consultor(a) estratégico sênior com MBA.\nTAREFA: SWOT completa com plano de ação.\nESTRUTURA: 1. Forças 2. Fraquezas 3. Oportunidades 4. Ameaças", "prompt": "PERSONA: Você é consultor(a) estratégico(a) sênior com MBA.\nTAREFA: SWOT completa com cruzamento e plano de ação.\nESTRUTURA:\n1. FORÇAS internas\n2. FRAQUEZAS internas\n3. OPORTUNIDADES externas\n4. AMEAÇAS externas\n5. CRUZAMENTO (SO, WO, ST, WT)\n6. TOP 5 AÇÕES com prazo\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Plano de Negócios para MEI", "area": "negocios", "nivel": "intermediario", "tag": "Plano", "desc": "Plano prático para quem está começando. Para empreendedores que precisam de direção.", "preview": "PERSONA: Consultor(a) especialista em pequenos negócios.\nTAREFA: Plano de negócios para MEI.\nESTRUTURA: 1. Negócio 2. Público 3. Concorrência", "prompt": "PERSONA: Você é consultor(a) especialista em pequenos negócios e MEI.\nTAREFA: Plano de negócios prático e aplicável.\nESTRUTURA:\n1. DESCRIÇÃO DO NEGÓCIO\n2. PÚBLICO E DIFERENCIAL\n3. CONCORRÊNCIA LOCAL\n4. PRECIFICAÇÃO\n5. CANAIS DE VENDA\n6. PROJEÇÃO 6 MESES\n7. PRIMEIROS 30 DIAS\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Script de Vendas por WhatsApp", "area": "negocios", "nivel": "intermediario", "tag": "Vendas", "desc": "Script completo para converter leads. Para vendedores que travam na hora de responder.", "preview": "PERSONA: Especialista em vendas digitais e WhatsApp Business.\nTAREFA: Script completo de vendas.\nESTRUTURA: 1. Contato 2. Diagnóstico 3. Apresentação", "prompt": "PERSONA: Você é especialista em vendas digitais e WhatsApp Business.\nTAREFA: Script completo de vendas para WhatsApp.\nESTRUTURA:\n1. PRIMEIRO CONTATO\n2. DIAGNÓSTICO (3 perguntas)\n3. APRESENTAÇÃO DA SOLUÇÃO\n4. PROVA SOCIAL\n5. OBJEÇÕES (5 principais com resposta)\n6. FECHAMENTO\n7. PÓS-VENDA\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Avaliação de Desempenho 360 Graus", "area": "negocios", "nivel": "avancado", "tag": "RH", "desc": "Avaliação completa com PDI e plano de feedback. Para gestores que querem desenvolvimento real.", "preview": "PERSONA: Especialista em gestão de desempenho com 20 anos em RH.\nTAREFA: Avaliação 360 completa com PDI.\nESTRUTURA: 1. Autoavaliação 2. Gestor 3. Pares", "prompt": "PERSONA: Você é especialista em gestão de desempenho com 20 anos em RH estratégico.\nTAREFA: Avaliação 360 completa com PDI.\nESTRUTURA:\n1. AUTOAVALIAÇÃO\n2. AVALIAÇÃO DO GESTOR (escala 1-5)\n3. AVALIAÇÃO DOS PARES\n4. RESULTADOS VS METAS\n5. PDI (3 ações com prazo)\n6. ROTEIRO DO FEEDBACK\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Carta de Advertência Trabalhista", "area": "negocios", "nivel": "basico", "tag": "RH", "desc": "Advertência formal com base na CLT. Para empresários que precisam documentar sem risco jurídico.", "preview": "PERSONA: Especialista em RH e direito do trabalho.\nTAREFA: Carta de advertência formal.\nBASE: CLT art 482", "prompt": "PERSONA: Você é especialista em RH e direito do trabalho.\nTAREFA: Carta de advertência formal.\nBASE: CLT art. 482.\nESTRUTURA:\n1. IDENTIFICAÇÃO DO COLABORADOR\n2. CONDUTA INADEQUADA\n3. NORMA VIOLADA\n4. ADVERTÊNCIA FORMAL\n5. CONSEQUÊNCIAS POR REINCIDÊNCIA\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Copy para Página de Vendas", "area": "marketing", "nivel": "avancado", "tag": "Copywriting", "desc": "Copy de alta conversão com gatilhos e CTA irresistível. Para vender mais sem pagar agência.", "preview": "PERSONA: Copywriter sênior especialista em alta conversão.\nTAREFA: Copy completa para página de vendas.\nESTRUTURA: 1. Headline 2. Dor 3. Solução", "prompt": "PERSONA: Você é copywriter sênior especialista em alta conversão.\nTAREFA: Copy completa para página de vendas.\nESTRUTURA:\n1. HEADLINE (3 opções)\n2. SUBHEADLINE\n3. IDENTIFICAÇÃO DA DOR\n4. AGITAÇÃO\n5. SOLUÇÃO\n6. BENEFÍCIOS\n7. PROVA SOCIAL\n8. OFERTA E BÔNUS\n9. GARANTIA\n10. CTA COM URGÊNCIA\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Sequência de 7 E-mails de Vendas", "area": "marketing", "nivel": "avancado", "tag": "E-mail Marketing", "desc": "Sequência que nutre e converte automaticamente. Para vender dormindo sem saber de copywriting.", "preview": "PERSONA: Especialista em e-mail marketing com conversões acima de 5%.\nTAREFA: Sequência de 7 e-mails.\nE1 boas-vindas ... E7 último aviso", "prompt": "PERSONA: Você é especialista em e-mail marketing com conversões acima de 5%.\nTAREFA: Sequência de 7 e-mails de nutrição e conversão.\nCada e-mail: ASSUNTO + ABERTURA + CORPO + CTA\nE1 - Boas-vindas\nE2 - A dor\nE3 - Sua história\nE4 - Prova social\nE5 - Conteúdo de valor\nE6 - Abertura da oferta\nE7 - Último aviso\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Roteiro de VSL", "area": "marketing", "nivel": "avancado", "tag": "Vídeo", "desc": "Script de vídeo de vendas que prende e converte. Para vender com vídeo sem saber roteirizar.", "preview": "PERSONA: Roteirista especialista em VSL de alta conversão.\nTAREFA: Roteiro completo de VSL.\nESTRUTURA: 1. Gancho 2. Promessa 3. Dor", "prompt": "PERSONA: Você é roteirista especialista em VSL de alta conversão.\nTAREFA: Roteiro completo de VSL.\nESTRUTURA:\n1. GANCHO (10 segundos)\n2. PROMESSA\n3. IDENTIFICAÇÃO COM O PROBLEMA\n4. AGITAÇÃO\n5. SOLUÇÃO\n6. MECANISMO ÚNICO\n7. PROVA\n8. OFERTA E BÔNUS\n9. GARANTIA\n10. CTA FINAL\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Post Viral para Instagram", "area": "marketing", "nivel": "basico", "tag": "Conteúdo", "desc": "Post com gancho e CTA de alto engajamento. Para crescer no Instagram sem contratar ninguém.", "preview": "PERSONA: Especialista em conteúdo viral para redes sociais.\nTAREFA: Post de alto engajamento para Instagram.\nESTRUTURA: 1. Gancho 2. Desenvolvimento 3. CTA", "prompt": "PERSONA: Você é especialista em conteúdo viral para redes sociais.\nTAREFA: Post de alto engajamento para Instagram.\nESTRUTURA:\n1. GANCHO (primeira linha que para o scroll)\n2. DESENVOLVIMENTO\n3. VIRADA OU INSIGHT\n4. CTA\n5. 10 HASHTAGS\nCRIE 2 VERSÕES: conservadora e ousada.\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Anúncio para Meta Ads", "area": "marketing", "nivel": "intermediario", "tag": "Tráfego Pago", "desc": "Copy para Facebook e Instagram com variações A/B. Para vender com tráfego sem desperdiçar.", "preview": "PERSONA: Especialista em Meta Ads e copy.\nTAREFA: Anúncio com 2 variações A/B.\nESTRUTURA: Texto principal, Headline, Descrição, CTA", "prompt": "PERSONA: Você é especialista em Meta Ads e copy.\nTAREFA: Anúncio com 2 variações A/B.\nVARIAÇÃO A e VARIAÇÃO B, cada uma com:\n- TEXTO PRINCIPAL (até 125 caracteres)\n- HEADLINE (até 40)\n- DESCRIÇÃO (até 30)\n- CTA sugerido\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Estratégia de Lançamento", "area": "marketing", "nivel": "premium", "tag": "Lançamento", "desc": "Plano completo de lançamento de produto. Para quem quer resultado real sem improvisar.", "preview": "PERSONA: Especialista em lançamentos digitais.\nTAREFA: Estratégia completa de lançamento.\nFase 1 Pré-lançamento, Fase 2 Lançamento...", "prompt": "PERSONA: Você é especialista em lançamentos digitais.\nTAREFA: Estratégia completa de lançamento.\nFASE 1 - PRÉ-LANÇAMENTO: aquecimento, lista de espera\nFASE 2 - LANÇAMENTO: abertura, conteúdos diários, e-mails\nFASE 3 - ÚLTIMAS HORAS: urgência, recuperação\nFASE 4 - PÓS: reativação, upsell\nPara cada fase: ações, conteúdos e métricas.\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Persona de Comprador Detalhada", "area": "marketing", "nivel": "intermediario", "tag": "Estratégia", "desc": "Persona completa com dores e objeções. Para parar de atirar para todo lado.", "preview": "PERSONA: Especialista em pesquisa de mercado.\nTAREFA: Persona de comprador detalhada.\nESTRUTURA: 1. Dados 2. Dia a dia 3. Dores 4. Objeções", "prompt": "PERSONA: Você é especialista em pesquisa de mercado e comportamento do consumidor.\nTAREFA: Persona de comprador completa e acionável.\nESTRUTURA:\n1. DADOS DEMOGRÁFICOS\n2. DIA A DIA\n3. OBJETIVOS E SONHOS\n4. DORES E FRUSTRAÇÕES\n5. COMPORTAMENTO DIGITAL\n6. OBJEÇÕES DE COMPRA\n7. GATILHOS DECISORES\n8. COMO SE COMUNICAR\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Parecer Contábil Técnico", "area": "contabil", "nivel": "avancado", "tag": "Parecer", "desc": "Parecer com NBC e legislação tributária. Para contadores que precisam de documentos sólidos.", "preview": "PERSONA: Contador(a) sênior com CRC ativo e 20 anos de experiência.\nTAREFA: Parecer contábil técnico.\nESTRUTURA: 1. Objeto 2. Documentação 3. Fundamentação", "prompt": "PERSONA: Você é contador(a) sênior com CRC ativo e 20 anos de experiência.\nTAREFA: Parecer contábil técnico completo.\nESTRUTURA:\n1. DO OBJETO\n2. DA DOCUMENTAÇÃO ANALISADA\n3. DA FUNDAMENTAÇÃO (NBC, IFRS, legislação)\n4. DAS CONSTATAÇÕES\n5. DA CONCLUSÃO\n6. DAS RESSALVAS\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Planejamento Tributário Legal", "area": "contabil", "nivel": "premium", "tag": "Tributário", "desc": "Redução legal da carga fiscal. Para empresas que pagam imposto a mais sem saber.", "preview": "PERSONA: Contador(a) tributarista sênior com CRC ativo.\nTAREFA: Planejamento tributário legal.\nBASE: IRPJ, CSLL, PIS, COFINS", "prompt": "PERSONA: Você é contador(a) tributarista sênior com CRC ativo.\nTAREFA: Planejamento tributário legal e eficiente.\nBASE: IRPJ, CSLL, PIS, COFINS e legislação vigente.\nESTRUTURA:\n1. DIAGNÓSTICO FISCAL ATUAL\n2. COMPARATIVO DE REGIMES\n3. OPORTUNIDADES DE ECONOMIA\n4. RECOMENDAÇÕES LEGAIS\n5. PROJEÇÃO DE ECONOMIA\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Laudo Pericial Contábil Judicial", "area": "contabil", "nivel": "premium", "tag": "Perícia", "desc": "Laudo com quesitos para processos judiciais. Para peritos que precisam de documentação incontestável.", "preview": "PERSONA: Contador(a) perito(a) judicial com CRC ativo.\nTAREFA: Laudo pericial contábil.\nBASE: CPC art 473", "prompt": "PERSONA: Você é contador(a) perito(a) judicial com CRC ativo.\nTAREFA: Laudo pericial contábil completo.\nBASE: CPC art. 473.\nESTRUTURA:\n1. IDENTIFICAÇÃO E PROCESSO\n2. DO OBJETO\n3. DAS DILIGÊNCIAS\n4. QUESITOS E RESPOSTAS\n5. CONCLUSÃO\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Relatório Gerencial Mensal", "area": "contabil", "nivel": "intermediario", "tag": "Relatório", "desc": "Indicadores e alertas mensais. Para empresários que querem entender a saúde financeira.", "preview": "PERSONA: Controller(a) sênior.\nTAREFA: Relatório gerencial mensal.\nESTRUTURA: 1. Resumo executivo 2. Resultado 3. Faturamento", "prompt": "PERSONA: Você é controller(a) sênior. Transforma números em linguagem de gestão.\nTAREFA: Relatório gerencial mensal completo.\nESTRUTURA:\n1. RESUMO EXECUTIVO (3 linhas)\n2. RESULTADO VS ORÇAMENTO\n3. FATURAMENTO\n4. CUSTOS E DESPESAS\n5. FLUXO DE CAIXA\n6. KPIs\n7. ALERTAS E RECOMENDAÇÕES\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Projeção de Fluxo de Caixa 12 Meses", "area": "contabil", "nivel": "avancado", "tag": "Financeiro", "desc": "Projeção com cenários otimista e pessimista. Para antecipar problemas de caixa.", "preview": "PERSONA: Analista financeiro(a) sênior especialista em modelagem.\nTAREFA: Projeção 12 meses com cenários.\nESTRUTURA: 1. Premissas 2. Entradas 3. Saídas", "prompt": "PERSONA: Você é analista financeiro(a) sênior especialista em modelagem.\nTAREFA: Projeção de fluxo de caixa 12 meses com cenários.\nESTRUTURA:\n1. PREMISSAS\n2. ENTRADAS MÊS A MÊS\n3. SAÍDAS MÊS A MÊS\n4. FLUXO LÍQUIDO\n5. SALDO ACUMULADO\n6. CENÁRIO PESSIMISTA (-20%)\n7. CENÁRIO OTIMISTA (+20%)\n8. ALERTAS\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Relatório Psicológico Completo", "area": "psicologia", "nivel": "avancado", "tag": "Relatório", "desc": "Relatório conforme CFP 06/2019. Para psicólogos que precisam de documentação clínica defensável.", "preview": "PERSONA: Psicólogo(a) com CRP ativo e 20 anos de experiência.\nTAREFA: Relatório psicológico completo.\nBASE: Resolução CFP 06/2019", "prompt": "PERSONA: Você é psicólogo(a) com CRP ativo e 20 anos de experiência.\nTAREFA: Relatório psicológico completo.\nBASE: Resolução CFP 06/2019.\nESTRUTURA:\n1. IDENTIFICAÇÃO E FINALIDADE\n2. PROCEDIMENTOS\n3. DADOS RELEVANTES\n4. ANÁLISE\n5. CONCLUSÃO\n6. RECOMENDAÇÕES\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Laudo de Avaliação Neuropsicológica", "area": "psicologia", "nivel": "premium", "tag": "Laudo", "desc": "Avaliação cognitiva com diagnóstico. Para neuropsicólogos que precisam de documentação rigorosa.", "preview": "PERSONA: Neuropsicólogo(a) com CRP ativo.\nTAREFA: Laudo neuropsicológico completo.\nESTRUTURA: 1. Identificação 2. Instrumentos 3. Funções cognitivas", "prompt": "PERSONA: Você é neuropsicólogo(a) com CRP ativo.\nTAREFA: Laudo de avaliação neuropsicológica completo.\nESTRUTURA:\n1. IDENTIFICAÇÃO E MOTIVO\n2. INSTRUMENTOS UTILIZADOS\n3. FUNÇÕES COGNITIVAS (atenção, memória, linguagem, funções executivas)\n4. ANÁLISE INTEGRADA\n5. DIAGNÓSTICO (CID-10 e DSM-5)\n6. RECOMENDAÇÕES\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Plano Terapêutico Individualizado", "area": "psicologia", "nivel": "avancado", "tag": "Plano", "desc": "Intervenção com objetivos mensuráveis e critérios de alta. Para psicólogos que organizam o tratamento.", "preview": "PERSONA: Psicólogo(a) clínico(a) experiente.\nTAREFA: Plano terapêutico individualizado.\nESTRUTURA: 1. Demanda 2. Hipótese 3. Objetivos", "prompt": "PERSONA: Você é psicólogo(a) clínico(a) experiente.\nTAREFA: Plano terapêutico individualizado completo.\nESTRUTURA:\n1. DEMANDA E QUEIXA\n2. HIPÓTESE DIAGNÓSTICA\n3. OBJETIVOS (curto, médio e longo prazo)\n4. ABORDAGEM E TÉCNICAS\n5. FREQUÊNCIA E DURAÇÃO\n6. CRITÉRIOS DE ALTA\n7. INDICADORES DE PROGRESSO\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Laudo Psicológico para Adoção", "area": "psicologia", "nivel": "premium", "tag": "Laudo Judicial", "desc": "Avaliação para habilitação à adoção. Para psicólogos que atuam no sistema judiciário.", "preview": "PERSONA: Psicólogo(a) com experiência em varas da infância.\nTAREFA: Laudo para habilitação à adoção.\nBASE: ECA e CFP 06/2019", "prompt": "PERSONA: Você é psicólogo(a) com CRP ativo e experiência em varas da infância.\nTAREFA: Laudo psicológico para habilitação à adoção.\nBASE: ECA e Resolução CFP 06/2019.\nESTRUTURA:\n1. IDENTIFICAÇÃO\n2. METODOLOGIA\n3. DINÂMICA FAMILIAR\n4. MOTIVAÇÃO\n5. CAPACIDADE DE ACOLHIMENTO\n6. REDE DE APOIO\n7. CONCLUSÃO\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Evolução de Sessão Psicológica", "area": "psicologia", "nivel": "basico", "tag": "Prontuário", "desc": "Registro de sessão estruturado e seguro. Para psicólogos que precisam de prontuário rápido.", "preview": "PERSONA: Psicólogo(a) clínico(a) com CRP ativo.\nTAREFA: Registro de evolução de sessão.\nESTRUTURA: 1. Data 2. Conteúdo 3. Intervenções", "prompt": "PERSONA: Você é psicólogo(a) clínico(a) com CRP ativo.\nTAREFA: Registro de evolução de sessão.\nESTRUTURA:\n1. DATA E NÚMERO DA SESSÃO\n2. CONTEÚDO TRAZIDO\n3. ESTADO EMOCIONAL\n4. INTERVENÇÕES\n5. RESPOSTA DO PACIENTE\n6. HIPÓTESES CLÍNICAS\n7. PLANO PRÓXIMA SESSÃO\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Plano de Aula Completo BNCC", "area": "educacao", "nivel": "intermediario", "tag": "Plano de Aula", "desc": "Plano com BNCC, metodologia ativa e avaliação. Para professores que economizam horas de planejamento.", "preview": "PERSONA: Pedagogo(a) especialista em currículo com 20 anos de experiência.\nTAREFA: Plano de aula completo BNCC.\nESTRUTURA: 1. Identificação 2. Objetivos 3. Habilidades", "prompt": "PERSONA: Você é pedagogo(a) especialista em currículo com 20 anos de experiência.\nTAREFA: Plano de aula completo alinhado à BNCC.\nESTRUTURA:\n1. IDENTIFICAÇÃO (disciplina, ano, tema, duração)\n2. OBJETIVOS DE APRENDIZAGEM\n3. HABILIDADES BNCC (com código)\n4. SEQUÊNCIA DIDÁTICA (início, desenvolvimento, fechamento)\n5. RECURSOS\n6. AVALIAÇÃO\n7. ADAPTAÇÕES PARA INCLUSÃO\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Projeto Interdisciplinar BNCC", "area": "educacao", "nivel": "avancado", "tag": "Projeto", "desc": "Projeto com BNCC, cronograma e avaliação. Para coordenadores que criam projetos de impacto real.", "preview": "PERSONA: Pedagogo(a) especialista em projetos interdisciplinares.\nTAREFA: Projeto didático BNCC.\nESTRUTURA: 1. Título 2. Objetivos 3. Competências", "prompt": "PERSONA: Você é pedagogo(a) especialista em projetos interdisciplinares.\nTAREFA: Projeto didático completo alinhado à BNCC.\nESTRUTURA:\n1. TÍTULO E JUSTIFICATIVA\n2. OBJETIVOS\n3. COMPETÊNCIAS E HABILIDADES BNCC\n4. DISCIPLINAS ENVOLVIDAS\n5. CRONOGRAMA\n6. METODOLOGIA\n7. PRODUTO FINAL\n8. AVALIAÇÃO\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Laudo Técnico de Vistoria", "area": "engenharia", "nivel": "avancado", "tag": "Laudo", "desc": "Laudo com ABNT para patologias e irregularidades. Para engenheiros que precisam de documentação incontestável.", "preview": "PERSONA: Engenheiro(a) civil sênior com CREA ativo.\nTAREFA: Laudo técnico de vistoria.\nREFERÊNCIAS: NBR aplicável", "prompt": "PERSONA: Você é engenheiro(a) civil sênior com CREA ativo.\nTAREFA: Laudo técnico de vistoria completo.\nREFERÊNCIAS: NBR aplicáveis.\nESTRUTURA:\n1. IDENTIFICAÇÃO E FINALIDADE\n2. METODOLOGIA\n3. DESCRIÇÃO DO IMÓVEL\n4. OCORRÊNCIAS (descrição, localização, gravidade)\n5. ANÁLISE E CAUSAS\n6. RISCO (alto, médio, baixo)\n7. RECOMENDAÇÕES\n8. CONCLUSÃO E ART\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Memorial Descritivo de Obra", "area": "engenharia", "nivel": "intermediario", "tag": "Memorial", "desc": "Memorial para aprovação em prefeitura. Para engenheiros que precisam de documentação rápida.", "preview": "PERSONA: Engenheiro(a) civil com CREA ativo.\nTAREFA: Memorial descritivo de obra.\nESTRUTURA: 1. Identificação 2. Localização 3. Descrição", "prompt": "PERSONA: Você é engenheiro(a) civil com CREA ativo.\nTAREFA: Memorial descritivo de obra completo.\nESTRUTURA:\n1. IDENTIFICAÇÃO\n2. LOCALIZAÇÃO E TERRENO\n3. DESCRIÇÃO DA OBRA\n4. FUNDAÇÕES E ESTRUTURA\n5. INSTALAÇÕES\n6. REVESTIMENTOS\n7. NORMAS (NBRs)\n8. ART\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Laudo Pericial de Engenharia", "area": "engenharia", "nivel": "premium", "tag": "Laudo Pericial", "desc": "Laudo para processos judiciais e arbitragem. Para peritos que precisam de documentação defensável.", "preview": "PERSONA: Engenheiro(a) perito(a) judicial com CREA ativo.\nTAREFA: Laudo técnico pericial.\nBASE: CPC arts 473 e 478", "prompt": "PERSONA: Você é engenheiro(a) perito(a) judicial com CREA ativo.\nTAREFA: Laudo técnico pericial de engenharia.\nBASE: CPC arts. 473 e 478.\nESTRUTURA:\n1. IDENTIFICAÇÃO E PROCESSO\n2. DO OBJETO\n3. DAS DILIGÊNCIAS\n4. ANÁLISE TÉCNICA (normas ABNT)\n5. QUESITOS E RESPOSTAS\n6. CONCLUSÃO\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Documento de Requisitos de Software", "area": "ti", "nivel": "premium", "tag": "Documentação", "desc": "SRS padrão IEEE 830. Para times que precisam de especificação técnica séria e defensável.", "preview": "PERSONA: Arquiteto(a) de software sênior.\nTAREFA: SRS completo padrão IEEE 830.\nESTRUTURA: 1. Visão geral 2. Requisitos funcionais 3. Requisitos não funcionais", "prompt": "PERSONA: Você é arquiteto(a) de software sênior.\nTAREFA: SRS completo padrão IEEE 830.\nESTRUTURA:\n1. VISÃO GERAL\n2. REQUISITOS FUNCIONAIS (RF001...)\n3. REQUISITOS NÃO FUNCIONAIS\n4. RESTRIÇÕES\n5. CASOS DE USO\n6. MATRIZ DE RASTREABILIDADE\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Plano de Resposta a Incidentes", "area": "ti", "nivel": "premium", "tag": "Segurança", "desc": "Plano completo de IR com playbooks. Para times que precisam de protocolo antes do incidente.", "preview": "PERSONA: Especialista sênior em segurança da informação com CISSP.\nTAREFA: Plano de resposta a incidentes.\nESTRUTURA: 1. Classificação 2. Papéis 3. Playbooks", "prompt": "PERSONA: Você é especialista sênior em segurança da informação com CISSP.\nTAREFA: Plano de resposta a incidentes completo.\nESTRUTURA:\n1. CLASSIFICAÇÃO (crítico, alto, médio, baixo)\n2. PAPÉIS E RESPONSABILIDADES\n3. DETECÇÃO E TRIAGEM\n4. ESCALONAMENTO\n5. PLAYBOOKS (ransomware, vazamento, DDoS)\n6. COMUNICAÇÃO (LGPD)\n7. PÓS-INCIDENTE\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}, {"titulo": "Arquitetura de Microsserviços", "area": "ti", "nivel": "premium", "tag": "Arquitetura", "desc": "ADR com padrões e trade-offs. Para arquitetos que precisam justificar decisões técnicas.", "preview": "PERSONA: Arquiteto(a) de soluções sênior especialista em microsserviços.\nTAREFA: ADR de microsserviços.\nESTRUTURA: 1. Visão 2. Decomposição 3. Comunicação", "prompt": "PERSONA: Você é arquiteto(a) de soluções sênior especialista em microsserviços.\nTAREFA: ADR - Architecture Decision Record para microsserviços.\nESTRUTURA:\n1. VISÃO E CONTEXTO\n2. DECOMPOSIÇÃO EM SERVIÇOS\n3. COMUNICAÇÃO (síncrona vs assíncrona)\n4. DADOS (um banco por serviço)\n5. PADRÕES (API Gateway, Circuit Breaker)\n6. OBSERVABILIDADE\n7. DECISÕES E TRADE-OFFS\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados não fornecidos.\n⛔ NUNCA cite leis ou CIDs inexistentes.\n✅ Use EXCLUSIVAMENTE os dados abaixo.\n✅ Se faltar info: DADO AUSENTE: [descreva]\n\nDADOS DO CASO:\n[INSIRA AQUI]"}];
-
-const PL={basico:"R$9,90",intermediario:"R$19,90",avancado:"R$29,90",premium:"R$49,90"};
-const NT={basico:"nb",intermediario:"ni",avancado:"na",premium:"np"};
-const NL={basico:"Básico",intermediario:"Intermediário",avancado:"Avançado",premium:"Premium"};
-const AREAS=[
-  {k:"all",l:"Todos",e:"✨"},{k:"juridico",l:"Jurídico",e:"⚖️"},{k:"medico",l:"Médico",e:"🏥"},
-  {k:"negocios",l:"Negócios",e:"💼"},{k:"marketing",l:"Marketing",e:"📣"},{k:"contabil",l:"Contábil",e:"📊"},
-  {k:"psicologia",l:"Psicologia",e:"🧠"},{k:"educacao",l:"Educação",e:"📚"},
-  {k:"engenharia",l:"Engenharia",e:"🔧"},{k:"ti",l:"TI",e:"💻"},{k:"outro",l:"Outro",e:"✳️"}
+var BASE=[{"titulo":"Peticao Inicial Trabalhista","area":"juridico","nivel":"avancado","tag":"Peticao","desc":"Peticao completa com CLT e Sumulas TST. Para advogados que perdem horas formatando pecas.","preview":"PERSONA: Advogado trabalhista senior 20 anos TRT\nTAREFA: Peticao inicial completa\nESTRUTURA: 1. Qualificacao 2. Fatos 3. Direito 4. Pedidos","prompt":"PERSONA: Voce e advogado trabalhista senior com 20 anos de TRT.\nTAREFA: Peticao inicial trabalhista completa.\nESTRUTURA:\n1. QUALIFICACAO DAS PARTES\n2. DOS FATOS (cronologico)\n3. DO DIREITO (CLT e Sumulas TST)\n4. DOS PEDIDOS (com valores)\n5. DO VALOR DA CAUSA\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Contrato de Prestacao de Servicos","area":"juridico","nivel":"intermediario","tag":"Contrato","desc":"Contrato com clausulas protetivas. Para se proteger juridicamente sem pagar caro.","preview":"PERSONA: Advogado civilista especialista em contratos\nTAREFA: Contrato de prestacao de servicos\nBASE: CC arts 593-609","prompt":"PERSONA: Voce e advogado civilista especialista em contratos.\nTAREFA: Contrato de prestacao de servicos completo.\nBASE: CC arts. 593 a 609.\nESTRUTURA:\n1. QUALIFICACAO DAS PARTES\n2. DO OBJETO\n3. DO PRAZO\n4. DO VALOR E PAGAMENTO\n5. DAS OBRIGACOES\n6. DA RESCISAO E MULTA\n7. DO FORO\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Notificacao Extrajudicial","area":"juridico","nivel":"intermediario","tag":"Notificacao","desc":"Notificacao com validade juridica. Para se proteger sem ir ao judiciario.","preview":"PERSONA: Advogado especialista em notificacoes\nTAREFA: Notificacao extrajudicial\nESTRUTURA: 1. Identificacao 2. Fatos 3. Base legal","prompt":"PERSONA: Voce e advogado especialista em notificacoes.\nTAREFA: Notificacao extrajudicial com plena validade.\nESTRUTURA:\n1. IDENTIFICACAO DAS PARTES\n2. DOS FATOS E OBRIGACAO\n3. DA BASE LEGAL\n4. DO PRAZO\n5. DAS CONSEQUENCIAS\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"NDA - Acordo de Confidencialidade","area":"juridico","nivel":"intermediario","tag":"Contrato","desc":"NDA completo para proteger informacoes sigilosas. Indispensavel antes de qualquer parceria.","preview":"PERSONA: Advogado especialista em contratos empresariais\nTAREFA: NDA completo\nESTRUTURA: 1. Partes 2. Informacoes 3. Obrigacoes","prompt":"PERSONA: Voce e advogado especialista em contratos empresariais.\nTAREFA: NDA completo e robusto.\nESTRUTURA:\n1. QUALIFICACAO DAS PARTES\n2. INFORMACOES CONFIDENCIAIS\n3. OBRIGACOES DE SIGILO\n4. EXCECOES\n5. PRAZO E PENALIDADES\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Acao de Dano Moral","area":"juridico","nivel":"avancado","tag":"Peticao","desc":"Peticao de dano moral com fundamentos solidos. Para quem foi prejudicado e nao sabe agir.","preview":"PERSONA: Advogado civel especialista em responsabilidade civil\nTAREFA: Peticao de dano moral\nBASE: CC arts 186 927","prompt":"PERSONA: Voce e advogado civel especialista em responsabilidade civil.\nTAREFA: Peticao de dano moral completa.\nBASE: CC arts. 186, 187, 927.\nESTRUTURA:\n1. QUALIFICACAO DAS PARTES\n2. DOS FATOS E DO DANO\n3. DO NEXO CAUSAL\n4. DA QUANTIFICACAO\n5. DOS PEDIDOS\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Habeas Corpus","area":"juridico","nivel":"premium","tag":"Peticao","desc":"HC com fundamentos constitucionais. Para advogados criminalistas que precisam agir rapido.","preview":"PERSONA: Advogado criminalista especialista em HC\nTAREFA: Habeas corpus fundamentado\nBASE: CF art 5 LXVIII","prompt":"PERSONA: Voce e advogado criminalista com 20 anos em HC.\nTAREFA: Peticao de HC completa e urgente.\nBASE: CF art. 5 LXVIII; CPP arts. 647-667.\nESTRUTURA:\n1. PACIENTE E AUTORIDADE COATORA\n2. DA ILEGALIDADE\n3. DOS FUNDAMENTOS\n4. DO PEDIDO LIMINAR\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Divorcio Consensual Completo","area":"juridico","nivel":"avancado","tag":"Peticao","desc":"Peticao com partilha, guarda e alimentos. Para casais que querem encerrar com dignidade.","preview":"PERSONA: Advogado de familia experiente\nTAREFA: Peticao de divorcio consensual\nBASE: CC arts 1571-1582","prompt":"PERSONA: Voce e advogado de familia com 20 anos de experiencia.\nTAREFA: Peticao de divorcio consensual completa.\nBASE: CC arts. 1.571 a 1.582.\nESTRUTURA:\n1. QUALIFICACAO DAS PARTES\n2. DO CASAMENTO\n3. DA PARTILHA DE BENS\n4. DA GUARDA E ALIMENTOS\n5. DO PEDIDO\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Recurso Administrativo de Multa","area":"juridico","nivel":"intermediario","tag":"Recurso","desc":"Recurso para contestar multas de transito, fiscais e sanitarias. Para quem recebe auto injusto.","preview":"PERSONA: Advogado especialista em direito administrativo\nTAREFA: Recurso administrativo completo","prompt":"PERSONA: Voce e advogado especialista em recursos administrativos.\nTAREFA: Recurso administrativo completo.\nESTRUTURA:\n1. IDENTIFICACAO E AUTUACAO\n2. DOS FATOS\n3. DOS ARGUMENTOS\n4. DAS PROVAS\n5. DO PEDIDO\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Cartas de Cobranca Escalonadas","area":"juridico","nivel":"intermediario","tag":"Cobranca","desc":"3 cartas: amigavel, formal e pre-judicial. Para cobrar dividas com forca legal.","preview":"PERSONA: Especialista em cobranca extrajudicial\nTAREFA: 3 cartas escalonadas\nCarta 1 amigavel Carta 2 formal Carta 3 pre-judicial","prompt":"PERSONA: Voce e especialista em cobranca extrajudicial.\nTAREFA: Sequencia de 3 cartas escalonadas.\nCARTA 1 - AMIGAVEL\nCARTA 2 - FORMAL\nCARTA 3 - PRE-JUDICIAL\nCada carta: identificacao, valor, prazo e consequencias.\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Laudo Medico Completo","area":"medico","nivel":"avancado","tag":"Laudo","desc":"Laudo com anamnese, CID-10 e conduta. Para medicos que precisam de documentacao impecavel.","preview":"PERSONA: Medico especialista com 20 anos\nTAREFA: Laudo medico completo\nESTRUTURA: 1. Identificacao 2. Queixa 3. Exame 4. CID 5. Conduta","prompt":"PERSONA: Voce e medico especialista com 20 anos de experiencia clinica.\nTAREFA: Laudo medico completo.\nESTRUTURA:\n1. IDENTIFICACAO DO PACIENTE\n2. QUEIXA PRINCIPAL E HMA\n3. ANTECEDENTES\n4. EXAME FISICO\n5. EXAMES COMPLEMENTARES\n6. DIAGNOSTICO E CID-10\n7. CONDUTA\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Relatorio Medico para Plano de Saude","area":"medico","nivel":"intermediario","tag":"Relatorio","desc":"Justifica procedimentos negados. Para medicos que defendem seus pacientes contra negativas.","preview":"PERSONA: Medico assistente com CRM ativo\nTAREFA: Relatorio para reverter negativa do plano\nESTRUTURA: 1. Identificacao 2. Diagnostico 3. Justificativa","prompt":"PERSONA: Voce e medico assistente com CRM ativo.\nTAREFA: Relatorio para autorizacao de procedimento.\nESTRUTURA:\n1. IDENTIFICACAO E BENEFICIARIO\n2. DIAGNOSTICO E CID-10\n3. HISTORICO DO CASO\n4. JUSTIFICATIVA CLINICA\n5. ALTERNATIVAS JA TENTADAS\n6. URGENCIA\n7. CONSEQUENCIAS DO NAO ATENDIMENTO\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Laudo de Incapacidade INSS","area":"medico","nivel":"premium","tag":"Laudo Pericial","desc":"Laudo de incapacidade para beneficio previdenciario. Para garantir o direito dos pacientes.","preview":"PERSONA: Medico especialista em pericias previdenciarias\nTAREFA: Laudo de incapacidade para INSS\nBASE: Lei 8213/91","prompt":"PERSONA: Voce e medico especialista em pericias previdenciarias.\nTAREFA: Laudo de incapacidade laboral para INSS.\nBASE: Lei 8.213/91 arts. 59-63.\nESTRUTURA:\n1. IDENTIFICACAO E FUNCAO\n2. ANAMNESE\n3. HISTORICO DE TRATAMENTOS\n4. EXAME FISICO\n5. DIAGNOSTICO E CID-10\n6. CAPACIDADE LABORATIVA\n7. CONCLUSAO E PRAZO\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Atestado Medico com Validade Legal","area":"medico","nivel":"basico","tag":"Atestado","desc":"Atestado conforme Resolucao CFM. Para medicos que precisam de documentacao rapida.","preview":"PERSONA: Medico com CRM ativo\nTAREFA: Atestado medico com plena validade\nBASE: Resolucao CFM 1658/2002","prompt":"PERSONA: Voce e medico com CRM ativo.\nTAREFA: Atestado medico com plena validade legal.\nBASE: Resolucao CFM 1.658/2002.\nESTRUTURA:\n1. IDENTIFICACAO DO PACIENTE\n2. CID-10\n3. PERIODO DE AFASTAMENTO\n4. RECOMENDACOES\n5. IDENTIFICACAO DO MEDICO E CRM\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Prontuario SOAP","area":"medico","nivel":"basico","tag":"Prontuario","desc":"Registro SOAP completo e seguro juridicamente. Para medicos que precisam de prontuario rapido.","preview":"PERSONA: Medico com CRM ativo\nTAREFA: Evolucao de prontuario SOAP\nS-Subjetivo O-Objetivo A-Avaliacao P-Plano","prompt":"PERSONA: Voce e medico com CRM ativo.\nTAREFA: Evolucao de prontuario metodo SOAP.\nS - SUBJETIVO: queixas e relato\nO - OBJETIVO: exame e resultados\nA - AVALIACAO: diagnostico\nP - PLANO: conduta e medicacoes\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Laudo Psiquiatrico Forense","area":"medico","nivel":"premium","tag":"Laudo Pericial","desc":"Laudo para processos criminais e interdicao. Para psiquiatras que atuam no campo juridico.","preview":"PERSONA: Psiquiatra forense com CRM ativo\nTAREFA: Laudo psiquiatrico forense completo","prompt":"PERSONA: Voce e psiquiatra forense com CRM ativo.\nTAREFA: Laudo psiquiatrico forense completo.\nESTRUTURA:\n1. IDENTIFICACAO E PROCESSO\n2. QUESITOS FORMULADOS\n3. ANAMNESE PSIQUIATRICA\n4. EXAME DO ESTADO MENTAL\n5. DIAGNOSTICO CID-10 e DSM-5\n6. RESPOSTAS AOS QUESITOS\n7. CONCLUSAO\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Laudo para Cirurgia Bariatrica","area":"medico","nivel":"premium","tag":"Laudo","desc":"Laudo de indicacao conforme CFM 2131/2015. Para medicos que precisam documentar a indicacao.","preview":"PERSONA: Medico especialista em bariatrica\nTAREFA: Laudo de indicacao cirurgica\nBASE: CFM 2131/2015","prompt":"PERSONA: Voce e medico especialista em cirurgia bariatrica.\nTAREFA: Laudo de indicacao para cirurgia bariatrica.\nBASE: Resolucao CFM 2.131/2015.\nESTRUTURA:\n1. IDENTIFICACAO nome idade peso IMC\n2. HISTORICO DE PESO\n3. COMORBIDADES\n4. TRATAMENTOS ANTERIORES\n5. ELEGIBILIDADE\n6. CONCLUSAO E INDICACAO\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Proposta Comercial de Alto Impacto","area":"negocios","nivel":"intermediario","tag":"Vendas","desc":"Proposta focada em valor e ROI. Para empresarios que perdem contratos por propostas fracas.","preview":"PERSONA: Consultor comercial senior B2B\nTAREFA: Proposta comercial persuasiva\nESTRUTURA: 1. Diagnostico 2. Solucao 3. ROI","prompt":"PERSONA: Voce e consultor comercial senior com 20 anos em B2B.\nTAREFA: Proposta comercial profissional e persuasiva.\nESTRUTURA:\n1. DIAGNOSTICO DO PROBLEMA\n2. SOLUCAO PROPOSTA\n3. METODOLOGIA\n4. BENEFICIOS E ROI\n5. DIFERENCIAIS\n6. INVESTIMENTO E CONDICOES\n7. PROXIMOS PASSOS\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Plano de Demissao Humanizada","area":"negocios","nivel":"avancado","tag":"RH","desc":"Roteiro completo com script e checklist. Para gestores que precisam demitir sem trauma.","preview":"PERSONA: Consultor senior de RH especialista em desligamentos\nTAREFA: Plano de demissao humanizada","prompt":"PERSONA: Voce e consultor senior de RH especialista em desligamentos humanizados.\nTAREFA: Plano completo de demissao humanizada.\nESTRUTURA:\n1. ROTEIRO DA CONVERSA script completo\n2. COMUNICADO AO COLABORADOR\n3. CHECKLIST DE RH\n4. COMUNICACAO A EQUIPE\n5. OFFBOARDING\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Analise SWOT com Plano de Acao","area":"negocios","nivel":"intermediario","tag":"Estrategia","desc":"SWOT com cruzamento estrategico e prioridades. Para gestores que precisam de visao clara.","preview":"PERSONA: Consultor estrategico senior com MBA\nTAREFA: SWOT completa com plano de acao","prompt":"PERSONA: Voce e consultor estrategico senior com MBA.\nTAREFA: SWOT completa com cruzamento e plano de acao.\nESTRUTURA:\n1. FORCAS internas\n2. FRAQUEZAS internas\n3. OPORTUNIDADES externas\n4. AMEACAS externas\n5. CRUZAMENTO SO WO ST WT\n6. TOP 5 ACOES com prazo\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Plano de Negocios para MEI","area":"negocios","nivel":"intermediario","tag":"Plano","desc":"Plano pratico para quem esta comecando. Para empreendedores que precisam de direcao.","preview":"PERSONA: Consultor especialista em pequenos negocios\nTAREFA: Plano de negocios para MEI","prompt":"PERSONA: Voce e consultor especialista em pequenos negocios e MEI.\nTAREFA: Plano de negocios pratico e aplicavel.\nESTRUTURA:\n1. DESCRICAO DO NEGOCIO\n2. PUBLICO E DIFERENCIAL\n3. CONCORRENCIA LOCAL\n4. PRECIFICACAO\n5. CANAIS DE VENDA\n6. PROJECAO 6 MESES\n7. PRIMEIROS 30 DIAS\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Script de Vendas por WhatsApp","area":"negocios","nivel":"intermediario","tag":"Vendas","desc":"Script completo para converter leads. Para vendedores que travam na hora de responder.","preview":"PERSONA: Especialista em vendas digitais e WhatsApp Business\nTAREFA: Script completo de vendas","prompt":"PERSONA: Voce e especialista em vendas digitais e WhatsApp Business.\nTAREFA: Script completo de vendas para WhatsApp.\nESTRUTURA:\n1. PRIMEIRO CONTATO\n2. DIAGNOSTICO 3 perguntas\n3. APRESENTACAO DA SOLUCAO\n4. PROVA SOCIAL\n5. OBJECOES 5 principais com resposta\n6. FECHAMENTO\n7. POS-VENDA\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Avaliacao de Desempenho 360 Graus","area":"negocios","nivel":"avancado","tag":"RH","desc":"Avaliacao completa com PDI e plano de feedback. Para gestores que querem desenvolvimento real.","preview":"PERSONA: Especialista em gestao de desempenho\nTAREFA: Avaliacao 360 com PDI","prompt":"PERSONA: Voce e especialista em gestao de desempenho com 20 anos em RH.\nTAREFA: Avaliacao 360 completa com PDI.\nESTRUTURA:\n1. AUTOAVALIACAO\n2. AVALIACAO DO GESTOR escala 1-5\n3. AVALIACAO DOS PARES\n4. RESULTADOS VS METAS\n5. PDI 3 acoes com prazo\n6. ROTEIRO DO FEEDBACK\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Carta de Advertencia Trabalhista","area":"negocios","nivel":"basico","tag":"RH","desc":"Advertencia formal com base na CLT. Para empresarios que precisam documentar sem risco juridico.","preview":"PERSONA: Especialista em RH e direito do trabalho\nTAREFA: Carta de advertencia formal\nBASE: CLT art 482","prompt":"PERSONA: Voce e especialista em RH e direito do trabalho.\nTAREFA: Carta de advertencia formal.\nBASE: CLT art. 482.\nESTRUTURA:\n1. IDENTIFICACAO DO COLABORADOR\n2. CONDUTA INADEQUADA\n3. NORMA VIOLADA\n4. ADVERTENCIA FORMAL\n5. CONSEQUENCIAS POR REINCIDENCIA\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Copy para Pagina de Vendas","area":"marketing","nivel":"avancado","tag":"Copywriting","desc":"Copy de alta conversao com gatilhos. Para vender muito mais sem pagar agencia.","preview":"PERSONA: Copywriter senior especialista em alta conversao\nTAREFA: Copy completa para pagina de vendas","prompt":"PERSONA: Voce e copywriter senior especialista em alta conversao.\nTAREFA: Copy completa para pagina de vendas.\nESTRUTURA:\n1. HEADLINE 3 opcoes\n2. SUBHEADLINE\n3. IDENTIFICACAO DA DOR\n4. AGITACAO\n5. SOLUCAO\n6. BENEFICIOS\n7. PROVA SOCIAL\n8. OFERTA E BONUS\n9. GARANTIA\n10. CTA COM URGENCIA\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Sequencia de 7 E-mails de Vendas","area":"marketing","nivel":"avancado","tag":"E-mail Marketing","desc":"Sequencia que nutre e converte automaticamente. Para vender dormindo.","preview":"PERSONA: Especialista em e-mail marketing\nTAREFA: Sequencia de 7 e-mails\nE1 boas-vindas E2 dor E3 historia E4 prova E5 valor E6 oferta E7 urgencia","prompt":"PERSONA: Voce e especialista em e-mail marketing com conversoes acima de 5 porcento.\nTAREFA: Sequencia de 7 e-mails de nutricao e conversao.\nCada e-mail: ASSUNTO + ABERTURA + CORPO + CTA\nE1 - Boas-vindas\nE2 - A dor\nE3 - Sua historia\nE4 - Prova social\nE5 - Conteudo de valor\nE6 - Abertura da oferta\nE7 - Ultimo aviso\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Roteiro de VSL","area":"marketing","nivel":"avancado","tag":"Video","desc":"Script de video de vendas que prende e converte. Para vender com video sem saber roteirizar.","preview":"PERSONA: Roteirista especialista em VSL de alta conversao\nTAREFA: Roteiro completo de VSL","prompt":"PERSONA: Voce e roteirista especialista em VSL de alta conversao.\nTAREFA: Roteiro completo de VSL.\nESTRUTURA:\n1. GANCHO 10 segundos\n2. PROMESSA\n3. IDENTIFICACAO COM O PROBLEMA\n4. AGITACAO\n5. SOLUCAO\n6. MECANISMO UNICO\n7. PROVA\n8. OFERTA E BONUS\n9. GARANTIA\n10. CTA FINAL\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Post Viral para Instagram","area":"marketing","nivel":"basico","tag":"Conteudo","desc":"Post com gancho e CTA de alto engajamento. Para crescer no Instagram sem contratar ninguem.","preview":"PERSONA: Especialista em conteudo viral\nTAREFA: Post de alto engajamento\nESTRUTURA: 1. Gancho 2. Desenvolvimento 3. CTA 4. Hashtags","prompt":"PERSONA: Voce e especialista em conteudo viral para redes sociais.\nTAREFA: Post de alto engajamento para Instagram.\nESTRUTURA:\n1. GANCHO primeira linha que para o scroll\n2. DESENVOLVIMENTO\n3. VIRADA OU INSIGHT\n4. CTA\n5. 10 HASHTAGS\nCRIE 2 VERSOES: conservadora e ousada.\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Anuncio para Meta Ads","area":"marketing","nivel":"intermediario","tag":"Trafego Pago","desc":"Copy para Facebook e Instagram com variacoes A e B. Para vender com trafego sem desperdicar.","preview":"PERSONA: Especialista em Meta Ads e copy\nTAREFA: Anuncio com 2 variacoes A/B","prompt":"PERSONA: Voce e especialista em Meta Ads e copy.\nTAREFA: Anuncio com 2 variacoes A e B.\nVARIACAO A e VARIACAO B, cada uma com:\n- TEXTO PRINCIPAL ate 125 caracteres\n- HEADLINE ate 40\n- DESCRICAO ate 30\n- CTA sugerido\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Estrategia de Lancamento de Produto","area":"marketing","nivel":"premium","tag":"Lancamento","desc":"Plano completo de lancamento. Para quem quer resultado real sem improvisar.","preview":"PERSONA: Especialista em lancamentos digitais\nTAREFA: Estrategia completa de lancamento","prompt":"PERSONA: Voce e especialista em lancamentos digitais.\nTAREFA: Estrategia completa de lancamento.\nFASE 1 - PRE-LANCAMENTO: aquecimento, lista de espera\nFASE 2 - LANCAMENTO: abertura, conteudos diarios, e-mails\nFASE 3 - ULTIMAS HORAS: urgencia, recuperacao\nFASE 4 - POS: reativacao, upsell\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Persona de Comprador Detalhada","area":"marketing","nivel":"intermediario","tag":"Estrategia","desc":"Persona completa com dores e objecoes. Para parar de atirar para todo lado.","preview":"PERSONA: Especialista em pesquisa de mercado\nTAREFA: Persona de comprador detalhada","prompt":"PERSONA: Voce e especialista em pesquisa de mercado.\nTAREFA: Persona de comprador completa e acionavel.\nESTRUTURA:\n1. DADOS DEMOGRAFICOS\n2. DIA A DIA\n3. OBJETIVOS E SONHOS\n4. DORES E FRUSTRACOES\n5. COMPORTAMENTO DIGITAL\n6. OBJECOES DE COMPRA\n7. GATILHOS DECISORES\n8. COMO SE COMUNICAR\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Parecer Contabil Tecnico","area":"contabil","nivel":"avancado","tag":"Parecer","desc":"Parecer com NBC e legislacao tributaria. Para contadores que precisam de documentos solidos.","preview":"PERSONA: Contador senior com CRC ativo e 20 anos\nTAREFA: Parecer contabil tecnico","prompt":"PERSONA: Voce e contador senior com CRC ativo e 20 anos de experiencia.\nTAREFA: Parecer contabil tecnico completo.\nESTRUTURA:\n1. DO OBJETO\n2. DA DOCUMENTACAO ANALISADA\n3. DA FUNDAMENTACAO NBC IFRS legislacao\n4. DAS CONSTATACOES\n5. DA CONCLUSAO\n6. DAS RESSALVAS\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Planejamento Tributario Legal","area":"contabil","nivel":"premium","tag":"Tributario","desc":"Reducao legal da carga fiscal. Para empresas que pagam imposto a mais sem saber.","preview":"PERSONA: Contador tributarista senior com CRC ativo\nTAREFA: Planejamento tributario legal","prompt":"PERSONA: Voce e contador tributarista senior com CRC ativo.\nTAREFA: Planejamento tributario legal e eficiente.\nBASE: IRPJ, CSLL, PIS, COFINS e legislacao vigente.\nESTRUTURA:\n1. DIAGNOSTICO FISCAL ATUAL\n2. COMPARATIVO DE REGIMES\n3. OPORTUNIDADES DE ECONOMIA\n4. RECOMENDACOES LEGAIS\n5. PROJECAO DE ECONOMIA\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Laudo Pericial Contabil Judicial","area":"contabil","nivel":"premium","tag":"Pericia","desc":"Laudo com quesitos para processos judiciais. Para peritos que precisam de documentacao incontestavel.","preview":"PERSONA: Contador perito judicial com CRC ativo\nTAREFA: Laudo pericial contabil","prompt":"PERSONA: Voce e contador perito judicial com CRC ativo.\nTAREFA: Laudo pericial contabil completo.\nBASE: CPC art. 473.\nESTRUTURA:\n1. IDENTIFICACAO E PROCESSO\n2. DO OBJETO\n3. DAS DILIGENCIAS\n4. QUESITOS E RESPOSTAS\n5. CONCLUSAO\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Relatorio Gerencial Mensal","area":"contabil","nivel":"intermediario","tag":"Relatorio","desc":"Indicadores e alertas mensais. Para empresarios que querem entender a saude financeira.","preview":"PERSONA: Controller senior\nTAREFA: Relatorio gerencial mensal completo","prompt":"PERSONA: Voce e controller senior. Transforma numeros em linguagem de gestao.\nTAREFA: Relatorio gerencial mensal completo.\nESTRUTURA:\n1. RESUMO EXECUTIVO 3 linhas\n2. RESULTADO VS ORCAMENTO\n3. FATURAMENTO\n4. CUSTOS E DESPESAS\n5. FLUXO DE CAIXA\n6. KPIS\n7. ALERTAS E RECOMENDACOES\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Projecao de Fluxo de Caixa 12 Meses","area":"contabil","nivel":"avancado","tag":"Financeiro","desc":"Projecao com cenarios otimista e pessimista. Para antecipar problemas de caixa.","preview":"PERSONA: Analista financeiro senior especialista em modelagem\nTAREFA: Projecao 12 meses com cenarios","prompt":"PERSONA: Voce e analista financeiro senior especialista em modelagem.\nTAREFA: Projecao de fluxo de caixa 12 meses com cenarios.\nESTRUTURA:\n1. PREMISSAS\n2. ENTRADAS MES A MES\n3. SAIDAS MES A MES\n4. FLUXO LIQUIDO\n5. SALDO ACUMULADO\n6. CENARIO PESSIMISTA menos 20 por cento\n7. CENARIO OTIMISTA mais 20 por cento\n8. ALERTAS\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Relatorio Psicologico Completo","area":"psicologia","nivel":"avancado","tag":"Relatorio","desc":"Relatorio conforme CFP 06/2019. Para psicologos que precisam de documentacao clinica defensavel.","preview":"PERSONA: Psicologo com CRP ativo e 20 anos\nTAREFA: Relatorio psicologico completo","prompt":"PERSONA: Voce e psicologo com CRP ativo e 20 anos de experiencia.\nTAREFA: Relatorio psicologico completo.\nBASE: Resolucao CFP 06/2019.\nESTRUTURA:\n1. IDENTIFICACAO E FINALIDADE\n2. PROCEDIMENTOS\n3. DADOS RELEVANTES\n4. ANALISE\n5. CONCLUSAO\n6. RECOMENDACOES\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Laudo de Avaliacao Neuropsicologica","area":"psicologia","nivel":"premium","tag":"Laudo","desc":"Avaliacao cognitiva com diagnostico. Para neuropsicologos que precisam de documentacao rigorosa.","preview":"PERSONA: Neuropsicólogo com CRP ativo\nTAREFA: Laudo neuropsicologico completo","prompt":"PERSONA: Voce e neuropsicólogo com CRP ativo.\nTAREFA: Laudo de avaliacao neuropsicologica completo.\nESTRUTURA:\n1. IDENTIFICACAO E MOTIVO\n2. INSTRUMENTOS UTILIZADOS\n3. FUNCOES COGNITIVAS atencao memoria linguagem funcoes executivas\n4. ANALISE INTEGRADA\n5. DIAGNOSTICO CID-10 e DSM-5\n6. RECOMENDACOES\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Plano Terapeutico Individualizado","area":"psicologia","nivel":"avancado","tag":"Plano","desc":"Intervencao com objetivos mensuraveis e criterios de alta. Para psicologos que organizam o tratamento.","preview":"PERSONA: Psicologo clinico experiente\nTAREFA: Plano terapeutico individualizado","prompt":"PERSONA: Voce e psicologo clinico experiente.\nTAREFA: Plano terapeutico individualizado completo.\nESTRUTURA:\n1. DEMANDA E QUEIXA\n2. HIPOTESE DIAGNOSTICA\n3. OBJETIVOS curto medio e longo prazo\n4. ABORDAGEM E TECNICAS\n5. FREQUENCIA E DURACAO\n6. CRITERIOS DE ALTA\n7. INDICADORES DE PROGRESSO\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Laudo Psicologico para Adocao","area":"psicologia","nivel":"premium","tag":"Laudo Judicial","desc":"Avaliacao para habilitacao a adocao. Para psicologos que atuam no sistema judiciario.","preview":"PERSONA: Psicologo com experiencia em varas da infancia\nTAREFA: Laudo para habilitacao a adocao","prompt":"PERSONA: Voce e psicologo com CRP ativo e experiencia em varas da infancia.\nTAREFA: Laudo psicologico para habilitacao a adocao.\nBASE: ECA e Resolucao CFP 06/2019.\nESTRUTURA:\n1. IDENTIFICACAO\n2. METODOLOGIA\n3. DINAMICA FAMILIAR\n4. MOTIVACAO\n5. CAPACIDADE DE ACOLHIMENTO\n6. REDE DE APOIO\n7. CONCLUSAO\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Evolucao de Sessao Psicologica","area":"psicologia","nivel":"basico","tag":"Prontuario","desc":"Registro de sessao estruturado e seguro. Para psicologos que precisam de prontuario rapido.","preview":"PERSONA: Psicologo clinico com CRP ativo\nTAREFA: Registro de evolucao de sessao","prompt":"PERSONA: Voce e psicologo clinico com CRP ativo.\nTAREFA: Registro de evolucao de sessao.\nESTRUTURA:\n1. DATA E NUMERO DA SESSAO\n2. CONTEUDO TRAZIDO\n3. ESTADO EMOCIONAL\n4. INTERVENCOES\n5. RESPOSTA DO PACIENTE\n6. HIPOTESES CLINICAS\n7. PLANO PROXIMA SESSAO\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Plano de Aula Completo BNCC","area":"educacao","nivel":"intermediario","tag":"Plano de Aula","desc":"Plano com BNCC, metodologia ativa e avaliacao. Para professores que economizam horas de planejamento.","preview":"PERSONA: Pedagogo especialista em curriculo 20 anos\nTAREFA: Plano de aula completo BNCC","prompt":"PERSONA: Voce e pedagogo especialista em curriculo com 20 anos de experiencia.\nTAREFA: Plano de aula completo alinhado a BNCC.\nESTRUTURA:\n1. IDENTIFICACAO disciplina ano tema duracao\n2. OBJETIVOS DE APRENDIZAGEM\n3. HABILIDADES BNCC com codigo\n4. SEQUENCIA DIDATICA inicio desenvolvimento fechamento\n5. RECURSOS\n6. AVALIACAO\n7. ADAPTACOES PARA INCLUSAO\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Projeto Interdisciplinar BNCC","area":"educacao","nivel":"avancado","tag":"Projeto","desc":"Projeto com BNCC, cronograma e avaliacao. Para coordenadores que criam projetos de impacto.","preview":"PERSONA: Pedagogo especialista em projetos interdisciplinares\nTAREFA: Projeto didatico BNCC","prompt":"PERSONA: Voce e pedagogo especialista em projetos interdisciplinares.\nTAREFA: Projeto didatico completo alinhado a BNCC.\nESTRUTURA:\n1. TITULO E JUSTIFICATIVA\n2. OBJETIVOS\n3. COMPETENCIAS E HABILIDADES BNCC\n4. DISCIPLINAS ENVOLVIDAS\n5. CRONOGRAMA\n6. METODOLOGIA\n7. PRODUTO FINAL\n8. AVALIACAO\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Laudo Tecnico de Vistoria","area":"engenharia","nivel":"avancado","tag":"Laudo","desc":"Laudo com ABNT para patologias. Para engenheiros que precisam de documentacao incontestavel.","preview":"PERSONA: Engenheiro civil senior com CREA ativo\nTAREFA: Laudo tecnico de vistoria completo","prompt":"PERSONA: Voce e engenheiro civil senior com CREA ativo.\nTAREFA: Laudo tecnico de vistoria completo.\nREFERENCIAS: NBR aplicaveis.\nESTRUTURA:\n1. IDENTIFICACAO E FINALIDADE\n2. METODOLOGIA\n3. DESCRICAO DO IMOVEL\n4. OCORRENCIAS descricao localizacao gravidade\n5. ANALISE E CAUSAS\n6. RISCO alto medio baixo\n7. RECOMENDACOES\n8. CONCLUSAO E ART\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Memorial Descritivo de Obra","area":"engenharia","nivel":"intermediario","tag":"Memorial","desc":"Memorial para aprovacao em prefeitura. Para engenheiros que precisam de documentacao rapida.","preview":"PERSONA: Engenheiro civil com CREA ativo\nTAREFA: Memorial descritivo de obra completo","prompt":"PERSONA: Voce e engenheiro civil com CREA ativo.\nTAREFA: Memorial descritivo de obra completo.\nESTRUTURA:\n1. IDENTIFICACAO\n2. LOCALIZACAO E TERRENO\n3. DESCRICAO DA OBRA\n4. FUNDACOES E ESTRUTURA\n5. INSTALACOES\n6. REVESTIMENTOS\n7. NORMAS NBRs\n8. ART\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Laudo Pericial de Engenharia","area":"engenharia","nivel":"premium","tag":"Laudo Pericial","desc":"Laudo para processos judiciais. Para peritos que precisam de documentacao defensavel.","preview":"PERSONA: Engenheiro perito judicial com CREA ativo\nTAREFA: Laudo tecnico pericial","prompt":"PERSONA: Voce e engenheiro perito judicial com CREA ativo.\nTAREFA: Laudo tecnico pericial de engenharia.\nBASE: CPC arts. 473 e 478.\nESTRUTURA:\n1. IDENTIFICACAO E PROCESSO\n2. DO OBJETO\n3. DAS DILIGENCIAS\n4. ANALISE TECNICA normas ABNT\n5. QUESITOS E RESPOSTAS\n6. CONCLUSAO\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Documento de Requisitos de Software","area":"ti","nivel":"premium","tag":"Documentacao","desc":"SRS padrao IEEE 830. Para times que precisam de especificacao tecnica seria.","preview":"PERSONA: Arquiteto de software senior\nTAREFA: SRS completo padrao IEEE 830","prompt":"PERSONA: Voce e arquiteto de software senior.\nTAREFA: SRS completo padrao IEEE 830.\nESTRUTURA:\n1. VISAO GERAL\n2. REQUISITOS FUNCIONAIS RF001...\n3. REQUISITOS NAO FUNCIONAIS\n4. RESTRICOES\n5. CASOS DE USO\n6. MATRIZ DE RASTREABILIDADE\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Plano de Resposta a Incidentes","area":"ti","nivel":"premium","tag":"Seguranca","desc":"Plano completo de IR com playbooks. Para times que precisam de protocolo antes do incidente.","preview":"PERSONA: Especialista senior em seguranca da informacao\nTAREFA: Plano de resposta a incidentes","prompt":"PERSONA: Voce e especialista senior em seguranca da informacao com CISSP.\nTAREFA: Plano de resposta a incidentes completo.\nESTRUTURA:\n1. CLASSIFICACAO critico alto medio baixo\n2. PAPEIS E RESPONSABILIDADES\n3. DETECCAO E TRIAGEM\n4. ESCALONAMENTO\n5. PLAYBOOKS ransomware vazamento DDoS\n6. COMUNICACAO LGPD\n7. POS-INCIDENTE\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"},{"titulo":"Arquitetura de Microsservicos","area":"ti","nivel":"premium","tag":"Arquitetura","desc":"ADR com padroes e trade-offs. Para arquitetos que precisam justificar decisoes tecnicas.","preview":"PERSONA: Arquiteto de solucoes senior especialista em microsservicos\nTAREFA: ADR de microsservicos","prompt":"PERSONA: Voce e arquiteto de solucoes senior especialista em microsservicos.\nTAREFA: ADR Architecture Decision Record para microsservicos.\nESTRUTURA:\n1. VISAO E CONTEXTO\n2. DECOMPOSICAO EM SERVICOS\n3. COMUNICACAO sincrona vs assincrona\n4. DADOS um banco por servico\n5. PADROES API Gateway Circuit Breaker\n6. OBSERVABILIDADE\n7. DECISOES E TRADE-OFFS\n\nREGRAS OBRIGATORIAS:\nNAO invente dados nao fornecidos.\nNAO cite leis ou CIDs inexistentes.\nUse EXCLUSIVAMENTE os dados abaixo.\nSe faltar info escreva: DADO AUSENTE\n\nDADOS DO CASO:\n[COLE AQUI AS INFORMACOES]"}];
+var PL={basico:"R$9,90",intermediario:"R$19,90",avancado:"R$29,90",premium:"R$49,90"};
+var NL={basico:"Basico",intermediario:"Intermediario",avancado:"Avancado",premium:"Premium"};
+var NT={basico:"lb",intermediario:"li",avancado:"la",premium:"lp"};
+var AREAS=[
+  {k:"all",l:"Todos"},{k:"juridico",l:"Juridico"},{k:"medico",l:"Medico"},
+  {k:"negocios",l:"Negocios"},{k:"marketing",l:"Marketing"},{k:"contabil",l:"Contabil"},
+  {k:"psicologia",l:"Psicologia"},{k:"educacao",l:"Educacao"},{k:"engenharia",l:"Engenharia"},{k:"ti",l:"TI"}
 ];
-const WA="5511978857415", SENHA="cassia2025", FB="https://cassia-v9-default-rtdb.firebaseio.com";
-const FC={databaseURL:FB};
-try{firebase.initializeApp(FC);}catch(e){}
-const db=firebase.database();
-
-// LOJA
-let aAtiva="all", pedAtual=null, entOpc="e";
-let allPeds=[], filtroP="all", arTimer=null, pedAdmin=null;
-
-function goLj(){showPg("pg-lj");}
-function goAL(){showPg("pg-al");}
-function showPg(id){
-  document.querySelectorAll(".pg").forEach(p=>{p.classList.remove("on");p.style.display="none";});
-  const el=document.getElementById(id);el.style.display="block";el.classList.add("on");window.scrollTo(0,0);
+var WA="5511978857415",SENHA="cassia2025",FB="https://cassia-v9-default-rtdb.firebaseio.com";
+var aA="all",pedA=null,entO="e",allP=[],filtP2="all",arT=null,pedAdm=null;
+function init(){
+  try{if(!firebase.apps.length)firebase.initializeApp({databaseURL:FB});}catch(e){}
+  mkF();render();
 }
-
-function renderFiltros(){
-  const w=document.getElementById("fwrap");if(!w)return;w.innerHTML="";
-  AREAS.forEach(a=>{
-    const b=document.createElement("button");b.className="ft"+(a.k===aAtiva?" on":"");
-    b.textContent=a.e+" "+a.l;b.onclick=()=>{aAtiva=a.k;renderFiltros();render();};w.appendChild(b);
+function goLj(){sP("pg-lj")}
+function goAL(){sP("pg-al")}
+function sP(id){
+  document.querySelectorAll(".pg").forEach(function(p){p.classList.remove("on");p.style.display="none";});
+  var e=document.getElementById(id);e.style.display="block";e.classList.add("on");window.scrollTo(0,0);
+}
+function mkF(){
+  var w=document.getElementById("fw");if(!w)return;w.innerHTML="";
+  AREAS.forEach(function(a){
+    var b=document.createElement("button");b.className="ft"+(a.k===aA?" on":"");
+    b.textContent=a.l;
+    b.onclick=function(){aA=a.k;mkF();render();};
+    w.appendChild(b);
   });
 }
-
 function render(){
-  const q=(document.getElementById("busca")?.value||"").toLowerCase();
-  const g=document.getElementById("grid"),lbl=document.getElementById("glbl");
+  var q=(document.getElementById("busca")||{value:""}).value.toLowerCase();
+  var g=document.getElementById("grid"),lbl=document.getElementById("glbl");
   if(!g)return;
-  let lista=BASE.filter(p=>{
-    const mA=aAtiva==="all"||p.area===aAtiva;
-    const mB=!q||p.titulo.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q)||p.tag.toLowerCase().includes(q);
+  var lista=BASE.filter(function(p){
+    var mA=aA==="all"||p.area===aA;
+    var mB=!q||p.titulo.toLowerCase().indexOf(q)>=0||p.desc.toLowerCase().indexOf(q)>=0||p.tag.toLowerCase().indexOf(q)>=0;
     return mA&&mB;
   });
-  const ai=AREAS.find(a=>a.k===aAtiva);
-  if(lbl)lbl.innerHTML=(aAtiva==="all"?"Todos os Prompts":((ai?.e||"")+" "+(ai?.l||"")))+' <span style="opacity:.3;font-size:9px;font-weight:400;">('+lista.length+")</span>";
+  var ai=AREAS.filter(function(a){return a.k===aA;})[0];
+  if(lbl)lbl.textContent=(aA==="all"?"Todos os Prompts":(ai?ai.l:""))+" ("+lista.length+")";
   g.innerHTML="";
-  if(!lista.length){g.innerHTML='<div class="vz">Nenhum prompt encontrado.</div>';return;}
-  lista.forEach((p,i)=>{
-    const pr=PL[p.nivel]||"R$19,90";
-    const ai2=AREAS.find(a=>a.k===p.area);
-    const d=document.createElement("div");d.className="card";d.style.animationDelay=(i*.025)+"s";
-    const pd=JSON.stringify(p).replace(/"/g,"&quot;");
-    d.innerHTML='<div class="ct"><div class="ca">'+(ai2?.e||"")+" "+(ai2?.l||"")+'</div><div class="cn">'+p.titulo+'</div><div class="cd">'+p.desc+'</div></div><div class="cpv"><div class="pvt">'+p.preview.replace(/\n/g,"\n")+'</div><div class="pvb"><div class="lk">🔒 Desbloqueado após compra</div></div></div><div class="cb"><div class="tags"><span class="tag '+(NT[p.nivel]||"")+'">'+(NL[p.nivel]||"")+'</span><span class="tag">'+p.tag+'</span></div><div style="display:flex;align-items:center;gap:10px;"><span class="preco">'+pr+'</span><button class="bcmp" onclick='abrC("'+encodeURIComponent(JSON.stringify(p))+'")''>COMPRAR</button></div></div>';
+  if(!lista.length){g.innerHTML="<div class='empty'>Nenhum prompt encontrado.</div>";return;}
+  lista.forEach(function(p,i){
+    var pr=PL[p.nivel]||"R$19,90";
+    var ai2=AREAS.filter(function(a){return a.k===p.area;})[0];
+    var d=document.createElement("div");d.className="card";d.style.animationDelay=(i*0.022)+"s";
+    var idx=BASE.indexOf(p);
+    d.innerHTML="<div class='ct'><div class='ca'>"+(ai2?ai2.l:"")+"</div><div class='cn'>"+p.titulo+"</div><div class='cd'>"+p.desc+"</div></div>"
+      +"<div class='cpv'><div class='pvt'>"+esc(p.preview)+"</div><div class='pvb'><span class='lk'>Bloqueado - desbloqueie apos compra</span></div></div>"
+      +"<div class='cb'><div class='tags'><span class='tag "+(NT[p.nivel]||"")+"'>"+(NL[p.nivel]||"")+"</span><span class='tag'>"+p.tag+"</span></div>"
+      +"<div style='display:flex;align-items:center;gap:7px'><span class='preco'>"+pr+"</span><button class='bcmp' onclick='abrC("+idx+")'>COMPRAR</button></div></div>";
     g.appendChild(d);
   });
 }
-
-function abrC(encoded){
-  const p=JSON.parse(decodeURIComponent(encoded));
-  pedAtual=p;
+function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function abrC(idx){
+  var p=BASE[idx];pedA=p;
   document.getElementById("s1t").textContent=p.titulo;
   document.getElementById("s1e").textContent="";
-  ["f-nm","f-em","f-wt"].forEach(id=>document.getElementById(id).value="");
-  sE("e");showS("s1");document.getElementById("ov-c").classList.add("on");
+  ["f-nm","f-em","f-wt"].forEach(function(id){document.getElementById(id).value="";});
+  sE("e");sS("s1");document.getElementById("ov-c").classList.add("on");
 }
-function sE(t){entOpc=t;["e","w","a"].forEach(x=>document.getElementById("ro-"+x).classList.toggle("on",x===t));}
+function sE(t){entO=t;["e","w","a"].forEach(function(x){document.getElementById("ro-"+x).classList.toggle("on",x===t);});}
 function goP(){
-  const nm=document.getElementById("f-nm").value.trim();
-  const em=document.getElementById("f-em").value.trim();
-  const wt=document.getElementById("f-wt").value.trim();
-  const err=document.getElementById("s1e");
-  if(!nm){err.textContent="INFORME SEU NOME";return;}
-  if(!em||!em.includes("@")){err.textContent="E-MAIL INVÁLIDO";return;}
-  if(!wt||wt.replace(/\D/g,"").length<10){err.textContent="WHATSAPP INVÁLIDO";return;}
-  const pr=PL[pedAtual.nivel]||"R$19,90";
-  const ent=entOpc==="e"?"E-mail":entOpc==="w"?"WhatsApp":"E-mail e WhatsApp";
-  document.getElementById("s2n").textContent=pedAtual.titulo;
+  var nm=document.getElementById("f-nm").value.trim();
+  var em=document.getElementById("f-em").value.trim();
+  var wt=document.getElementById("f-wt").value.trim();
+  var er=document.getElementById("s1e");
+  if(!nm){er.textContent="INFORME SEU NOME";return;}
+  if(!em||em.indexOf("@")<0){er.textContent="E-MAIL INVALIDO";return;}
+  if(!wt||wt.replace(/\D/g,"").length<10){er.textContent="WHATSAPP INVALIDO";return;}
+  var pr=PL[pedA.nivel]||"R$19,90";
+  var ent=entO==="e"?"E-mail":entO==="w"?"WhatsApp":"E-mail e WhatsApp";
+  document.getElementById("s2n").textContent=pedA.titulo;
   document.getElementById("s2p").textContent=pr;
-  document.getElementById("s2ent").textContent=ent;
-  const msg=encodeURIComponent("Olá Cássia! Comprei o prompt \""+pedAtual.titulo+"\" ("+pr+") na PROMPTUS Store. Segue o comprovante. Nome: "+nm+" | Tel: "+wt);
+  document.getElementById("s2e").textContent=ent;
+  var msg=encodeURIComponent("Ola Cassia! Comprei o prompt "+pedA.titulo+" ("+pr+"). Segue comprovante. Nome: "+nm+" Tel: "+wt);
   document.getElementById("b-wa").href="https://wa.me/"+WA+"?text="+msg;
-  showS("s2");
+  sS("s2");
 }
 function conf(){
-  const nm=document.getElementById("f-nm").value.trim();
-  const em=document.getElementById("f-em").value.trim();
-  const wt=document.getElementById("f-wt").value.trim();
-  const ent=entOpc==="e"?"E-mail":entOpc==="w"?"WhatsApp":"E-mail e WhatsApp";
-  const pr=PL[pedAtual.nivel]||"R$19,90";
-  const ped={promptTitulo:pedAtual.titulo,promptArea:pedAtual.area,promptNivel:pedAtual.nivel,promptCompleto:pedAtual.prompt||"",cliente:{nome:nm,email:em,tel:wt},entrega:ent,preco:pr,status:"pendente",criadoEm:Date.now()};
+  var nm=document.getElementById("f-nm").value.trim();
+  var em=document.getElementById("f-em").value.trim();
+  var wt=document.getElementById("f-wt").value.trim();
+  var ent=entO==="e"?"E-mail":entO==="w"?"WhatsApp":"E-mail e WhatsApp";
+  var pr=PL[pedA.nivel]||"R$19,90";
+  var ped={promptTitulo:pedA.titulo,promptArea:pedA.area,promptNivel:pedA.nivel,promptCompleto:pedA.prompt,cliente:{nome:nm,email:em,tel:wt},entrega:ent,preco:pr,status:"pendente",criadoEm:Date.now()};
   fetch(FB+"/ps_pedidos.json",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(ped)})
-  .then(r=>r.json()).then(()=>{
-    try{const l=JSON.parse(localStorage.getItem("ps_bkp")||"[]");l.push(ped);localStorage.setItem("ps_bkp",JSON.stringify(l));}catch(e){}
-    document.getElementById("s3e").textContent=ent;showS("s3");toast("PEDIDO REGISTRADO!");
-  }).catch(()=>{
-    try{const l=JSON.parse(localStorage.getItem("ps_bkp")||"[]");l.push(ped);localStorage.setItem("ps_bkp",JSON.stringify(l));}catch(e){}
-    document.getElementById("s3e").textContent=ent;showS("s3");toast("PEDIDO SALVO!");
-  });
+  .then(function(){bkp(ped);document.getElementById("s3e").textContent=ent;sS("s3");toast("PEDIDO REGISTRADO!");})
+  .catch(function(){bkp(ped);document.getElementById("s3e").textContent=ent;sS("s3");toast("PEDIDO SALVO!");});
 }
+function bkp(p){try{var l=JSON.parse(localStorage.getItem("ps_bkp")||"[]");l.push(p);localStorage.setItem("ps_bkp",JSON.stringify(l));}catch(e){}}
 function cpPix(){
-  const b=document.getElementById("b-cp");
-  const ok=()=>{b.textContent="✓ COPIADO!";toast("PIX COPIADO!");setTimeout(()=>b.textContent="📋 COPIAR CHAVE PIX",3000);};
-  if(navigator.clipboard)navigator.clipboard.writeText("39521484829").then(ok).catch(()=>fb2("39521484829",ok));else fb2("39521484829",ok);
+  var b=document.getElementById("b-cp");
+  var ok=function(){b.textContent="COPIADO!";toast("PIX COPIADO!");setTimeout(function(){b.textContent="COPIAR CHAVE PIX";},3000);};
+  if(navigator.clipboard)navigator.clipboard.writeText("39521484829").then(ok).catch(function(){fb2("39521484829",ok);});else fb2("39521484829",ok);
 }
-function fC(){document.getElementById("ov-c").classList.remove("on");setTimeout(()=>showS("s1"),300);}
-function showS(id){["s1","s2","s3"].forEach(s=>document.getElementById(s).classList.toggle("on",s===id));}
-
-// ADMIN
+function fC(){document.getElementById("ov-c").classList.remove("on");setTimeout(function(){sS("s1");},250);}
+function sS(id){["s1","s2","s3"].forEach(function(s){document.getElementById(s).classList.toggle("on",s===id);});}
 function login(){
-  const pw=document.getElementById("a-pw").value;
-  if(pw===SENHA){document.getElementById("a-err").textContent="";showPg("pg-adm");carPeds();startAR();}
+  var pw=document.getElementById("a-pw").value;
+  if(pw===SENHA){document.getElementById("a-err").textContent="";sP("pg-adm");carP();stAR();}
   else document.getElementById("a-err").textContent="SENHA INCORRETA";
 }
 function aTab(t,el){
-  document.querySelectorAll(".atab").forEach(x=>x.classList.remove("on"));
-  document.querySelectorAll(".ap").forEach(x=>x.classList.remove("on"));
+  document.querySelectorAll(".atab").forEach(function(x){x.classList.remove("on");});
+  document.querySelectorAll(".ap").forEach(function(x){x.classList.remove("on");});
   el.classList.add("on");document.getElementById("ap-"+t).classList.add("on");
-  if(t==="pd")carPeds();
+  if(t==="pd")carP();
 }
 function setSt(s){
-  const d=document.getElementById("dot"),t=document.getElementById("stxt");if(!d||!t)return;
+  var d=document.getElementById("dot"),t=document.getElementById("stxt");if(!d||!t)return;
   if(s==="ok"){d.className="dot ok";t.textContent="Atualizado";}
   else if(s==="ld"){d.className="dot";t.textContent="Atualizando...";}
-  else{d.className="dot err";t.textContent="Erro de conexão";}
+  else{d.className="dot err";t.textContent="Erro";}
 }
-function rfManual(){
-  const ic=document.getElementById("rfic");
-  if(ic)ic.classList.add("go");
-  setSt("ld");
-  carPeds(()=>{if(ic)ic.classList.remove("go");});
+function rfM(){
+  var ic=document.getElementById("rfic");if(ic)ic.classList.add("go");
+  setSt("ld");carP(function(){if(ic)ic.classList.remove("go");});
 }
-function startAR(){
-  if(arTimer)clearInterval(arTimer);
-  arTimer=setInterval(()=>{setSt("ld");carPeds();},30000);
-}
+function stAR(){if(arT)clearInterval(arT);arT=setInterval(function(){setSt("ld");carP();},30000);}
 function filtP(f,el){
-  filtroP=f;
-  document.querySelectorAll(".fpt").forEach(b=>b.classList.remove("on"));
+  filtP2=f;
+  document.querySelectorAll(".fpt").forEach(function(b){b.classList.remove("on");});
   if(el)el.classList.add("on");
-  renderPeds();
+  renderP();
 }
-function tempo(ts){
-  const d=Date.now()-ts,m=Math.floor(d/60000),h=Math.floor(m/60),dy=Math.floor(h/24);
-  if(dy>0)return"há "+dy+"d";if(h>0)return"há "+h+"h";if(m>0)return"há "+m+"min";return"agora";
+function tmp(ts){
+  var d=Date.now()-ts,m=Math.floor(d/60000),h=Math.floor(m/60),dy=Math.floor(h/24);
+  if(dy>0)return"ha "+dy+"d";if(h>0)return"ha "+h+"h";if(m>0)return"ha "+m+"min";return"agora";
 }
-function renderPeds(){
-  const list=document.getElementById("ped-list");if(!list)return;
-  const NOVO=3600000,now=Date.now();
-  let lista=allPeds;
-  if(filtroP==="nv")lista=allPeds.filter(p=>p.status==="pendente"&&(now-p.criadoEm)<NOVO);
-  else if(filtroP==="pd")lista=allPeds.filter(p=>p.status==="pendente");
-  else if(filtroP==="ok")lista=allPeds.filter(p=>p.status==="entregue");
-  if(!lista.length){list.innerHTML='<div style="text-align:center;padding:50px;color:var(--sub);font-size:12px;letter-spacing:2px;">Nenhum pedido aqui.</div>';return;}
+function renderP(){
+  var list=document.getElementById("ped-list");if(!list)return;
+  var NV=3600000,now=Date.now(),lista=allP;
+  if(filtP2==="nv")lista=allP.filter(function(p){return p.status==="pendente"&&(now-p.criadoEm)<NV;});
+  else if(filtP2==="pd")lista=allP.filter(function(p){return p.status==="pendente";});
+  else if(filtP2==="ok")lista=allP.filter(function(p){return p.status==="entregue";});
+  if(!lista.length){list.innerHTML="<div style='text-align:center;padding:46px;color:var(--sub);font-size:12px;letter-spacing:2px'>Nenhum pedido aqui.</div>";return;}
   list.innerHTML="";
-  lista.forEach(p=>{
-    const now2=Date.now(),isNv=p.status==="pendente"&&(now2-p.criadoEm)<NOVO,isPd=p.status==="pendente";
-    const cli=p.cliente||{};const dt=new Date(p.criadoEm).toLocaleString("pt-BR");
-    const div=document.createElement("div");div.className="pc"+(isNv?" nv":"");
-    const pd=encodeURIComponent(JSON.stringify(p));
-    div.innerHTML='<div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:10px;"><div style="flex:1;"><div class="pct">'+p.promptTitulo+'</div><div class="pcm" style="margin-top:5px;"><span>👤 '+(cli.nome||"-")+'</span><span>📧 '+(cli.email||"-")+'</span><span>💬 '+(cli.tel||"-")+'</span><span>📦 '+p.entrega+'</span></div><div style="font-size:10px;color:var(--sub);margin-top:5px;opacity:.6;">'+dt+" · "+tempo(p.criadoEm)+'</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:7px;"><span class="pcp">'+p.preco+'</span><span class="bdg '+(isNv?"bdg-nv":isPd?"bdg-p":"bdg-ok")+'">'+(isNv?"🔴 NOVO":isPd?"⏳ Pendente":"✅ Entregue")+'</span></div></div><button class="bsm" onclick='abrP("'+pd+'")''>VER / ENTREGAR →</button>';
+  lista.forEach(function(p){
+    var n2=Date.now(),iN=p.status==="pendente"&&(n2-p.criadoEm)<NV,iP=p.status==="pendente";
+    var cli=p.cliente||{};var dt=new Date(p.criadoEm).toLocaleString("pt-BR");
+    var div=document.createElement("div");div.className="pc"+(iN?" nv":"");
+    var pi=allP.indexOf(p);
+    div.innerHTML="<div style='display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:7px;margin-bottom:7px'>"
+      +"<div><div class='pct'>"+p.promptTitulo+"</div>"
+      +"<div class='pcm' style='margin-top:3px'><span>"+(cli.nome||"-")+"</span><span>"+(cli.email||"-")+"</span><span>"+(cli.tel||"-")+"</span><span>"+p.entrega+"</span></div>"
+      +"<div style='font-size:10px;color:var(--sub);margin-top:3px;opacity:.5'>"+dt+" - "+tmp(p.criadoEm)+"</div></div>"
+      +"<div style='display:flex;flex-direction:column;align-items:flex-end;gap:5px'><span class='pcp'>"+p.preco+"</span>"
+      +"<span class='bdg "+(iN?"bdg-nv":iP?"bdg-p":"bdg-ok")+"'>"+(iN?"NOVO":iP?"Pendente":"Entregue")+"</span></div></div>"
+      +"<button class='bsm' onclick='abrP("+pi+")'>VER / ENTREGAR</button>";
     list.appendChild(div);
   });
 }
-function atuStats(arr){
-  const now=Date.now(),NOVO=3600000;
-  const nv=arr.filter(p=>p.status==="pendente"&&(now-p.criadoEm)<NOVO).length;
-  const pd=arr.filter(p=>p.status==="pendente").length;
-  const ok=arr.filter(p=>p.status==="entregue").length;
-  const r=arr.reduce((a,p)=>a+parseFloat((p.preco||"0").replace("R$","").replace(",",".")||0),0);
-  const se=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-  se("st-t",arr.length);se("st-p",pd);se("st-r","R$"+r.toFixed(2).replace(".",","));se("st-n",nv);
-  se("ct-all",arr.length);se("ct-nv",nv);se("ct-pd",pd);se("ct-ok",ok);
+function atuSt(arr){
+  var now=Date.now(),NV=3600000;
+  var nv=arr.filter(function(p){return p.status==="pendente"&&(now-p.criadoEm)<NV;}).length;
+  var pd=arr.filter(function(p){return p.status==="pendente";}).length;
+  var ok=arr.filter(function(p){return p.status==="entregue";}).length;
+  var r=arr.reduce(function(a,p){return a+parseFloat((p.preco||"0").replace("R$","").replace(",",".")||0);},0);
+  function se(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+  se("st-t",arr.length);se("st-p",pd);se("st-n",nv);se("st-r","R$"+r.toFixed(2).replace(".",","));
+  se("ct-a",arr.length);se("ct-n",nv);se("ct-p",pd);se("ct-o",ok);
 }
-function carPeds(cb){
-  fetch(FB+"/ps_pedidos.json").then(r=>r.json()).then(data=>{
-    let arr=[];
-    if(data&&typeof data==="object")Object.entries(data).forEach(([k,v])=>{if(v&&v.criadoEm)arr.push({id:k,...v});});
+function carP(cb){
+  fetch(FB+"/ps_pedidos.json").then(function(r){return r.json();}).then(function(data){
+    var arr=[];
+    if(data&&typeof data==="object")Object.entries(data).forEach(function(e){var k=e[0],v=e[1];if(v&&v.criadoEm)arr.push(Object.assign({id:k},v));});
     try{
-      const loc=JSON.parse(localStorage.getItem("ps_bkp")||"[]");
-      loc.forEach(p=>{if(!arr.find(a=>a.promptTitulo===p.promptTitulo&&Math.abs(a.criadoEm-p.criadoEm)<5000))arr.push(p);});
+      var loc=JSON.parse(localStorage.getItem("ps_bkp")||"[]");
+      loc.forEach(function(p){var dup=arr.some(function(a){return a.promptTitulo===p.promptTitulo&&Math.abs((a.criadoEm||0)-(p.criadoEm||0))<5000;});if(!dup)arr.push(p);});
     }catch(e){}
-    arr.sort((a,b)=>b.criadoEm-a.criadoEm);
-    allPeds=arr;atuStats(arr);renderPeds();setSt("ok");if(cb)cb();
-  }).catch(()=>{
-    try{
-      const loc=JSON.parse(localStorage.getItem("ps_bkp")||"[]");
-      loc.sort((a,b)=>b.criadoEm-a.criadoEm);allPeds=loc;atuStats(loc);renderPeds();
-    }catch(e){}
+    arr.sort(function(a,b){return b.criadoEm-a.criadoEm;});
+    allP=arr;atuSt(arr);renderP();setSt("ok");if(cb)cb();
+  }).catch(function(){
+    try{var loc=JSON.parse(localStorage.getItem("ps_bkp")||"[]");loc.sort(function(a,b){return b.criadoEm-a.criadoEm;});allP=loc;atuSt(loc);renderP();}catch(e){}
     setSt("err");if(cb)cb();
   });
 }
-function abrP(enc){
-  const p=JSON.parse(decodeURIComponent(enc));pedAdmin=p;const cli=p.cliente||{};
+function abrP(idx){
+  var p=allP[idx];if(!p)return;pedAdm=p;var cli=p.cliente||{};
   document.getElementById("ap-t").textContent=p.promptTitulo;
   document.getElementById("ap-nm").textContent=cli.nome||"-";
   document.getElementById("ap-em").textContent=cli.email||"-";
   document.getElementById("ap-wt").textContent=cli.tel||"-";
-  document.getElementById("ap-ent").textContent=p.entrega;
-  document.getElementById("ap-pr").textContent=p.preco;
+  document.getElementById("ap-ent").textContent=p.entrega||"-";
+  document.getElementById("ap-pr").textContent=p.preco||"-";
   document.getElementById("ap-dt").textContent=new Date(p.criadoEm).toLocaleString("pt-BR");
-  document.getElementById("ap-pm").textContent=p.promptCompleto||"Prompt não encontrado.";
-  const wn=(cli.tel||"").replace(/\D/g,"");
-  const msg=encodeURIComponent("Olá "+(cli.nome||"")+", aqui está seu prompt \""+p.promptTitulo+"\" da PROMPTUS Store! 🎉\n\n"+(p.promptCompleto||""));
+  document.getElementById("ap-pm").textContent=p.promptCompleto||"Prompt nao encontrado.";
+  var wn=(cli.tel||"").replace(/\D/g,"");
+  var msg=encodeURIComponent("Ola "+(cli.nome||"")+", aqui esta seu prompt "+p.promptTitulo+" da PROMPTUS Store!
+
+"+(p.promptCompleto||""));
   document.getElementById("b-wae").href="https://wa.me/55"+wn+"?text="+msg;
   document.getElementById("b-mk").style.display=p.status==="entregue"?"none":"block";
   document.getElementById("ov-p").classList.add("on");
 }
-function fecharP(){document.getElementById("ov-p").classList.remove("on");}
+function fP(){document.getElementById("ov-p").classList.remove("on");}
 function cpAdm(){
-  const txt=document.getElementById("ap-pm").textContent;
-  const b=document.getElementById("b-cpa");
-  const ok=()=>{b.textContent="✓ COPIADO!";toast("PROMPT COPIADO!");setTimeout(()=>b.textContent="📋 COPIAR PROMPT",4000);};
-  if(navigator.clipboard)navigator.clipboard.writeText(txt).then(ok).catch(()=>fb2(txt,ok));else fb2(txt,ok);
+  var txt=document.getElementById("ap-pm").textContent;
+  var b=document.getElementById("b-cpa");
+  var ok=function(){b.textContent="COPIADO!";toast("PROMPT COPIADO!");setTimeout(function(){b.textContent="COPIAR PROMPT";},4000);};
+  if(navigator.clipboard)navigator.clipboard.writeText(txt).then(ok).catch(function(){fb2(txt,ok);});else fb2(txt,ok);
 }
 function mkOk(){
-  if(!pedAdmin)return;
-  const url=FB+"/ps_pedidos/"+(pedAdmin.id||"")+".json";
-  fetch(url,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({status:"entregue"})})
-  .then(()=>{toast("✅ ENTREGUE!");fecharP();carPeds();}).catch(()=>toast("ERRO AO ATUALIZAR"));
+  if(!pedAdm)return;
+  fetch(FB+"/ps_pedidos/"+(pedAdm.id||"")+".json",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({status:"entregue"})})
+  .then(function(){toast("ENTREGUE!");fP();carP();}).catch(function(){toast("ERRO");});
 }
 function salvar(){
-  const ti=document.getElementById("f-ti").value.trim();
-  const ar=document.getElementById("f-ar").value;
-  const nv=document.getElementById("f-nv").value;
-  const tg=document.getElementById("f-tg").value.trim();
-  const ds=document.getElementById("f-ds").value.trim();
-  const pv=document.getElementById("f-pv").value.trim();
-  const pm=document.getElementById("f-pm").value.trim();
-  const err=document.getElementById("f-err");
-  if(!ti||!tg||!ds||!pv||!pm){err.textContent="PREENCHA TODOS OS CAMPOS";return;}
+  var ti=document.getElementById("f-ti").value.trim(),ar=document.getElementById("f-ar").value;
+  var nv=document.getElementById("f-nv").value,tg=document.getElementById("f-tg").value.trim();
+  var ds=document.getElementById("f-ds").value.trim(),pv=document.getElementById("f-pv").value.trim();
+  var pm=document.getElementById("f-pm").value.trim();
+  var er=document.getElementById("f-err");
+  if(!ti||!tg||!ds||!pv||!pm){er.textContent="PREENCHA TODOS OS CAMPOS";return;}
   fetch(FB+"/ps_prompts_extra.json",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({titulo:ti,area:ar,nivel:nv,tag:tg,desc:ds,preview:pv,prompt:pm,criadoEm:Date.now()})})
-  .then(()=>{toast("PROMPT SALVO!");err.textContent="";["f-ti","f-tg","f-ds","f-pv","f-pm"].forEach(id=>document.getElementById(id).value="");})
-  .catch(()=>{err.textContent="ERRO AO SALVAR.";});
+  .then(function(){toast("PROMPT SALVO!");er.textContent="";["f-ti","f-tg","f-ds","f-pv","f-pm"].forEach(function(id){document.getElementById(id).value="";});})
+  .catch(function(){er.textContent="ERRO AO SALVAR.";});
 }
-function fb2(t,cb){const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");cb();}catch(e){}document.body.removeChild(ta);}
-function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("on");setTimeout(()=>t.classList.remove("on"),3000);}
-
-document.getElementById("ov-c").addEventListener("click",e=>{if(e.target===document.getElementById("ov-c"))fC();});
-document.getElementById("ov-p").addEventListener("click",e=>{if(e.target===document.getElementById("ov-p"))fecharP();});
-
-// INICIAR
-renderFiltros();
-render();
+function fb2(t,cb){var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");cb();}catch(e){}document.body.removeChild(ta);}
+function toast(msg){var t=document.getElementById("toast");t.textContent=msg;t.classList.add("on");setTimeout(function(){t.classList.remove("on");},3000);}
+document.getElementById("ov-c").addEventListener("click",function(e){if(e.target===document.getElementById("ov-c"))fC();});
+document.getElementById("ov-p").addEventListener("click",function(e){if(e.target===document.getElementById("ov-p"))fP();});
+init();
 </script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 </body>
 </html>
