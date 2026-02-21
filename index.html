@@ -359,22 +359,11 @@ try{firebase.initializeApp(FC);}catch(e){}
 const db=firebase.database();
 
 function carregarPrompts(){
-    db.ref('ps_prompts').once('value').then(snap=>{
-        let existentes=0;
-        if(snap.exists()) snap.forEach(()=>existentes++);
-        // Se tiver menos de 50 prompts, apaga tudo e repopula
-        if(existentes < 50){
-            db.ref('ps_prompts').remove().then(()=>{
-                const batch={};
-                BASE.forEach(p=>{const key=db.ref('ps_prompts').push().key;batch['ps_prompts/'+key]={...p,criadoEm:Date.now()};});
-                db.ref().update(batch).then(()=>setTimeout(carregarPrompts,3000));
-            });
-            return;
-        }
-        prompts=[];snap.forEach(c=>prompts.push({id:c.key,...c.val()}));
-        const el=document.getElementById('st-pr');if(el)el.innerText=prompts.length;
-        renderFiltros();renderGrid();
-    });
+    // Prompts ficam locais — sem depender do Firebase
+    prompts = BASE.map((p, i) => ({id: 'local_'+i, ...p}));
+    const el=document.getElementById('st-pr');if(el)el.innerText=prompts.length;
+    renderFiltros();
+    renderGrid();
 }
 function renderFiltros(){
     const w=document.getElementById('filtros');if(!w)return;
