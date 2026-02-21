@@ -8,192 +8,132 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <style>
-        :root {
-            --bg: #030305; --card: #0a0a10; --card2: #0f0f18;
-            --gold: #bf953f; --gold-light: #fcf6ba;
-            --gold-grad: linear-gradient(135deg, #bf953f 0%, #fcf6ba 50%, #b38728 100%);
-            --border: rgba(191,149,63,0.14); --border-h: rgba(191,149,63,0.4);
-            --text: #f0ede8; --sub: rgba(240,237,232,0.45); --accent: rgba(191,149,63,0.07);
-            --green: #27ae60; --red: #e74c3c;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
-        body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
-        body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse 70% 50% at 50% -10%, rgba(191,149,63,0.05) 0%, transparent 60%); pointer-events: none; z-index: 0; }
-
-        /* PÁGINAS */
-        .page { display: none; min-height: 100vh; position: relative; z-index: 1; }
-        .page.ativa { display: block; }
-
-        /* ══ NAVBAR ══ */
-        .navbar { display: flex; align-items: center; justify-content: space-between; padding: 18px 48px; border-bottom: 1px solid var(--border); background: rgba(3,3,5,0.9); backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 200; flex-wrap: wrap; gap: 12px; }
-        .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 900; background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
-        .nav-logo span { font-size: 11px; font-family: 'DM Sans', sans-serif; font-weight: 600; letter-spacing: 3px; color: var(--sub); -webkit-text-fill-color: var(--sub); }
-        .nav-right { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-        .nav-btn { background: none; border: 1px solid var(--border); color: var(--sub); padding: 8px 18px; border-radius: 3px; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 1px; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
-        .nav-btn:hover { border-color: var(--gold); color: var(--gold); }
-        .nav-btn.gold { background: var(--gold-grad); color: #000; border-color: transparent; }
-        .nav-user { font-size: 12px; font-weight: 600; color: var(--gold); background: var(--accent); border: 1px solid var(--border); border-radius: 20px; padding: 7px 16px; }
-
-        /* ══ HERO LOJA ══ */
-        .hero { padding: 80px 48px 60px; max-width: 1160px; margin: 0 auto; text-align: center; }
-        .hero-kicker { font-size: 9px; font-weight: 700; letter-spacing: 6px; color: var(--gold); text-transform: uppercase; margin-bottom: 18px; }
-        .hero-titulo { font-family: 'Cormorant Garamond', serif; font-size: clamp(38px, 6vw, 72px); font-weight: 900; line-height: 1.1; margin-bottom: 18px; }
-        .hero-titulo em { font-style: italic; background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero-sub { font-size: 15px; color: var(--sub); max-width: 520px; margin: 0 auto 14px; line-height: 1.8; }
-        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(39,174,96,0.1); border: 1px solid rgba(39,174,96,0.25); border-radius: 20px; padding: 6px 16px; font-size: 10px; font-weight: 700; color: var(--green); letter-spacing: 2px; text-transform: uppercase; margin-top: 12px; }
-
-        /* ══ FILTROS ══ */
-        .filtros-wrap { max-width: 1160px; margin: 0 auto; padding: 0 48px 30px; display: flex; gap: 8px; flex-wrap: wrap; }
-        .filtro { background: var(--card); border: 1px solid var(--border); border-radius: 30px; padding: 8px 18px; font-size: 11px; font-weight: 600; color: var(--sub); cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
-        .filtro:hover { border-color: var(--gold); color: var(--gold); }
-        .filtro.ativo { background: var(--gold-grad); color: #000; border-color: transparent; }
-
-        /* BUSCA */
-        .busca-wrap { max-width: 1160px; margin: 0 auto; padding: 0 48px 24px; }
-        .busca { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 14px 20px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; transition: 0.3s; }
-        .busca::placeholder { color: var(--sub); }
-        .busca:focus { border-color: var(--gold); }
-
-        /* ══ GRID DE PROMPTS ══ */
-        .grid-section { max-width: 1160px; margin: 0 auto; padding: 0 48px 80px; }
-        .grid-label { font-size: 9px; font-weight: 700; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
-        .grid-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
-
-        /* ══ CARD DE PROMPT ══ */
-        .pcard { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: 0.3s; position: relative; animation: fadeUp 0.4s ease both; }
-        .pcard:hover { border-color: var(--border-h); transform: translateY(-3px); }
-        .pcard-top { padding: 22px 22px 16px; }
-        .pcard-area { font-size: 9px; font-weight: 700; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
-        .pcard-titulo { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
-        .pcard-desc { font-size: 12px; color: var(--sub); line-height: 1.6; margin-bottom: 14px; }
-
-        /* PREVIEW COM CADEADO */
-        .pcard-preview { position: relative; background: #000; border: 1px solid var(--border); border-radius: 4px; margin: 0 22px 16px; overflow: hidden; }
-        .pcard-preview-texto { font-family: 'Courier New', monospace; font-size: 11px; color: rgba(252,246,186,0.5); line-height: 1.6; padding: 12px 14px; white-space: pre-wrap; }
-        .pcard-preview-blur { position: absolute; bottom: 0; left: 0; right: 0; height: 55px; background: linear-gradient(transparent, #000); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px; }
-        .lock-pill { display: flex; align-items: center; gap: 5px; background: rgba(191,149,63,0.12); border: 1px solid rgba(191,149,63,0.3); border-radius: 20px; padding: 4px 12px; font-size: 9px; font-weight: 700; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; }
-
-        /* CARD BOTTOM */
-        .pcard-bottom { padding: 14px 22px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
-        .pcard-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-        .tag { font-size: 8px; font-weight: 700; padding: 3px 9px; border-radius: 20px; background: var(--accent); border: 1px solid var(--border); color: var(--sub); text-transform: uppercase; }
-        .tag.nivel-basico { color: #3498db; border-color: rgba(52,152,219,0.3); background: rgba(52,152,219,0.08); }
-        .tag.nivel-inter { color: #f39c12; border-color: rgba(243,156,18,0.3); background: rgba(243,156,18,0.08); }
-        .tag.nivel-avancado { color: #e74c3c; border-color: rgba(231,76,60,0.3); background: rgba(231,76,60,0.08); }
-        .tag.nivel-premium { color: var(--gold); border-color: rgba(191,149,63,0.3); background: rgba(191,149,63,0.08); }
-        .pcard-preco { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .btn-comprar { background: var(--gold-grad); color: #000; border: none; padding: 10px 20px; border-radius: 3px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: 0.3s; white-space: nowrap; }
-        .btn-comprar:hover { filter: brightness(1.15); }
-
-        /* ══ MODAL COMPRA ══ */
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.94); z-index: 500; display: none; align-items: center; justify-content: center; padding: 20px; }
-        .overlay.show { display: flex; }
-        .modal { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 40px; max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; animation: fadeUp 0.3s ease both; }
-        .modal::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--gold-grad); border-radius: 10px 10px 0 0; }
-        .modal-fechar { position: absolute; top: 14px; right: 18px; background: none; border: none; color: var(--sub); font-size: 24px; cursor: pointer; transition: 0.2s; }
-        .modal-fechar:hover { color: var(--text); }
-        .modal-step { display: none; }
-        .modal-step.ativo { display: block; }
-
-        /* STEP 1 — CADASTRO */
-        .modal-kicker { font-size: 9px; font-weight: 700; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
-        .modal-titulo { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 700; margin-bottom: 6px; }
-        .modal-sub { font-size: 13px; color: var(--sub); line-height: 1.7; margin-bottom: 24px; }
-        .inp { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 4px; padding: 14px 16px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; transition: 0.3s; margin-bottom: 12px; }
-        .inp::placeholder { color: var(--sub); }
-        .inp:focus { border-color: var(--gold); }
-        .radio-group { display: flex; gap: 10px; margin-bottom: 16px; }
-        .radio-opt { flex: 1; border: 1px solid var(--border); border-radius: 4px; padding: 12px; cursor: pointer; text-align: center; transition: 0.3s; }
-        .radio-opt.sel { border-color: var(--gold); background: var(--accent); }
-        .radio-opt-icon { font-size: 20px; margin-bottom: 4px; }
-        .radio-opt-label { font-size: 11px; font-weight: 600; color: var(--sub); }
-        .radio-opt.sel .radio-opt-label { color: var(--gold); }
-        .btn-full { width: 100%; background: var(--gold-grad); color: #000; border: none; padding: 16px; border-radius: 4px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; transition: 0.3s; margin-top: 6px; }
-        .btn-full:hover { filter: brightness(1.15); }
-        .btn-full.green { background: linear-gradient(135deg, #27ae60, #52c452); }
-        .btn-full.copied { background: linear-gradient(135deg, #27ae60, #52c452); }
-
-        /* STEP 2 — PIX */
-        .prompt-resumo { background: var(--card2); border: 1px solid var(--border); border-radius: 6px; padding: 16px; margin-bottom: 20px; }
-        .prompt-resumo-nome { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; margin-bottom: 4px; }
-        .prompt-resumo-preco { font-size: 28px; font-family: 'Cormorant Garamond', serif; font-weight: 700; background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .pix-box { background: #000; border: 1px solid rgba(191,149,63,0.2); border-radius: 6px; padding: 18px; margin-bottom: 16px; text-align: center; }
-        .pix-lbl { font-size: 9px; font-weight: 700; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
-        .pix-key { font-size: 18px; font-weight: 700; color: var(--text); letter-spacing: 2px; margin-bottom: 6px; }
-        .pix-nome { font-size: 11px; color: var(--sub); }
-        .aviso-entrega { font-size: 12px; color: var(--sub); line-height: 1.7; text-align: center; margin-top: 16px; }
-        .aviso-entrega strong { color: var(--gold); }
-
-        /* STEP 3 — AGUARDANDO */
-        .aguardando-box { text-align: center; padding: 20px 0; }
-        .aguardando-icon { font-size: 50px; margin-bottom: 16px; animation: pulse 2s infinite; }
-        @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
-        .aguardando-titulo { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 700; margin-bottom: 10px; }
-        .aguardando-sub { font-size: 13px; color: var(--sub); line-height: 1.7; }
-
-        /* ══ PAINEL ADMIN ══ */
-        #page-admin { background: var(--bg); }
-        .admin-header { padding: 30px 40px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
-        .admin-titulo { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; }
-        .admin-titulo em { font-style: italic; background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .admin-tabs { display: flex; gap: 8px; padding: 20px 40px 0; border-bottom: 1px solid var(--border); }
-        .admin-tab { background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 20px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700; color: var(--sub); cursor: pointer; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; margin-bottom: -1px; }
-        .admin-tab.ativo { color: var(--gold); border-bottom-color: var(--gold); }
-        .admin-content { padding: 30px 40px; }
-        .admin-panel { display: none; }
-        .admin-panel.ativo { display: block; }
-
-        /* PEDIDOS */
-        .pedidos-grid { display: flex; flex-direction: column; gap: 12px; }
-        .pedido-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; transition: 0.3s; }
-        .pedido-card:hover { border-color: var(--border-h); }
-        .pedido-info h3 { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 700; margin-bottom: 4px; }
-        .pedido-meta { font-size: 11px; color: var(--sub); display: flex; gap: 14px; flex-wrap: wrap; }
-        .pedido-meta span { display: flex; align-items: center; gap: 4px; }
-        .pedido-preco { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .pedido-status { font-size: 9px; font-weight: 700; letter-spacing: 2px; padding: 5px 12px; border-radius: 20px; text-transform: uppercase; }
-        .status-pendente { background: rgba(243,156,18,0.12); border: 1px solid rgba(243,156,18,0.3); color: #f39c12; }
-        .status-entregue { background: rgba(39,174,96,0.12); border: 1px solid rgba(39,174,96,0.3); color: var(--green); }
-        .pedido-acoes { display: flex; gap: 8px; flex-wrap: wrap; }
-        .btn-entregar { background: var(--gold-grad); color: #000; border: none; padding: 10px 18px; border-radius: 3px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
-        .btn-entregar:hover { filter: brightness(1.15); }
-        .btn-ver-pedido { background: none; color: var(--gold); border: 1px solid rgba(191,149,63,0.3); padding: 10px 18px; border-radius: 3px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
-        .btn-ver-pedido:hover { background: var(--accent); }
-
-        /* ADICIONAR PROMPT */
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-        .form-full { grid-column: 1 / -1; }
-        .inp-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; color: var(--sub); text-transform: uppercase; margin-bottom: 6px; display: block; }
-        textarea.inp { resize: vertical; min-height: 120px; }
-        select.inp { appearance: none; cursor: pointer; }
-
-        /* STATS ADMIN */
-        .stats-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-bottom: 30px; }
-        .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
-        .stat-card-num { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 700; background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 6px; }
-        .stat-card-label { font-size: 10px; color: var(--sub); letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
-
-        /* LOGIN ADMIN */
-        #page-admin-login { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: var(--bg); }
-        .admin-login-box { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 40px; width: 100%; max-width: 360px; text-align: center; position: relative; }
-        .admin-login-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--gold-grad); }
-
-        /* TOAST */
-        #toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--gold-grad); color: #000; padding: 13px 26px; border-radius: 4px; font-size: 10px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; opacity: 0; transition: 0.3s; z-index: 9999; pointer-events: none; white-space: nowrap; }
-        #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-        .vazio { grid-column: 1/-1; text-align: center; padding: 80px 20px; color: var(--sub); font-size: 13px; letter-spacing: 2px; }
-
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 640px) {
-            .navbar, .hero, .filtros-wrap, .busca-wrap, .grid-section { padding-left: 20px; padding-right: 20px; }
-            .grid { grid-template-columns: 1fr; }
-            .modal { padding: 28px 20px; }
-            .admin-header, .admin-content { padding-left: 20px; padding-right: 20px; }
-            .form-grid { grid-template-columns: 1fr; }
-            .radio-group { flex-direction: column; }
+        :root{--bg:#030305;--card:#0a0a10;--card2:#0f0f18;--gold:#bf953f;--gold-grad:linear-gradient(135deg,#bf953f 0%,#fcf6ba 50%,#b38728 100%);--border:rgba(191,149,63,0.14);--border-h:rgba(191,149,63,0.4);--text:#f0ede8;--sub:rgba(240,237,232,0.45);--accent:rgba(191,149,63,0.07);--green:#27ae60;--red:#e74c3c;}
+        *{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+        body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+        body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 50% -10%,rgba(191,149,63,0.05) 0%,transparent 60%);pointer-events:none;z-index:0;}
+        .page{display:none;min-height:100vh;position:relative;z-index:1;}.page.ativa{display:block;}
+        .navbar{display:flex;align-items:center;justify-content:space-between;padding:18px 48px;border-bottom:1px solid var(--border);background:rgba(3,3,5,0.95);backdrop-filter:blur(20px);position:sticky;top:0;z-index:200;flex-wrap:wrap;gap:12px;}
+        .nav-logo{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:900;background:var(--gold-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer;}
+        .nav-logo span{font-size:11px;font-family:'DM Sans',sans-serif;font-weight:600;letter-spacing:3px;color:var(--sub);-webkit-text-fill-color:var(--sub);}
+        .nav-right{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+        .nav-btn{background:none;border:1px solid var(--border);color:var(--sub);padding:8px 18px;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;cursor:pointer;transition:0.3s;text-transform:uppercase;}
+        .nav-btn:hover{border-color:var(--gold);color:var(--gold);}
+        .hero{padding:80px 48px 60px;max-width:1160px;margin:0 auto;text-align:center;}
+        .hero-kicker{font-size:9px;font-weight:700;letter-spacing:6px;color:var(--gold);text-transform:uppercase;margin-bottom:18px;}
+        .hero-titulo{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,6vw,72px);font-weight:900;line-height:1.1;margin-bottom:18px;}
+        .hero-titulo em{font-style:italic;background:var(--gold-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+        .hero-sub{font-size:15px;color:var(--sub);max-width:520px;margin:0 auto 14px;line-height:1.8;}
+        .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(39,174,96,0.1);border:1px solid rgba(39,174,96,0.25);border-radius:20px;padding:6px 16px;font-size:10px;font-weight:700;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-top:12px;}
+        .filtros-wrap{max-width:1160px;margin:0 auto;padding:0 48px 30px;display:flex;gap:8px;flex-wrap:wrap;}
+        .filtro{background:var(--card);border:1px solid var(--border);border-radius:30px;padding:8px 18px;font-size:11px;font-weight:600;color:var(--sub);cursor:pointer;transition:0.3s;text-transform:uppercase;letter-spacing:1px;}
+        .filtro:hover{border-color:var(--gold);color:var(--gold);}.filtro.ativo{background:var(--gold-grad);color:#000;border-color:transparent;}
+        .busca-wrap{max-width:1160px;margin:0 auto;padding:0 48px 24px;}
+        .busca{width:100%;background:var(--card);border:1px solid var(--border);border-radius:4px;padding:14px 20px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:0.3s;}
+        .busca::placeholder{color:var(--sub);}.busca:focus{border-color:var(--gold);}
+        .grid-section{max-width:1160px;margin:0 auto;padding:0 48px 80px;}
+        .grid-label{font-size:9px;font-weight:700;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+        .grid-label::after{content:'';flex:1;height:1px;background:var(--border);}
+        .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;}
+        .pcard{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:0.3s;position:relative;}
+        .pcard:hover{border-color:var(--border-h);transform:translateY(-3px);}
+        .pcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold-grad);transform:scaleX(0);transition:0.3s;transform-origin:left;}
+        .pcard:hover::before{transform:scaleX(1);}
+        .pcard-top{padding:22px 22px 16px;}
+        .pcard-area{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;}
+        .pcard-titulo{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;margin-bottom:8px;line-height:1.3;}
+        .pcard-desc{font-size:12px;color:var(--sub);line-height:1.6;margin-bottom:14px;}
+        .pcard-preview{position:relative;background:#000;border:1px solid var(--border);border-radius:4px;margin:0 22px 16px;overflow:hidden;}
+        .pcard-preview-texto{font-family:'Courier New',monospace;font-size:10px;color:rgba(252,246,186,0.5);line-height:1.6;padding:12px 14px;white-space:pre-wrap;max-height:80px;overflow:hidden;}
+        .pcard-preview-blur{position:absolute;bottom:0;left:0;right:0;height:55px;background:linear-gradient(transparent,#000);display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;}
+        .lock-pill{display:flex;align-items:center;gap:5px;background:rgba(191,149,63,0.12);border:1px solid rgba(191,149,63,0.3);border-radius:20px;padding:4px 12px;font-size:9px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;}
+        .pcard-bottom{padding:14px 22px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+        .pcard-tags{display:flex;gap:6px;flex-wrap:wrap;}
+        .tag{font-size:8px;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--accent);border:1px solid var(--border);color:var(--sub);text-transform:uppercase;}
+        .tag.nivel-basico{color:#3498db;border-color:rgba(52,152,219,0.3);background:rgba(52,152,219,0.08);}
+        .tag.nivel-inter{color:#f39c12;border-color:rgba(243,156,18,0.3);background:rgba(243,156,18,0.08);}
+        .tag.nivel-avancado{color:#e74c3c;border-color:rgba(231,76,60,0.3);background:rgba(231,76,60,0.08);}
+        .tag.nivel-premium{color:var(--gold);border-color:rgba(191,149,63,0.3);background:rgba(191,149,63,0.08);}
+        .pcard-preco{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;background:var(--gold-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+        .btn-comprar{background:var(--gold-grad);color:#000;border:none;padding:10px 20px;border-radius:3px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:0.3s;white-space:nowrap;}
+        .btn-comprar:hover{filter:brightness(1.15);}
+        .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.94);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;}
+        .overlay.show{display:flex;}
+        .modal{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:36px;max-width:480px;width:100%;max-height:90vh;overflow-y:auto;position:relative;}
+        .modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold-grad);border-radius:10px 10px 0 0;}
+        .modal-fechar{position:absolute;top:14px;right:18px;background:none;border:none;color:var(--sub);font-size:24px;cursor:pointer;}
+        .modal-step{display:none;}.modal-step.ativo{display:block;}
+        .modal-kicker{font-size:9px;font-weight:700;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;}
+        .modal-titulo{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;margin-bottom:8px;}
+        .modal-sub{font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:22px;}
+        .inp{width:100%;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:4px;padding:14px 16px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:0.3s;margin-bottom:12px;}
+        .inp::placeholder{color:var(--sub);}.inp:focus{border-color:var(--gold);}
+        .radio-group{display:flex;gap:10px;margin-bottom:16px;}
+        .radio-opt{flex:1;border:1px solid var(--border);border-radius:4px;padding:12px;cursor:pointer;text-align:center;transition:0.3s;}
+        .radio-opt.sel{border-color:var(--gold);background:var(--accent);}
+        .radio-opt-icon{font-size:20px;margin-bottom:4px;}
+        .radio-opt-label{font-size:11px;font-weight:600;color:var(--sub);}
+        .radio-opt.sel .radio-opt-label{color:var(--gold);}
+        .btn-full{width:100%;background:var(--gold-grad);color:#000;border:none;padding:16px;border-radius:4px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:0.3s;margin-top:6px;}
+        .btn-full:hover{filter:brightness(1.15);}
+        .prompt-resumo{background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:16px;margin-bottom:20px;}
+        .prompt-resumo-nome{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;margin-bottom:4px;}
+        .prompt-resumo-preco{font-size:28px;font-family:'Cormorant Garamond',serif;font-weight:700;background:var(--gold-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+        .pix-box{background:#000;border:1px solid rgba(191,149,63,0.2);border-radius:6px;padding:18px;margin-bottom:14px;text-align:center;}
+        .pix-lbl{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;}
+        .pix-key{font-size:20px;font-weight:700;color:var(--text);letter-spacing:2px;margin-bottom:6px;}
+        .pix-nome{font-size:11px;color:var(--sub);}
+        .aviso-entrega{font-size:12px;color:var(--sub);line-height:1.8;text-align:center;margin:14px 0;}
+        .aviso-entrega strong{color:var(--gold);}
+        .aguardando-box{text-align:center;padding:20px 0;}
+        .aguardando-icon{font-size:50px;margin-bottom:16px;animation:pulse 2s infinite;}
+        @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}
+        .aguardando-titulo{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;margin-bottom:10px;}
+        .aguardando-sub{font-size:13px;color:var(--sub);line-height:1.7;}
+        #page-admin-login{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--bg);}
+        .admin-login-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:40px;width:100%;max-width:360px;text-align:center;position:relative;}
+        .admin-login-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold-grad);}
+        .admin-header{padding:24px 40px;border-bottom:1px solid var(--border);}
+        .admin-titulo{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;}
+        .admin-titulo em{font-style:italic;background:var(--gold-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+        .stats-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin:20px 40px;}
+        .stat-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px;}
+        .stat-card-num{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:700;background:var(--gold-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:5px;}
+        .stat-card-label{font-size:9px;color:var(--sub);letter-spacing:2px;text-transform:uppercase;font-weight:600;}
+        .admin-tabs{display:flex;gap:0;padding:0 40px;border-bottom:1px solid var(--border);}
+        .admin-tab{background:none;border:none;border-bottom:2px solid transparent;padding:12px 20px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;color:var(--sub);cursor:pointer;letter-spacing:2px;text-transform:uppercase;transition:0.3s;margin-bottom:-1px;}
+        .admin-tab.ativo{color:var(--gold);border-bottom-color:var(--gold);}
+        .admin-content{padding:24px 40px;}
+        .admin-panel{display:none;}.admin-panel.ativo{display:block;}
+        .pedidos-grid{display:flex;flex-direction:column;gap:12px;}
+        .pedido-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px;transition:0.3s;}
+        .pedido-card:hover{border-color:var(--border-h);}
+        .pedido-header{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:10px;}
+        .pedido-titulo{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;margin-bottom:4px;}
+        .pedido-meta{font-size:11px;color:var(--sub);display:flex;gap:12px;flex-wrap:wrap;}
+        .pedido-preco{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;background:var(--gold-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+        .pedido-status{font-size:9px;font-weight:700;letter-spacing:2px;padding:4px 10px;border-radius:20px;text-transform:uppercase;white-space:nowrap;}
+        .status-pendente{background:rgba(243,156,18,0.12);border:1px solid rgba(243,156,18,0.3);color:#f39c12;}
+        .status-entregue{background:rgba(39,174,96,0.12);border:1px solid rgba(39,174,96,0.3);color:var(--green);}
+        .pedido-acoes{display:flex;gap:8px;margin-top:10px;}
+        .btn-entregar{background:var(--gold-grad);color:#000;border:none;padding:9px 16px;border-radius:3px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:0.3s;}
+        .btn-entregar:hover{filter:brightness(1.15);}
+        .btn-ver-pedido{background:none;color:var(--gold);border:1px solid rgba(191,149,63,0.3);padding:9px 16px;border-radius:3px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:0.3s;}
+        .btn-ver-pedido:hover{background:var(--accent);}
+        .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+        .form-full{grid-column:1/-1;}
+        .inp-label{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--sub);text-transform:uppercase;margin-bottom:6px;display:block;}
+        textarea.inp{resize:vertical;min-height:120px;}select.inp{appearance:none;cursor:pointer;}
+        #toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--gold-grad);color:#000;padding:13px 26px;border-radius:4px;font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;opacity:0;transition:0.3s;z-index:9999;pointer-events:none;white-space:nowrap;}
+        #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+        .vazio{grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--sub);font-size:13px;letter-spacing:2px;}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+        .pcard{animation:fadeUp 0.4s ease both;}
+        @media(max-width:640px){
+            .navbar,.hero,.filtros-wrap,.busca-wrap,.grid-section{padding-left:20px;padding-right:20px;}
+            .grid{grid-template-columns:1fr;}.modal{padding:24px 16px;}
+            .admin-header,.admin-content,.stats-cards,.admin-tabs{padding-left:16px;padding-right:16px;}
+            .form-grid{grid-template-columns:1fr;}.radio-group{flex-direction:column;}
         }
     </style>
 </head>
@@ -202,674 +142,716 @@
 
 <!-- OVERLAY COMPRA -->
 <div class="overlay" id="overlay-compra">
-    <div class="modal">
-        <button class="modal-fechar" onclick="fecharOverlay()">×</button>
-
-        <!-- STEP 1: DADOS DO CLIENTE -->
-        <div class="modal-step ativo" id="step1">
-            <div class="modal-kicker">Quase lá!</div>
-            <div class="modal-titulo" id="s1-titulo">Petição Inicial</div>
-            <div class="modal-sub">Preencha seus dados para receber o prompt após o pagamento.</div>
-
-            <input class="inp" type="text" id="s1-nome" placeholder="Seu nome completo">
-            <input class="inp" type="email" id="s1-email" placeholder="Seu e-mail">
-            <input class="inp" type="tel" id="s1-whats" placeholder="WhatsApp com DDD">
-
-            <div style="margin-bottom:10px;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--sub);text-transform:uppercase;">Como quer receber o prompt?</div>
-            <div class="radio-group">
-                <div class="radio-opt sel" id="opt-email" onclick="selecionarEntrega('email')">
-                    <div class="radio-opt-icon">📧</div>
-                    <div class="radio-opt-label">E-mail</div>
-                </div>
-                <div class="radio-opt" id="opt-whats" onclick="selecionarEntrega('whats')">
-                    <div class="radio-opt-icon">💬</div>
-                    <div class="radio-opt-label">WhatsApp</div>
-                </div>
-                <div class="radio-opt" id="opt-ambos" onclick="selecionarEntrega('ambos')">
-                    <div class="radio-opt-icon">✅</div>
-                    <div class="radio-opt-label">Os dois</div>
-                </div>
-            </div>
-
-            <div id="s1-erro" style="font-size:11px;color:var(--red);margin-bottom:10px;min-height:16px;"></div>
-            <button class="btn-full" onclick="irParaPix()">CONTINUAR PARA PAGAMENTO →</button>
+<div class="modal">
+    <button class="modal-fechar" onclick="fecharOverlay()">×</button>
+    <!-- STEP 1 -->
+    <div class="modal-step ativo" id="step1">
+        <div class="modal-kicker">Quase lá!</div>
+        <div class="modal-titulo" id="s1-titulo"></div>
+        <div class="modal-sub">Preencha seus dados para receber o prompt após o pagamento.</div>
+        <input class="inp" type="text" id="s1-nome" placeholder="Seu nome completo">
+        <input class="inp" type="email" id="s1-email" placeholder="Seu e-mail">
+        <input class="inp" type="tel" id="s1-whats" placeholder="WhatsApp com DDD (ex: 11999990000)">
+        <div style="margin-bottom:8px;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--sub);text-transform:uppercase;">Como quer receber o prompt?</div>
+        <div class="radio-group">
+            <div class="radio-opt sel" id="opt-email" onclick="selEntrega('email')"><div class="radio-opt-icon">📧</div><div class="radio-opt-label">E-mail</div></div>
+            <div class="radio-opt" id="opt-whats" onclick="selEntrega('whats')"><div class="radio-opt-icon">💬</div><div class="radio-opt-label">WhatsApp</div></div>
+            <div class="radio-opt" id="opt-ambos" onclick="selEntrega('ambos')"><div class="radio-opt-icon">✅</div><div class="radio-opt-label">Os dois</div></div>
         </div>
-
-        <!-- STEP 2: PIX -->
-        <div class="modal-step" id="step2">
-            <div class="modal-kicker">Pagamento</div>
-            <div class="modal-titulo">Pagar com Pix</div>
-            <div class="modal-sub">Faça o Pix abaixo. Seu prompt será enviado após confirmação.</div>
-
-            <div class="prompt-resumo">
-                <div class="prompt-resumo-nome" id="s2-titulo"></div>
-                <div class="prompt-resumo-preco" id="s2-preco"></div>
-            </div>
-
-            <div class="pix-box">
-                <div class="pix-lbl">Chave Pix — CPF</div>
-                <div class="pix-key">39521484829</div>
-                <div class="pix-nome">Cássia Kelly Lins Reis</div>
-            </div>
-
-            <button class="btn-full" id="btn-copiar-pix" onclick="copiarPix()">📋 COPIAR CHAVE PIX</button>
-
-            <div class="aviso-entrega">
-                Após pagar, <strong>envie o comprovante</strong> para o WhatsApp abaixo e clique em "Já fiz o pagamento".<br><br>
-                <strong>Você receberá o prompt em breve via <span id="s2-entrega"></span>.</strong>
-            </div>
-
-            <a id="btn-whats-comprovante" href="" target="_blank" class="btn-full" style="margin-top:16px;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;text-decoration:none;display:block;text-align:center;padding:16px;border-radius:4px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;">💬 ENVIAR COMPROVANTE NO WHATSAPP</a>
-
-            <button class="btn-full" style="margin-top:10px;background:rgba(39,174,96,0.15);color:var(--green);border:1px solid rgba(39,174,96,0.3);" onclick="confirmarPagamento()">✅ JÁ FIZ O PAGAMENTO</button>
+        <div id="s1-erro" style="font-size:11px;color:var(--red);margin-bottom:8px;min-height:16px;"></div>
+        <button class="btn-full" onclick="irParaPix()">CONTINUAR →</button>
+    </div>
+    <!-- STEP 2 -->
+    <div class="modal-step" id="step2">
+        <div class="modal-kicker">Pagamento via Pix</div>
+        <div class="modal-titulo">Pague e envie o comprovante</div>
+        <div class="prompt-resumo">
+            <div class="prompt-resumo-nome" id="s2-titulo"></div>
+            <div class="prompt-resumo-preco" id="s2-preco"></div>
         </div>
-
-        <!-- STEP 3: AGUARDANDO -->
-        <div class="modal-step" id="step3">
-            <div class="aguardando-box">
-                <div class="aguardando-icon">⏳</div>
-                <div class="aguardando-titulo">Pedido recebido!</div>
-                <div class="aguardando-sub">
-                    Seu pedido foi registrado com sucesso.<br><br>
-                    Estamos verificando o pagamento e em breve você receberá o prompt via <strong id="s3-entrega" style="color:var(--gold);"></strong>.<br><br>
-                    Tempo médio: <strong style="color:var(--gold);">até 1 hora</strong>.
-                </div>
-            </div>
+        <div class="pix-box">
+            <div class="pix-lbl">Chave Pix — CPF</div>
+            <div class="pix-key" id="pix-key-display">39521484829</div>
+            <div class="pix-nome">Cássia Kelly Lins Reis</div>
+        </div>
+        <button class="btn-full" id="btn-copiar-pix" onclick="copiarPix()" style="margin-bottom:10px;">📋 COPIAR CHAVE PIX</button>
+        <div class="aviso-entrega">
+            Após pagar, <strong>envie o comprovante</strong> para o WhatsApp:<br>
+            <strong style="font-size:16px;display:block;margin:6px 0;">📲 (11) 97885-7415</strong>
+        </div>
+        <a id="btn-wa-comprovante" href="" target="_blank" style="display:block;width:100%;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;text-decoration:none;text-align:center;padding:15px;border-radius:4px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">💬 ENVIAR COMPROVANTE NO WHATSAPP</a>
+        <div class="aviso-entrega" style="margin-top:0;">Você receberá o prompt via <strong><span id="s2-entrega"></span></strong> assim que confirmarmos o pagamento.</div>
+        <button class="btn-full" style="background:rgba(39,174,96,0.15);color:var(--green);border:1px solid rgba(39,174,96,0.3);margin-top:10px;" onclick="confirmarPagamento()">✅ JÁ ENVIEI O COMPROVANTE</button>
+    </div>
+    <!-- STEP 3 -->
+    <div class="modal-step" id="step3">
+        <div class="aguardando-box">
+            <div class="aguardando-icon">⏳</div>
+            <div class="aguardando-titulo">Pedido registrado!</div>
+            <div class="aguardando-sub">Seu pedido foi salvo com sucesso.<br><br>Assim que confirmarmos o comprovante, você receberá o prompt via <strong id="s3-entrega" style="color:var(--gold);"></strong>.<br><br>Tempo médio: <strong style="color:var(--gold);">até 1 hora.</strong></div>
         </div>
     </div>
 </div>
+</div>
 
-<!-- OVERLAY VER PEDIDO (ADMIN) -->
+<!-- OVERLAY PEDIDO ADMIN -->
 <div class="overlay" id="overlay-pedido">
-    <div class="modal">
-        <button class="modal-fechar" onclick="fecharOverlayPedido()">×</button>
-        <div class="modal-kicker">Detalhes do Pedido</div>
-        <div class="modal-titulo" id="op-prompt"></div>
-        <div style="margin:14px 0;padding:14px;background:var(--card2);border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--sub);line-height:1.7;">
-            <div><strong style="color:var(--text);">Cliente:</strong> <span id="op-nome"></span></div>
-            <div><strong style="color:var(--text);">E-mail:</strong> <span id="op-email"></span></div>
-            <div><strong style="color:var(--text);">WhatsApp:</strong> <span id="op-whats"></span></div>
-            <div><strong style="color:var(--text);">Entrega:</strong> <span id="op-entrega"></span></div>
-            <div><strong style="color:var(--text);">Valor:</strong> <span id="op-preco"></span></div>
-            <div><strong style="color:var(--text);">Data:</strong> <span id="op-data"></span></div>
-        </div>
-        <div style="margin-bottom:10px;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--sub);text-transform:uppercase;">Prompt completo para enviar:</div>
-        <div id="op-prompt-completo" style="background:#000;border:1px solid var(--border);border-radius:4px;padding:16px;font-family:'Courier New',monospace;font-size:11px;color:#fcf6ba;line-height:1.7;white-space:pre-wrap;max-height:220px;overflow-y:auto;margin-bottom:14px;"></div>
-        <button class="btn-full" id="btn-copiar-prompt-admin" onclick="copiarPromptAdmin()">📋 COPIAR PROMPT PARA ENVIAR</button>
-        <button class="btn-full" style="margin-top:10px;" id="btn-marcar-entregue" onclick="marcarEntregue()">✅ MARCAR COMO ENTREGUE</button>
+<div class="modal" style="max-width:540px;">
+    <button class="modal-fechar" onclick="document.getElementById('overlay-pedido').classList.remove('show')">×</button>
+    <div class="modal-kicker">Detalhes do Pedido</div>
+    <div class="modal-titulo" id="op-titulo"></div>
+    <div style="background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:14px;margin:14px 0;font-size:12px;color:var(--sub);line-height:2;">
+        <div>👤 <strong style="color:var(--text);">Cliente:</strong> <span id="op-nome"></span></div>
+        <div>📧 <strong style="color:var(--text);">E-mail:</strong> <span id="op-email"></span></div>
+        <div>💬 <strong style="color:var(--text);">WhatsApp:</strong> <span id="op-whats"></span></div>
+        <div>📦 <strong style="color:var(--text);">Entrega:</strong> <span id="op-entrega"></span></div>
+        <div>💰 <strong style="color:var(--text);">Valor:</strong> <span id="op-preco"></span></div>
+        <div>🕐 <strong style="color:var(--text);">Data:</strong> <span id="op-data"></span></div>
     </div>
+    <div style="font-size:9px;font-weight:700;letter-spacing:2px;color:var(--sub);text-transform:uppercase;margin-bottom:8px;">Prompt completo — copie e envie ao cliente:</div>
+    <div id="op-prompt-txt" style="background:#000;border:1px solid var(--border);border-radius:4px;padding:14px;font-family:'Courier New',monospace;font-size:11px;color:#fcf6ba;line-height:1.7;white-space:pre-wrap;max-height:200px;overflow-y:auto;margin-bottom:12px;"></div>
+    <button class="btn-full" id="btn-copiar-admin" onclick="copiarPromptAdmin()" style="margin-bottom:10px;">📋 COPIAR PROMPT</button>
+    <a id="btn-wa-entregar" href="" target="_blank" style="display:block;width:100%;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;text-decoration:none;text-align:center;padding:15px;border-radius:4px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">💬 ABRIR WHATSAPP DO CLIENTE</button>
+    <button class="btn-full" id="btn-marcar" onclick="marcarEntregue()" style="background:rgba(39,174,96,0.15);color:var(--green);border:1px solid rgba(39,174,96,0.3);">✅ MARCAR COMO ENTREGUE</button>
+</div>
 </div>
 
-<!-- ══════════════ PÁGINA: LOJA ══════════════ -->
+<!-- LOJA -->
 <div id="page-loja" class="page ativa">
     <nav class="navbar">
         <div class="nav-logo" onclick="irParaLoja()">PROMPTUS <span>STORE</span></div>
-        <div class="nav-right">
-            <button class="nav-btn" onclick="irParaAdminLogin()">🔐 Admin</button>
-        </div>
+        <div class="nav-right"><button class="nav-btn" onclick="irParaAdminLogin()">🔐 Admin</button></div>
     </nav>
-
     <div class="hero">
         <div class="hero-kicker">Prompts Profissionais Brasileiros</div>
         <h1 class="hero-titulo">Prompts que resolvem<br><em>dores reais.</em></h1>
         <p class="hero-sub">Cada prompt foi criado por especialista, testado contra alucinações e calibrado para o mercado brasileiro. Compre só o que precisa.</p>
         <div class="hero-badge">🛡️ Anti-alucinação · Anti-mentira · Uso universal</div>
     </div>
-
-    <div class="busca-wrap">
-        <input class="busca" type="text" id="busca" placeholder="🔍  Buscar prompt... ex: petição, laudo, contrato, proposta" oninput="filtrarPrompts()">
-    </div>
-
+    <div class="busca-wrap"><input class="busca" type="text" id="busca" placeholder="🔍  Buscar prompt... ex: petição, laudo, contrato" oninput="filtrarPrompts()"></div>
     <div class="filtros-wrap" id="filtros-wrap"></div>
-
     <div class="grid-section">
         <div class="grid-label" id="grid-label">Todos os Prompts</div>
         <div class="grid" id="prompts-grid"></div>
     </div>
 </div>
 
-<!-- ══════════════ PÁGINA: ADMIN LOGIN ══════════════ -->
+<!-- ADMIN LOGIN -->
 <div id="page-admin-login" class="page" style="display:none;">
     <div class="admin-login-box">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:900;background:var(--gold-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px;">PROMPTUS</div>
-        <div style="font-size:9px;letter-spacing:4px;color:var(--sub);text-transform:uppercase;margin-bottom:32px;">Painel Admin</div>
-        <input class="inp" type="password" id="admin-senha" placeholder="Senha de administrador" onkeydown="if(event.key==='Enter') loginAdmin()">
-        <div id="admin-erro" style="font-size:11px;color:var(--red);margin-bottom:10px;min-height:16px;"></div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:900;background:var(--gold-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;">PROMPTUS</div>
+        <div style="font-size:9px;letter-spacing:4px;color:var(--sub);text-transform:uppercase;margin-bottom:28px;">Painel Admin</div>
+        <input class="inp" type="password" id="admin-senha" placeholder="Senha" onkeydown="if(event.key==='Enter')loginAdmin()">
+        <div id="admin-erro" style="font-size:11px;color:var(--red);margin-bottom:8px;min-height:16px;"></div>
         <button class="btn-full" onclick="loginAdmin()">ENTRAR</button>
-        <div style="margin-top:16px;font-size:11px;color:var(--sub);cursor:pointer;" onclick="irParaLoja()">← Voltar à loja</div>
+        <div style="margin-top:14px;font-size:11px;color:var(--sub);cursor:pointer;" onclick="irParaLoja()">← Voltar à loja</div>
     </div>
 </div>
 
-<!-- ══════════════ PÁGINA: ADMIN PAINEL ══════════════ -->
+<!-- ADMIN PAINEL -->
 <div id="page-admin" class="page" style="display:none;">
     <nav class="navbar">
         <div class="nav-logo">PROMPTUS <span>ADMIN</span></div>
         <div class="nav-right">
-            <button class="nav-btn" onclick="irParaLoja()">← Ver Loja</button>
-            <button class="nav-btn" onclick="logoutAdmin()">SAIR</button>
+            <button class="nav-btn" onclick="irParaLoja()">← Loja</button>
+            <button class="nav-btn" onclick="mostrarPagina('page-admin-login')">SAIR</button>
         </div>
     </nav>
-
     <div class="admin-header">
         <div class="admin-titulo">Painel de <em>Gestão</em></div>
-        <div class="stats-cards" style="margin:0;flex:1;justify-content:flex-end;display:flex;gap:14px;flex-wrap:wrap;">
-            <div class="stat-card" style="min-width:140px;">
-                <div class="stat-card-num" id="stat-pedidos">0</div>
-                <div class="stat-card-label">Pedidos totais</div>
-            </div>
-            <div class="stat-card" style="min-width:140px;">
-                <div class="stat-card-num" id="stat-pendentes">0</div>
-                <div class="stat-card-label">Pendentes</div>
-            </div>
-            <div class="stat-card" style="min-width:140px;">
-                <div class="stat-card-num" id="stat-receita">R$0</div>
-                <div class="stat-card-label">Receita total</div>
-            </div>
-        </div>
     </div>
-
+    <div class="stats-cards">
+        <div class="stat-card"><div class="stat-card-num" id="stat-total">0</div><div class="stat-card-label">Pedidos totais</div></div>
+        <div class="stat-card"><div class="stat-card-num" id="stat-pend">0</div><div class="stat-card-label">Pendentes</div></div>
+        <div class="stat-card"><div class="stat-card-num" id="stat-receita">R$0</div><div class="stat-card-label">Receita total</div></div>
+        <div class="stat-card"><div class="stat-card-num" id="stat-prompts">0</div><div class="stat-card-label">Prompts na loja</div></div>
+    </div>
     <div class="admin-tabs">
-        <button class="admin-tab ativo" onclick="mudarTab('pedidos', this)">📦 Pedidos</button>
-        <button class="admin-tab" onclick="mudarTab('prompts', this)">📝 Prompts</button>
-        <button class="admin-tab" onclick="mudarTab('adicionar', this)">➕ Adicionar Prompt</button>
+        <button class="admin-tab ativo" onclick="mudarTab('pedidos',this)">📦 Pedidos</button>
+        <button class="admin-tab" onclick="mudarTab('adicionar',this)">➕ Adicionar Prompt</button>
     </div>
-
     <div class="admin-content">
-        <!-- PEDIDOS -->
         <div class="admin-panel ativo" id="panel-pedidos">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
-                <div style="font-size:13px;color:var(--sub);">Pedidos recentes (clique em Ver para copiar o prompt e entregar)</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;">
+                <div style="font-size:12px;color:var(--sub);">Clique em <strong style="color:var(--text);">VER / ENTREGAR</strong> para copiar o prompt e enviar ao cliente.</div>
                 <button class="nav-btn" onclick="carregarPedidos()" style="font-size:10px;">🔄 Atualizar</button>
             </div>
-            <div class="pedidos-grid" id="pedidos-grid">
-                <div style="text-align:center;padding:40px;color:var(--sub);">Carregando pedidos...</div>
-            </div>
+            <div class="pedidos-grid" id="pedidos-grid"><div style="text-align:center;padding:40px;color:var(--sub);">Carregando...</div></div>
         </div>
-
-        <!-- LISTA PROMPTS ADMIN -->
-        <div class="admin-panel" id="panel-prompts">
-            <div style="margin-bottom:20px;font-size:13px;color:var(--sub);">Prompts cadastrados. Clique em um para editar.</div>
-            <div class="grid" id="admin-prompts-grid"></div>
-        </div>
-
-        <!-- ADICIONAR PROMPT -->
         <div class="admin-panel" id="panel-adicionar">
             <div style="max-width:680px;">
-                <div style="margin-bottom:24px;font-size:13px;color:var(--sub);">Preencha os dados do novo prompt:</div>
+                <div style="margin-bottom:20px;font-size:13px;color:var(--sub);">Adicione um novo prompt à loja:</div>
                 <div class="form-grid">
-                    <div>
-                        <label class="inp-label">Título do prompt</label>
-                        <input class="inp" type="text" id="f-titulo" placeholder="Ex: Petição Inicial Trabalhista">
-                    </div>
-                    <div>
-                        <label class="inp-label">Área</label>
-                        <select class="inp" id="f-area">
-                            <option value="juridico">⚖️ Jurídico</option>
-                            <option value="medico">🏥 Médico</option>
-                            <option value="negocios">💼 Negócios e RH</option>
-                            <option value="marketing">📣 Marketing</option>
-                            <option value="contabil">📊 Contábil</option>
-                            <option value="psicologia">🧠 Psicologia</option>
-                            <option value="educacao">📚 Educação</option>
-                            <option value="engenharia">🔧 Engenharia</option>
-                            <option value="ti">💻 TI</option>
-                            <option value="outro">✳️ Outro</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="inp-label">Nível de complexidade</label>
-                        <select class="inp" id="f-nivel">
-                            <option value="basico">Básico — R$9,90</option>
-                            <option value="intermediario">Intermediário — R$19,90</option>
-                            <option value="avancado">Avançado — R$29,90</option>
-                            <option value="premium">Premium — R$49,90</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="inp-label">Tag (categoria)</label>
-                        <input class="inp" type="text" id="f-tag" placeholder="Ex: Petição, Laudo, Contrato">
-                    </div>
-                    <div class="form-full">
-                        <label class="inp-label">Descrição (o que este prompt resolve?)</label>
-                        <textarea class="inp" id="f-desc" placeholder="Explique claramente o que o prompt faz e qual dor resolve..." rows="3"></textarea>
-                    </div>
-                    <div class="form-full">
-                        <label class="inp-label">Preview do prompt (primeiras linhas visíveis antes da compra)</label>
-                        <textarea class="inp" id="f-preview" placeholder="PERSONA: Você é advogado(a) trabalhista..." rows="3"></textarea>
-                    </div>
-                    <div class="form-full">
-                        <label class="inp-label">Prompt completo (entregue após pagamento)</label>
-                        <textarea class="inp" id="f-prompt" placeholder="Prompt completo com todas as instruções..." rows="8"></textarea>
-                    </div>
+                    <div><label class="inp-label">Título</label><input class="inp" type="text" id="f-titulo" placeholder="Ex: Petição Inicial Trabalhista"></div>
+                    <div><label class="inp-label">Área</label>
+                    <select class="inp" id="f-area">
+                        <option value="juridico">⚖️ Jurídico</option><option value="medico">🏥 Médico</option>
+                        <option value="negocios">💼 Negócios e RH</option><option value="marketing">📣 Marketing</option>
+                        <option value="contabil">📊 Contábil</option><option value="psicologia">🧠 Psicologia</option>
+                        <option value="educacao">📚 Educação</option><option value="engenharia">🔧 Engenharia</option>
+                        <option value="ti">💻 TI</option><option value="outro">✳️ Outro</option>
+                    </select></div>
+                    <div><label class="inp-label">Nível / Preço</label>
+                    <select class="inp" id="f-nivel">
+                        <option value="basico">Básico — R$9,90</option><option value="intermediario">Intermediário — R$19,90</option>
+                        <option value="avancado">Avançado — R$29,90</option><option value="premium">Premium — R$49,90</option>
+                    </select></div>
+                    <div><label class="inp-label">Tag</label><input class="inp" type="text" id="f-tag" placeholder="Ex: Petição, Laudo"></div>
+                    <div class="form-full"><label class="inp-label">Descrição (qual dor resolve?)</label><textarea class="inp" id="f-desc" rows="3" placeholder="Descreva claramente o que o prompt faz..."></textarea></div>
+                    <div class="form-full"><label class="inp-label">Preview (primeiras linhas visíveis)</label><textarea class="inp" id="f-preview" rows="3" placeholder="PERSONA: Você é..."></textarea></div>
+                    <div class="form-full"><label class="inp-label">Prompt completo (entregue após pagamento)</label><textarea class="inp" id="f-prompt" rows="10" placeholder="Prompt completo com todas as instruções..."></textarea></div>
                 </div>
                 <div id="f-erro" style="font-size:11px;color:var(--red);margin:10px 0;min-height:16px;"></div>
-                <button class="btn-full" onclick="salvarPrompt()">✅ SALVAR PROMPT NA LOJA</button>
+                <button class="btn-full" onclick="salvarPrompt()">✅ SALVAR NA LOJA</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-// ── FIREBASE ──
-const fConfig = { databaseURL: "https://cassia-v9-default-rtdb.firebaseio.com" };
-firebase.initializeApp(fConfig);
+const FC = {databaseURL:"https://cassia-v9-default-rtdb.firebaseio.com"};
+if(!firebase.apps.length) firebase.initializeApp(FC);
 const db = firebase.database();
 
-// ── CONFIG ──
 const ADMIN_SENHA = 'cassia2025';
-const PIX_CHAVE = '39521484829';
-const PIX_NOME = 'Cássia Kelly Lins Reis';
-const PRECOS = { basico: 9.90, intermediario: 19.90, avancado: 29.90, premium: 49.90 };
-const PRECOS_LABEL = { basico: 'R$9,90', intermediario: 'R$19,90', avancado: 'R$29,90', premium: 'R$49,90' };
-const NIVEIS_TAG = { basico: 'nivel-basico', intermediario: 'nivel-inter', avancado: 'nivel-avancado', premium: 'nivel-premium' };
-const NIVEIS_LABEL = { basico: 'Básico', intermediario: 'Intermediário', avancado: 'Avançado', premium: 'Premium' };
-
+const WA_CASSIA = '5511978857415';
+const PRECOS_LABEL = {basico:'R$9,90',intermediario:'R$19,90',avancado:'R$29,90',premium:'R$49,90'};
+const NIVEIS_TAG = {basico:'nivel-basico',intermediario:'nivel-inter',avancado:'nivel-avancado',premium:'nivel-premium'};
+const NIVEIS_LABEL = {basico:'Básico',intermediario:'Intermediário',avancado:'Avançado',premium:'Premium'};
 const AREAS = [
-    {key:'todos',label:'Todos',emoji:'✨'},
-    {key:'juridico',label:'Jurídico',emoji:'⚖️'},
-    {key:'medico',label:'Médico',emoji:'🏥'},
-    {key:'negocios',label:'Negócios',emoji:'💼'},
-    {key:'marketing',label:'Marketing',emoji:'📣'},
-    {key:'contabil',label:'Contábil',emoji:'📊'},
-    {key:'psicologia',label:'Psicologia',emoji:'🧠'},
-    {key:'educacao',label:'Educação',emoji:'📚'},
-    {key:'engenharia',label:'Engenharia',emoji:'🔧'},
-    {key:'ti',label:'TI',emoji:'💻'},
+    {key:'todos',label:'Todos',emoji:'✨'},{key:'juridico',label:'Jurídico',emoji:'⚖️'},
+    {key:'medico',label:'Médico',emoji:'🏥'},{key:'negocios',label:'Negócios',emoji:'💼'},
+    {key:'marketing',label:'Marketing',emoji:'📣'},{key:'contabil',label:'Contábil',emoji:'📊'},
+    {key:'psicologia',label:'Psicologia',emoji:'🧠'},{key:'educacao',label:'Educação',emoji:'📚'},
+    {key:'engenharia',label:'Engenharia',emoji:'🔧'},{key:'ti',label:'TI',emoji:'💻'},
     {key:'outro',label:'Outro',emoji:'✳️'},
 ];
 
-// ── ANTI-ALUCINAÇÃO (padrão adicionado a todos os prompts) ──
-const ANTI = `\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO — OBRIGATÓRIAS:\n⛔ NUNCA invente dados, nomes, datas, valores ou fatos não fornecidos.\n⛔ NUNCA cite leis ou jurisprudência inexistentes.\n⛔ Se faltar informação essencial, escreva: ⚠️ DADO AUSENTE: [o que falta].\n✅ Use EXCLUSIVAMENTE os dados fornecidos abaixo.\n✅ Em caso de dúvida, sinalize claramente.`;
+const ANTI = `\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO — SIGA OBRIGATORIAMENTE:\n⛔ NUNCA invente dados, nomes, valores, datas ou fatos não fornecidos.\n⛔ NUNCA cite leis, artigos, CIDs ou jurisprudências inexistentes.\n⛔ Se faltar alguma informação essencial, escreva: ⚠️ DADO AUSENTE: [descreva o que falta].\n✅ Baseie-se EXCLUSIVAMENTE nos dados fornecidos abaixo.\n✅ Em caso de dúvida, sinalize claramente a incerteza.`;
 
-// ── PROMPTS INICIAIS (base de mercado brasileiro) ──
-const PROMPTS_INICIAIS = [
-{titulo:'Petição Inicial Trabalhista',area:'juridico',nivel:'avancado',tag:'Petição',desc:'Gera petição trabalhista completa com CLT, Súmulas do TST e jurisprudência. Resolve a dor de advogados que perdem horas formatando peças.',preview:'PERSONA: Você é advogado(a) trabalhista sênior com 20 anos de TRT.\nTAREFA: Redigir petição inicial trabalhista completa.\nESTRUTURA:\n1. Qualificação das partes\n2. Dos fatos...',prompt:`PERSONA: Você é advogado(a) trabalhista sênior com 20 anos de experiência no TRT.\nTAREFA: Redigir petição inicial trabalhista completa e tecnicamente impecável.\nESTRUTURA OBRIGATÓRIA:\n1. Qualificação das partes\n2. Dos fatos (cronológico)\n3. Do direito (cite CLT e Súmulas TST específicas)\n4. Dos pedidos (itemize cada um com valor)\n5. Do valor da causa${ANTI}\nDADOS DO CASO:\n[INSIRA AQUI: partes, fatos, verbas e pedidos]`},
-{titulo:'Laudo Médico Completo',area:'medico',nivel:'avancado',tag:'Laudo',desc:'Laudo técnico estruturado com anamnese, CID-10 e conduta. Para médicos que precisam de documentação impecável e rápida.',preview:'PERSONA: Você é médico(a) especialista com 20 anos de experiência clínica.\nTAREFA: Redigir laudo médico completo.\nESTRUTURA:\n1. Identificação do paciente\n2. Anamnese...',prompt:`PERSONA: Você é médico(a) especialista com 20 anos de experiência clínica.\nTAREFA: Redigir laudo médico completo e impecável.\nESTRUTURA:\n1. Identificação do paciente\n2. Queixa principal\n3. Anamnese e histórico\n4. Exame físico\n5. Hipótese diagnóstica e CID-10\n6. Conduta médica${ANTI}\nDADOS:\n[INSIRA: nome, idade, queixas, exames e histórico]`},
-{titulo:'Proposta Comercial de Alto Impacto',area:'negocios',nivel:'intermediario',tag:'Vendas',desc:'Proposta persuasiva focada em valor, não preço. Para empresários que perdem vendas por propostas fracas e genéricas.',preview:'PERSONA: Você é consultor(a) comercial sênior com 20 anos em vendas B2B.\nTAREFA: Redigir proposta comercial profissional.\nESTRUTURA:\n1. Diagnóstico do problema...',prompt:`PERSONA: Você é consultor(a) comercial sênior com 20 anos em vendas B2B.\nTAREFA: Redigir proposta comercial profissional e persuasiva.\nESTRUTURA:\n1. Apresentação executiva\n2. Diagnóstico do problema do cliente\n3. Solução proposta\n4. Benefícios e ROI estimado\n5. Investimento e condições\n6. Próximos passos e prazo${ANTI}\nDADOS:\n[INSIRA: empresa, produto, cliente e valor]`},
-{titulo:'Copy para Página de Vendas',area:'marketing',nivel:'avancado',tag:'Copywriting',desc:'Copy de alta conversão com gatilhos mentais e CTA irresistível. Para quem quer vender mais sem contratar agência.',preview:'PERSONA: Você é copywriter sênior especialista em páginas de vendas.\nTAREFA: Escrever copy completa.\nESTRUTURA:\n1. Headline impactante\n2. Identificação do problema...',prompt:`PERSONA: Você é copywriter sênior especialista em páginas de alta conversão.\nTAREFA: Escrever copy completa para página de vendas.\nESTRUTURA:\n1. Headline impactante (testa 3 opções)\n2. Subheadline de apoio\n3. Identificação da dor do público\n4. Apresentação da solução\n5. Benefícios (não características)\n6. Prova social\n7. Oferta e garantia\n8. CTA urgente${ANTI}\nDADOS:\n[INSIRA: produto, público, preço e diferenciais]`},
-{titulo:'Parecer Contábil Técnico',area:'contabil',nivel:'avancado',tag:'Parecer',desc:'Parecer com fundamentação NBC e legislação tributária. Para contadores que precisam de documentos sólidos e sem erros.',preview:'PERSONA: Você é contador(a) sênior com CRC ativo e 20 anos de experiência.\nTAREFA: Elaborar parecer contábil técnico.\nESTRUTURA:\n1. Do objeto...',prompt:`PERSONA: Você é contador(a) sênior com CRC ativo e 20 anos de experiência.\nTAREFA: Elaborar parecer contábil técnico fundamentado.\nESTRUTURA:\n1. Do objeto do parecer\n2. Da documentação analisada\n3. Da fundamentação (NBC, IFRS, legislação)\n4. Das constatações\n5. Da conclusão fundamentada${ANTI}\nDADOS:\n[INSIRA: empresa, período, situação e dados contábeis]`},
-{titulo:'Relatório Psicológico Completo',area:'psicologia',nivel:'avancado',tag:'Relatório',desc:'Relatório conforme Resolução CFP 06/2019. Para psicólogos que precisam de documentação clínica impecável.',preview:'PERSONA: Você é psicólogo(a) com CRP ativo e 20 anos de experiência.\nTAREFA: Elaborar relatório psicológico completo.\nBASE: Resolução CFP 06/2019...',prompt:`PERSONA: Você é psicólogo(a) com CRP ativo e 20 anos de experiência clínica.\nTAREFA: Elaborar relatório psicológico completo.\nBASE LEGAL: Resolução CFP 06/2019.\nESTRUTURA:\n1. Identificação e finalidade\n2. Procedimentos utilizados\n3. Análise dos resultados\n4. Conclusão\n5. Assinatura e CRP${ANTI}\nDADOS:\n[INSIRA: paciente, demanda e observações clínicas]`},
-{titulo:'Plano de Aula BNCC',area:'educacao',nivel:'intermediario',tag:'Plano de Aula',desc:'Plano completo com habilidades BNCC e metodologias ativas. Para professores que economizam horas de planejamento.',preview:'PERSONA: Você é pedagogo(a) especialista em currículo.\nTAREFA: Elaborar plano de aula completo.\nBASE: BNCC.\nESTRUTURA:\n1. Objetivos de aprendizagem...',prompt:`PERSONA: Você é pedagogo(a) especialista em currículo e didática.\nTAREFA: Elaborar plano de aula completo e aplicável.\nBASE: BNCC.\nESTRUTURA:\n1. Identificação (disciplina, ano, tema, duração)\n2. Objetivos de aprendizagem\n3. Habilidades BNCC\n4. Sequência didática (início, desenvolvimento, fechamento)\n5. Recursos necessários\n6. Avaliação e critérios${ANTI}\nDADOS:\n[INSIRA: disciplina, ano, tema e contexto da turma]`},
-{titulo:'Laudo Técnico de Vistoria',area:'engenharia',nivel:'avancado',tag:'Laudo',desc:'Laudo de vistoria com base ABNT. Para engenheiros que precisam de documentação técnica profissional e sem risco.',preview:'PERSONA: Você é engenheiro(a) civil sênior com CREA ativo.\nTAREFA: Elaborar laudo técnico de vistoria.\nREFERÊNCIAS: NBR aplicável...',prompt:`PERSONA: Você é engenheiro(a) civil sênior com CREA ativo.\nTAREFA: Elaborar laudo técnico de vistoria.\nREFERÊNCIAS: NBR aplicável e legislação municipal.\nESTRUTURA:\n1. Identificação do imóvel e solicitante\n2. Objeto e finalidade\n3. Metodologia\n4. Descrição do estado da edificação\n5. Análise técnica\n6. Conclusão\n7. Recomendações${ANTI}\nDADOS:\n[INSIRA: endereço, data, finalidade e observações]`},
-{titulo:'Documento de Requisitos de Software',area:'ti',nivel:'premium',tag:'Documentação',desc:'Especificação técnica padrão IEEE 830 com requisitos funcionais e não funcionais. Para times de TI que precisam de documentação séria.',preview:'PERSONA: Você é arquiteto(a) de software sênior com 20 anos de experiência.\nTAREFA: Elaborar SRS completo.\nPADRÃO: IEEE 830...',prompt:`PERSONA: Você é arquiteto(a) de software sênior com 20 anos de experiência.\nTAREFA: Elaborar documento de requisitos de software (SRS).\nPADRÃO: IEEE 830.\nESTRUTURA:\n1. Visão geral do sistema\n2. Requisitos funcionais\n3. Requisitos não funcionais\n4. Restrições\n5. Casos de uso principais${ANTI}\nDADOS:\n[INSIRA: sistema, stakeholders e funcionalidades]`},
-{titulo:'Atestado Médico',area:'medico',nivel:'basico',tag:'Atestado',desc:'Atestado com validade legal conforme CFM. Para médicos que precisam de documentação rápida e correta.',preview:'PERSONA: Você é médico(a) com CRM ativo.\nTAREFA: Redigir atestado médico com plena validade legal.\nBASE: Resolução CFM 1.658/2002...',prompt:`PERSONA: Você é médico(a) com CRM ativo.\nTAREFA: Redigir atestado médico com plena validade legal.\nBASE: Resolução CFM 1.658/2002.\nESTRUTURA:\n1. Identificação do paciente\n2. Diagnóstico ou CID (se autorizado)\n3. Período de afastamento\n4. Recomendações\n5. Dados do médico e CRM${ANTI}\nDADOS:\n[INSIRA: paciente, diagnóstico, período e CRM]`},
-{titulo:'Contrato de Prestação de Serviços',area:'juridico',nivel:'intermediario',tag:'Contrato',desc:'Contrato com cláusulas protetivas baseado no Código Civil. Para quem quer se proteger juridicamente sem pagar advogado.',preview:'PERSONA: Você é advogado(a) civilista especialista em contratos.\nTAREFA: Redigir contrato de prestação de serviços.\nBASE: Código Civil arts. 593-609...',prompt:`PERSONA: Você é advogado(a) civilista especialista em contratos.\nTAREFA: Redigir contrato de prestação de serviços completo.\nBASE: Código Civil arts. 593-609.\nESTRUTURA:\n1. Qualificação das partes\n2. Do objeto\n3. Do prazo\n4. Do valor e pagamento\n5. Das obrigações\n6. Da rescisão e multa\n7. Do foro${ANTI}\nDADOS:\n[INSIRA: partes, objeto, valores e condições]`},
-{titulo:'Sequência de E-mails de Vendas',area:'marketing',nivel:'intermediario',tag:'E-mail Marketing',desc:'5 e-mails que nutrem e convertem leads. Para empresários que querem vender mais no piloto automático.',preview:'PERSONA: Você é especialista em e-mail marketing e copywriting.\nTAREFA: Criar sequência de 5 e-mails de nutrição.\nFLUXO: Boas-vindas → Dor → Solução...',prompt:`PERSONA: Você é especialista em e-mail marketing e copywriting.\nTAREFA: Criar sequência completa de 5 e-mails de nutrição e conversão.\nESTRUTURA DE CADA E-MAIL:\n- Assunto irresistível\n- Abertura que conecta\n- Corpo com valor ou storytelling\n- CTA claro\nFLUXO: E1 boas-vindas → E2 dor → E3 solução → E4 prova → E5 oferta${ANTI}\nDADOS:\n[INSIRA: produto, público e oferta]`},
-{titulo:'Avaliação de Desempenho Completa',area:'negocios',nivel:'intermediario',tag:'RH',desc:'Formulário e relatório de avaliação com PDI. Para gestores que querem dar feedback justo e estruturado.',preview:'PERSONA: Você é especialista em gestão de desempenho.\nTAREFA: Elaborar avaliação de desempenho completa.\nESTRUTURA:\n1. Competências avaliadas...',prompt:`PERSONA: Você é especialista em gestão de desempenho.\nTAREFA: Elaborar avaliação de desempenho completa e justa.\nESTRUTURA:\n1. Identificação do colaborador\n2. Competências avaliadas (com escala 1-5)\n3. Resultados vs. metas\n4. Pontos fortes\n5. Pontos de desenvolvimento\n6. PDI (Plano de Desenvolvimento Individual)\n7. Feedback e próximos passos${ANTI}\nDADOS:\n[INSIRA: colaborador, cargo, período e metas]`},
-{titulo:'Planejamento Tributário Empresarial',area:'contabil',nivel:'premium',tag:'Tributário',desc:'Planejamento tributário legal para redução da carga fiscal. Para empresas que pagam imposto a mais sem saber.',preview:'PERSONA: Você é contador(a) tributarista sênior.\nTAREFA: Elaborar planejamento tributário legal.\nBASE: IRPJ, CSLL, PIS, COFINS...',prompt:`PERSONA: Você é contador(a) tributarista sênior.\nTAREFA: Elaborar planejamento tributário legal e eficiente.\nBASE LEGAL: IRPJ, CSLL, PIS, COFINS e legislação vigente.\nESTRUTURA:\n1. Diagnóstico fiscal atual\n2. Comparativo de regimes (Simples, Lucro Presumido, Real)\n3. Oportunidades de economia identificadas\n4. Recomendações legais\n5. Projeção de economia${ANTI}\nDADOS:\n[INSIRA: empresa, faturamento e regime atual]`},
-{titulo:'Laudo Psicológico para INSS',area:'psicologia',nivel:'premium',tag:'Laudo Pericial',desc:'Laudo de incapacidade por transtorno mental para benefício previdenciário. Para psicólogos que atendem pacientes em demanda judicial.',preview:'PERSONA: Você é psicólogo(a) com CRP ativo especializado em avaliação pericial.\nTAREFA: Elaborar laudo para afastamento e benefício INSS...',prompt:`PERSONA: Você é psicólogo(a) com CRP ativo especializado em avaliação pericial.\nTAREFA: Elaborar laudo psicológico para afastamento e benefício INSS.\nBASE: Lei 8.213/91 e Resolução CFP 06/2019.\nESTRUTURA:\n1. Identificação do periciado\n2. Anamnese psicológica\n3. Histórico de tratamentos\n4. Avaliação do estado mental atual\n5. Diagnóstico CID-10\n6. Impacto na capacidade laborativa\n7. Conclusão e prazo de afastamento${ANTI}\nDADOS:\n[INSIRA: paciente, diagnóstico e histórico]`},
-{titulo:'Notificação Extrajudicial',area:'juridico',nivel:'intermediario',tag:'Notificação',desc:'Notificação formal com validade jurídica para cobranças e descumprimentos. Resolve a dor de quem precisa se proteger sem ir ao judiciário.',preview:'PERSONA: Você é advogado(a) especialista em notificações extrajudiciais.\nTAREFA: Redigir notificação com plena validade jurídica.\nESTRUTURA:\n1. Identificação do notificante...',prompt:`PERSONA: Você é advogado(a) especialista em notificações extrajudiciais.\nTAREFA: Redigir notificação extrajudicial com plena validade jurídica.\nESTRUTURA:\n1. Identificação do notificante e notificado\n2. Dos fatos e da obrigação descumprida\n3. Da base legal\n4. Do prazo para cumprimento\n5. Das consequências jurídicas\n${ANTI}\nDADOS:\n[INSIRA: notificante, notificado, fato e exigência]`},
-{titulo:'Acordo de Confidencialidade NDA',area:'juridico',nivel:'intermediario',tag:'Contrato',desc:'NDA completo para proteger informações sigilosas antes de parcerias e negociações.',preview:'PERSONA: Você é advogado(a) especialista em contratos empresariais.\nTAREFA: Redigir NDA completo.\nESTRUTURA:\n1. Qualificação das partes...',prompt:`PERSONA: Você é advogado(a) especialista em contratos empresariais.\nTAREFA: Redigir acordo de confidencialidade (NDA) completo.\nESTRUTURA:\n1. Qualificação das partes\n2. Definição de informações confidenciais\n3. Obrigações de sigilo\n4. Exceções\n5. Prazo de vigência\n6. Penalidades por violação\n${ANTI}\nDADOS:\n[INSIRA: partes, objeto e informações a proteger]`},
-{titulo:'Rescisão Contratual por Inadimplência',area:'juridico',nivel:'intermediario',tag:'Notificação',desc:'Carta de rescisão com base no CC. Para encerrar contratos com segurança jurídica.',preview:'PERSONA: Você é advogado(a) cível.\nTAREFA: Carta de rescisão contratual.\nBASE: CC arts. 472 a 480...',prompt:`PERSONA: Você é advogado(a) cível especialista em contratos.\nTAREFA: Redigir carta de rescisão contratual por inadimplência.\nBASE LEGAL: CC arts. 472 a 480.\nESTRUTURA:\n1. Das partes e do contrato\n2. Das obrigações descumpridas\n3. Da rescisão e seus efeitos\n4. Das penalidades e valores\n${ANTI}\nDADOS:\n[INSIRA: contrato, inadimplência e valores]`},
-{titulo:'Relatório Médico para Plano de Saúde',area:'medico',nivel:'intermediario',tag:'Relatório',desc:'Justifica procedimentos negados pelo plano. Para médicos que precisam defender seus pacientes.',preview:'PERSONA: Você é médico(a) assistente.\nTAREFA: Relatório para autorização pelo plano de saúde.\nESTRUTURA:\n1. Identificação do paciente...',prompt:`PERSONA: Você é médico(a) assistente com CRM ativo.\nTAREFA: Redigir relatório médico para autorização de procedimento pelo plano de saúde.\nESTRUTURA:\n1. Identificação do paciente e beneficiário\n2. Diagnóstico clínico e CID-10\n3. Justificativa clínica\n4. Urgência ou eletividade\n5. Consequências do não atendimento\n${ANTI}\nDADOS:\n[INSIRA: paciente, diagnóstico e procedimento]`},
-{titulo:'Laudo de Incapacidade INSS',area:'medico',nivel:'premium',tag:'Laudo Pericial',desc:'Laudo de incapacidade laboral para benefício previdenciário. Para médicos que atendem pacientes com demanda de afastamento.',preview:'PERSONA: Você é médico(a) especialista em perícias previdenciárias.\nTAREFA: Laudo de incapacidade laboral.\nBASE: Lei 8.213/91...',prompt:`PERSONA: Você é médico(a) especialista em perícias previdenciárias.\nTAREFA: Redigir laudo de incapacidade laboral para INSS.\nBASE LEGAL: Lei 8.213/91.\nESTRUTURA:\n1. Identificação do periciado\n2. Anamnese e histórico laboral\n3. Exame físico pericial\n4. Diagnóstico e CID-10\n5. Conclusão sobre capacidade e prazo\n${ANTI}\nDADOS:\n[INSIRA: paciente, diagnóstico, função e documentos]`},
-{titulo:'Roteiro para Vídeo de Vendas VSL',area:'marketing',nivel:'avancado',tag:'Vídeo',desc:'Script completo de VSL que converte. Para empreendedores que querem vender mais com vídeos.',preview:'PERSONA: Você é roteirista especialista em VSL.\nTAREFA: Roteiro completo para vídeo de vendas.\nESTRUTURA:\n1. Gancho (10 segundos)...',prompt:`PERSONA: Você é roteirista especialista em VSL de alta conversão.\nTAREFA: Criar roteiro completo para vídeo de vendas.\nESTRUTURA:\n1. Gancho (10 segundos)\n2. Identificação do problema\n3. Agitação da dor\n4. Apresentação da solução\n5. Prova e autoridade\n6. Oferta e bônus\n7. Garantia\n8. Urgência e CTA\n${ANTI}\nDADOS:\n[INSIRA: produto, público, oferta e preço]`},
-{titulo:'Post Viral para Instagram',area:'marketing',nivel:'basico',tag:'Conteúdo',desc:'Post com gancho e CTA de alto engajamento. Para crescer no Instagram sem contratar social media.',preview:'PERSONA: Você é especialista em conteúdo viral.\nTAREFA: Post de alto engajamento.\nESTRUTURA:\n1. Gancho que para o scroll...',prompt:`PERSONA: Você é especialista em conteúdo viral para Instagram.\nTAREFA: Criar post de alto engajamento.\nESTRUTURA:\n1. Gancho poderoso\n2. Desenvolvimento com valor\n3. Virada ou revelação\n4. CTA\n5. 10 hashtags relevantes\n${ANTI}\nDADOS:\n[INSIRA: tema, nicho e objetivo]`},
-{titulo:'Anúncio para Meta Ads',area:'marketing',nivel:'intermediario',tag:'Tráfego Pago',desc:'Copy para Facebook e Instagram com variações A/B. Para vender com tráfego pago sem desperdiçar dinheiro.',preview:'PERSONA: Você é especialista em Meta Ads.\nTAREFA: Anúncio com variações A/B.\nESTRUTURA:\n- Texto principal...',prompt:`PERSONA: Você é especialista em tráfego pago e copy para Meta Ads.\nTAREFA: Criar anúncio com 2 variações A/B.\nESTRUTURA:\n- Texto principal (até 125 caracteres)\n- Headline (até 40 caracteres)\n- Descrição (até 30 caracteres)\n- CTA sugerido\n${ANTI}\nDADOS:\n[INSIRA: produto, público e oferta]`},
-{titulo:'OKRs Trimestrais Completos',area:'negocios',nivel:'intermediario',tag:'Estratégia',desc:'OKRs com objetivos, KRs e iniciativas. Para gestores que querem alinhar o time com clareza.',preview:'PERSONA: Você é consultor(a) especialista em OKRs.\nTAREFA: Estruturar OKRs trimestrais.\nESTRUTURA:\n1. Objetivo 1 + 3 KRs...',prompt:`PERSONA: Você é consultor(a) especialista em OKRs e gestão ágil.\nTAREFA: Estruturar OKRs trimestrais.\nESTRUTURA:\n1. Objetivo 1 + 3 KRs mensuráveis\n2. Objetivo 2 + 3 KRs\n3. Objetivo 3 + 3 KRs\n4. Iniciativas por KR\n5. Responsáveis e check-in\n${ANTI}\nDADOS:\n[INSIRA: empresa, área, metas e contexto]`},
-{titulo:'Manual de Identidade Visual',area:'marketing',nivel:'premium',tag:'Branding',desc:'Diretrizes completas de marca. Para empresas que querem identidade visual profissional e consistente.',preview:'PERSONA: Você é designer e estrategista de branding sênior.\nTAREFA: Manual de identidade visual.\nESTRUTURA:\n1. Conceito da marca...',prompt:`PERSONA: Você é designer e estrategista de branding sênior.\nTAREFA: Elaborar manual de identidade visual completo.\nESTRUTURA:\n1. Conceito e personalidade da marca\n2. Logotipo e variações\n3. Paleta de cores (códigos HEX)\n4. Tipografia\n5. Tom de voz\n6. Aplicações corretas e incorretas\n${ANTI}\nDADOS:\n[INSIRA: marca, segmento, público e referências]`},
-{titulo:'Carta de Advertência Trabalhista',area:'negocios',nivel:'basico',tag:'RH',desc:'Advertência formal com base na CLT. Para empresários que documentam condutas sem risco jurídico.',preview:'PERSONA: Você é especialista em RH e direito do trabalho.\nTAREFA: Carta de advertência formal.\nBASE: CLT art. 482...',prompt:`PERSONA: Você é especialista em RH e direito do trabalho.\nTAREFA: Redigir carta de advertência formal.\nBASE LEGAL: CLT art. 482.\nESTRUTURA:\n1. Identificação do colaborador\n2. Conduta inadequada\n3. Norma violada\n4. Advertência formal\n5. Consequências por reincidência\n${ANTI}\nDADOS:\n[INSIRA: colaborador, conduta e norma]`},
-{titulo:'Análise de Balanço Patrimonial',area:'contabil',nivel:'avancado',tag:'Análise',desc:'Análise vertical, horizontal e indicadores. Para contadores e empresários que querem entender a saúde financeira.',preview:'PERSONA: Você é analista contábil-financeiro sênior.\nTAREFA: Análise completa de balanço.\nESTRUTURA:\n1. Análise vertical...',prompt:`PERSONA: Você é analista contábil-financeiro sênior.\nTAREFA: Análise completa de balanço patrimonial.\nESTRUTURA:\n1. Análise vertical\n2. Análise horizontal\n3. Indicadores de liquidez\n4. Indicadores de endividamento\n5. Indicadores de rentabilidade\n6. Conclusão e recomendações\n${ANTI}\nDADOS:\n[INSIRA: balanços do período e empresa]`},
-{titulo:'Plano Terapêutico Individualizado',area:'psicologia',nivel:'avancado',tag:'Plano',desc:'Intervenção com objetivos, técnicas e critérios de alta. Para psicólogos que organizam o tratamento.',preview:'PERSONA: Você é psicólogo(a) clínico(a).\nTAREFA: Plano terapêutico individualizado.\nESTRUTURA:\n1. Demanda e queixa...',prompt:`PERSONA: Você é psicólogo(a) clínico(a).\nTAREFA: Elaborar plano terapêutico individualizado.\nESTRUTURA:\n1. Demanda e queixa\n2. Hipótese diagnóstica\n3. Objetivos (curto, médio e longo prazo)\n4. Abordagem e técnicas\n5. Frequência e duração\n6. Critérios de alta\n${ANTI}\nDADOS:\n[INSIRA: paciente, queixa e abordagem]`},
-{titulo:'Plano de Negócios para MEI',area:'negocios',nivel:'intermediario',tag:'Plano',desc:'Plano prático para MEI. Para empreendedores que precisam de direção sem complicação.',preview:'PERSONA: Você é consultor(a) especialista em pequenas empresas.\nTAREFA: Plano de negócios para MEI.\nESTRUTURA:\n1. Descrição do negócio...',prompt:`PERSONA: Você é consultor(a) especialista em pequenas empresas e MEI.\nTAREFA: Elaborar plano de negócios prático.\nESTRUTURA:\n1. Descrição do negócio\n2. Público-alvo e diferencial\n3. Concorrência local\n4. Precificação\n5. Canais de venda\n6. Projeção financeira 6 meses\n7. Primeiros passos\n${ANTI}\nDADOS:\n[INSIRA: negócio, produto, público e localidade]`},
-{titulo:'Laudo Fisioterapêutico',area:'medico',nivel:'intermediario',tag:'Laudo',desc:'Avaliação fisioterapêutica com plano de tratamento. Para fisioterapeutas que precisam de documentação sólida.',preview:'PERSONA: Você é fisioterapeuta com CREFITO ativo.\nTAREFA: Laudo fisioterapêutico completo.\nESTRUTURA:\n1. Identificação do paciente...',prompt:`PERSONA: Você é fisioterapeuta com CREFITO ativo.\nTAREFA: Redigir laudo fisioterapêutico completo.\nESTRUTURA:\n1. Identificação do paciente\n2. Diagnóstico médico de referência\n3. Avaliação fisioterapêutica\n4. Limitações funcionais\n5. Plano de tratamento\n6. Prognóstico e alta\n${ANTI}\nDADOS:\n[INSIRA: paciente, diagnóstico e limitações]`},
-{titulo:'Relatório Gerencial Mensal',area:'contabil',nivel:'intermediario',tag:'Relatório',desc:'Indicadores e alertas mensais. Para empresários que querem saber a saúde financeira do negócio.',preview:'PERSONA: Você é controller(a) sênior.\nTAREFA: Relatório gerencial mensal.\nESTRUTURA:\n1. Resultado vs. orçamento...',prompt:`PERSONA: Você é controller(a) e analista financeiro(a) sênior.\nTAREFA: Elaborar relatório gerencial mensal.\nESTRUTURA:\n1. Resultado vs. orçamento\n2. Faturamento\n3. Custos e despesas\n4. Fluxo de caixa\n5. KPIs\n6. Alertas e recomendações\n${ANTI}\nDADOS:\n[INSIRA: empresa, período e dados financeiros]`},
-{titulo:'Avaliação Psicológica Vocacional',area:'psicologia',nivel:'intermediario',tag:'Avaliação',desc:'Relatório vocacional com perfil e recomendações. Para psicólogos que orientam jovens e adultos em transição de carreira.',preview:'PERSONA: Você é psicólogo(a) especialista em orientação vocacional.\nTAREFA: Relatório vocacional.\nESTRUTURA:\n1. Identificação...',prompt:`PERSONA: Você é psicólogo(a) especialista em orientação vocacional.\nTAREFA: Elaborar relatório vocacional completo.\nESTRUTURA:\n1. Identificação do avaliado\n2. Instrumentos aplicados\n3. Perfil de interesses\n4. Personalidade\n5. Habilidades e aptidões\n6. Áreas compatíveis\n7. Recomendações\n${ANTI}\nDADOS:\n[INSIRA: avaliado, idade e resultados]`},
-{titulo:'Projeto Didático Interdisciplinar BNCC',area:'educacao',nivel:'avancado',tag:'Projeto',desc:'Projeto completo com BNCC e metodologia. Para coordenadores e professores que criam projetos de qualidade.',preview:'PERSONA: Você é pedagogo(a) especialista em projetos educacionais.\nTAREFA: Projeto didático BNCC.\nESTRUTURA:\n1. Título e justificativa...',prompt:`PERSONA: Você é pedagogo(a) especialista em projetos educacionais interdisciplinares.\nTAREFA: Elaborar projeto didático alinhado à BNCC.\nESTRUTURA:\n1. Título e justificativa\n2. Objetivos\n3. Competências e habilidades BNCC\n4. Conteúdos e disciplinas\n5. Cronograma\n6. Metodologia\n7. Avaliação\n${ANTI}\nDADOS:\n[INSIRA: tema, ano, disciplinas e contexto]`},
-{titulo:'Laudo Técnico de Engenharia',area:'engenharia',nivel:'premium',tag:'Laudo',desc:'Laudo com ABNT para fins periciais e contratuais. Para engenheiros que precisam de documentação incontestável.',preview:'PERSONA: Você é engenheiro(a) sênior com CREA ativo.\nTAREFA: Laudo técnico completo.\nREFERÊNCIAS: NBR aplicável...',prompt:`PERSONA: Você é engenheiro(a) sênior com CREA ativo.\nTAREFA: Elaborar laudo técnico de engenharia.\nREFERÊNCIAS: NBR aplicável.\nESTRUTURA:\n1. Identificação e objeto\n2. Finalidade\n3. Metodologia\n4. Descrição técnica\n5. Análise e fundamentação\n6. Conclusão\n7. Recomendações\n${ANTI}\nDADOS:\n[INSIRA: objeto, local, finalidade e observações]`},
-{titulo:'Especificação de API REST',area:'ti',nivel:'avancado',tag:'Documentação',desc:'Documentação de API com endpoints e exemplos. Para desenvolvedores que precisam de documentação profissional.',preview:'PERSONA: Você é arquiteto(a) de software sênior.\nTAREFA: Documentar API REST.\nPADRÃO: OpenAPI 3.0...',prompt:`PERSONA: Você é arquiteto(a) de software sênior.\nTAREFA: Documentar API REST completa.\nPADRÃO: OpenAPI 3.0.\nESTRUTURA:\n1. Visão geral e autenticação\n2. Base URL\n3. Endpoints (método, path, parâmetros, respostas)\n4. Erros\n5. Exemplos\n${ANTI}\nDADOS:\n[INSIRA: sistema, endpoints e regras de negócio]`}
+const PROMPTS_BASE = [
+// ══ JURÍDICO ══
+{titulo:'Petição Inicial Trabalhista Completa',area:'juridico',nivel:'avancado',tag:'Petição',
+desc:'Petição trabalhista com CLT, Súmulas TST e jurisprudência. Para advogados que perdem horas formatando peças sem padrão.',
+preview:'PERSONA: Você é advogado(a) trabalhista sênior com 20 anos de TRT.\nTAREFA: Petição inicial trabalhista completa e impecável.\nESTRUTURA:\n1. Qualificação das partes\n2. Dos fatos (cronológico e detalhado)...',
+prompt:`PERSONA: Você é advogado(a) trabalhista sênior com 20 anos de experiência no TRT. Conhece a CLT de cor e as Súmulas do TST na ponta da língua.\nTAREFA: Redigir petição inicial trabalhista completa, tecnicamente impecável, linguagem jurídica precisa e formal.\nESTRUTURA OBRIGATÓRIA:\n1. QUALIFICAÇÃO DAS PARTES (reclamante e reclamada com dados completos)\n2. DOS FATOS (narrativa cronológica, clara e objetiva)\n3. DO DIREITO (fundamentos na CLT, Constituição Federal e Súmulas TST com números corretos)\n4. DOS PEDIDOS (cada pedido em item separado com valor estimado quando possível)\n5. DO VALOR DA CAUSA\n6. DOS REQUERIMENTOS FINAIS${ANTI}\nDADOS DO CASO:\n[INSIRA: partes completas, fatos, verbas pleiteadas e provas disponíveis]`},
+
+{titulo:'Contrato de Prestação de Serviços',area:'juridico',nivel:'intermediario',tag:'Contrato',
+desc:'Contrato robusto com cláusulas protetivas e base no Código Civil. Resolve a dor de quem quer proteção jurídica sem pagar caro.',
+preview:'PERSONA: Você é advogado(a) civilista especialista em contratos.\nTAREFA: Contrato de prestação de serviços completo.\nBASE: CC arts. 593-609.\nESTRUTURA:\n1. Qualificação das partes...',
+prompt:`PERSONA: Você é advogado(a) civilista especialista em contratos com 20 anos de experiência.\nTAREFA: Redigir contrato de prestação de serviços completo, claro e protetivo.\nBASE LEGAL: CC arts. 593 a 609.\nESTRUTURA:\n1. QUALIFICAÇÃO DAS PARTES (contratante e contratado com dados completos)\n2. DO OBJETO (descrição precisa do serviço)\n3. DO PRAZO (datas de início e término)\n4. DO VALOR E FORMA DE PAGAMENTO\n5. DAS OBRIGAÇÕES DAS PARTES (cada uma em separado)\n6. DA PROPRIEDADE INTELECTUAL (se aplicável)\n7. DA RESCISÃO E MULTA\n8. DO FORO COMPETENTE${ANTI}\nDADOS:\n[INSIRA: partes, objeto detalhado, valores e condições]`},
+
+{titulo:'Notificação Extrajudicial Formal',area:'juridico',nivel:'intermediario',tag:'Notificação',
+desc:'Notificação com validade jurídica para cobranças, descumprimentos e irregularidades. Para se proteger sem ir ao judiciário.',
+preview:'PERSONA: Você é advogado(a) especialista em notificações extrajudiciais.\nTAREFA: Notificação com plena validade jurídica.\nESTRUTURA:\n1. Identificação das partes\n2. Dos fatos...',
+prompt:`PERSONA: Você é advogado(a) especialista em notificações extrajudiciais.\nTAREFA: Redigir notificação extrajudicial com plena validade jurídica.\nESTRUTURA:\n1. IDENTIFICAÇÃO DO NOTIFICANTE E NOTIFICADO (dados completos)\n2. DOS FATOS E DA OBRIGAÇÃO DESCUMPRIDA (narrativa clara e objetiva)\n3. DA BASE LEGAL (dispositivos aplicáveis ao caso)\n4. DO PRAZO PARA CUMPRIMENTO (prazo razoável e expresso)\n5. DAS CONSEQUÊNCIAS JURÍDICAS DO DESCUMPRIMENTO (ação judicial, multa, etc.)${ANTI}\nDADOS:\n[INSIRA: notificante, notificado, fato, obrigação e prazo desejado]`},
+
+{titulo:'Acordo de Confidencialidade (NDA)',area:'juridico',nivel:'intermediario',tag:'Contrato',
+desc:'NDA completo para proteger informações sigilosas antes de parcerias e negociações. Indispensável para qualquer negócio.',
+preview:'PERSONA: Você é advogado(a) especialista em contratos empresariais.\nTAREFA: Redigir NDA completo e protetivo.\nESTRUTURA:\n1. Qualificação das partes\n2. Definição de informação confidencial...',
+prompt:`PERSONA: Você é advogado(a) especialista em contratos empresariais e propriedade intelectual.\nTAREFA: Redigir acordo de confidencialidade (NDA) completo e robusto.\nESTRUTURA:\n1. QUALIFICAÇÃO DAS PARTES\n2. DEFINIÇÃO DE INFORMAÇÃO CONFIDENCIAL (abrangente e precisa)\n3. OBRIGAÇÕES DE SIGILO (o que pode e o que não pode ser revelado)\n4. EXCEÇÕES AO SIGILO (informações públicas, ordem judicial, etc.)\n5. PRAZO DE VIGÊNCIA E SOBREVIVÊNCIA\n6. PROPRIEDADE INTELECTUAL\n7. PENALIDADES POR VIOLAÇÃO (multa específica)\n8. FORO COMPETENTE${ANTI}\nDADOS:\n[INSIRA: partes, objeto da parceria e informações a proteger]`},
+
+{titulo:'Recurso Administrativo de Multa',area:'juridico',nivel:'intermediario',tag:'Recurso',
+desc:'Recurso administrativo para contestar multas de trânsito, fiscais e sanitárias. Resolve a dor de quem recebe auto de infração injusto.',
+preview:'PERSONA: Você é advogado(a) especialista em direito administrativo.\nTAREFA: Recurso administrativo completo.\nESTRUTURA:\n1. Identificação do recorrente\n2. Da multa ou auto questionado...',
+prompt:`PERSONA: Você é advogado(a) especialista em direito administrativo e recursos.\nTAREFA: Redigir recurso administrativo completo, técnico e persuasivo.\nESTRUTURA:\n1. IDENTIFICAÇÃO DO RECORRENTE E DA AUTORIDADE\n2. DA AUTUAÇÃO CONTESTADA (número, data, infração)\n3. DOS FATOS (versão do recorrente com clareza)\n4. DOS ARGUMENTOS JURÍDICOS (nulidade, cerceamento de defesa, mérito)\n5. DAS PROVAS ANEXADAS\n6. DO PEDIDO (cancelamento, redução ou conversão)${ANTI}\nDADOS:\n[INSIRA: recorrente, auto, infração, data e argumentos]`},
+
+{titulo:'Ação de Indenização por Dano Moral',area:'juridico',nivel:'avancado',tag:'Petição',
+desc:'Petição de dano moral com fundamentos sólidos e pedido de valor justo. Para quem foi prejudicado e não sabe como agir.',
+preview:'PERSONA: Você é advogado(a) cível especialista em responsabilidade civil.\nTAREFA: Petição inicial de dano moral.\nBASE: CC arts. 186, 187 e 927...',
+prompt:`PERSONA: Você é advogado(a) cível especialista em responsabilidade civil e dano moral.\nTAREFA: Redigir petição inicial de ação de indenização por dano moral.\nBASE LEGAL: CC arts. 186, 187, 927 e CDC (se relação de consumo).\nESTRUTURA:\n1. QUALIFICAÇÃO DAS PARTES\n2. DOS FATOS (narrativa detalhada da conduta ilícita)\n3. DO DANO SOFRIDO (impacto real na vida do autor)\n4. DO NEXO DE CAUSALIDADE\n5. DA QUANTIFICAÇÃO (parâmetros da jurisprudência)\n6. DOS PEDIDOS (dano moral, material se houver, e honorários)${ANTI}\nDADOS:\n[INSIRA: partes, fatos, dano sofrido e provas]`},
+
+{titulo:'Habeas Corpus — Crime e Liberdade',area:'juridico',nivel:'premium',tag:'Petição',
+desc:'HC com fundamentos constitucionais e CPP. Para advogados criminalistas que precisam agir rápido pela liberdade do cliente.',
+preview:'PERSONA: Você é advogado(a) criminalista especialista em habeas corpus.\nTAREFA: HC com fundamentos sólidos para liberdade.\nBASE: CF art. 5º LXVIII e CPP arts. 647-667...',
+prompt:`PERSONA: Você é advogado(a) criminalista com 20 anos de experiência em habeas corpus.\nTAREFA: Redigir petição de habeas corpus completa e urgente.\nBASE LEGAL: CF art. 5º LXVIII; CPP arts. 647 a 667.\nESTRUTURA:\n1. PACIENTE E AUTORIDADE COATORA\n2. DA ILEGALIDADE OU ABUSO DE PODER (argumento central)\n3. DOS FUNDAMENTOS JURÍDICOS (doutrina e jurisprudência STJ/STF)\n4. DA AUSÊNCIA DOS REQUISITOS DA PRISÃO PREVENTIVA (se aplicável)\n5. DO PEDIDO LIMINAR E DEFINITIVO${ANTI}\nDADOS:\n[INSIRA: paciente, autoridade coatora, ilegalidade e situação processual]`},
+
+{titulo:'Divórcio Consensual Completo',area:'juridico',nivel:'avancado',tag:'Petição',
+desc:'Petição de divórcio com partilha, guarda e alimentos. Para casais que querem encerrar o relacionamento com ordem e dignidade.',
+preview:'PERSONA: Você é advogado(a) de família experiente.\nTAREFA: Petição de divórcio consensual completa.\nBASE: CC arts. 1571-1582 e CPC art. 731...',
+prompt:`PERSONA: Você é advogado(a) de família com 20 anos de experiência em divórcios consensuais.\nTAREFA: Redigir petição de divórcio consensual completa.\nBASE LEGAL: CC arts. 1.571 a 1.582; CPC art. 731.\nESTRUTURA:\n1. QUALIFICAÇÃO DAS PARTES (cônjuges com dados completos)\n2. DO CASAMENTO (data, regime de bens)\n3. DA DECISÃO CONSENSUAL\n4. DA PARTILHA DE BENS (bens discriminados e como serão divididos)\n5. DA GUARDA E CONVIVÊNCIA DOS FILHOS (se houver)\n6. DOS ALIMENTOS (valores e condições)\n7. DO PEDIDO${ANTI}\nDADOS:\n[INSIRA: partes, casamento, bens, filhos e acordos já definidos]`},
+
+// ══ MÉDICO ══
+{titulo:'Laudo Médico Completo',area:'medico',nivel:'avancado',tag:'Laudo',
+desc:'Laudo técnico com anamnese, CID-10 e conduta. Para médicos que precisam de documentação impecável com agilidade.',
+preview:'PERSONA: Você é médico(a) especialista com 20 anos de experiência clínica.\nTAREFA: Laudo médico completo e tecnicamente impecável.\nESTRUTURA:\n1. Identificação do paciente\n2. Queixa principal...',
+prompt:`PERSONA: Você é médico(a) especialista com 20 anos de experiência clínica. Sua documentação é referência no hospital.\nTAREFA: Redigir laudo médico completo e impecável.\nESTRUTURA:\n1. IDENTIFICAÇÃO DO PACIENTE (nome, idade, sexo, data)\n2. QUEIXA PRINCIPAL E HMA (história da moléstia atual)\n3. ANTECEDENTES PESSOAIS E FAMILIARES\n4. EXAME FÍSICO (dados objetivos)\n5. EXAMES COMPLEMENTARES (resultados relevantes)\n6. HIPÓTESE DIAGNÓSTICA E CID-10\n7. CONDUTA MÉDICA${ANTI}\nDADOS:\n[INSIRA: paciente, queixas, exame físico, exames e histórico]`},
+
+{titulo:'Relatório Médico para Plano de Saúde',area:'medico',nivel:'intermediario',tag:'Relatório',
+desc:'Relatório que justifica procedimentos negados pelo plano. Para médicos que precisam defender seus pacientes contra negativas injustas.',
+preview:'PERSONA: Você é médico(a) assistente especialista.\nTAREFA: Relatório para reverter negativa do plano de saúde.\nESTRUTURA:\n1. Identificação do paciente e beneficiário...',
+prompt:`PERSONA: Você é médico(a) assistente especialista com CRM ativo. Conhece os direitos dos pacientes perante planos de saúde.\nTAREFA: Redigir relatório médico convincente para autorização de procedimento pelo plano de saúde.\nESTRUTURA:\n1. IDENTIFICAÇÃO DO PACIENTE E NÚMERO DO BENEFICIÁRIO\n2. DIAGNÓSTICO CLÍNICO E CID-10\n3. HISTÓRICO E EVOLUÇÃO DO CASO\n4. JUSTIFICATIVA CLÍNICA DO PROCEDIMENTO SOLICITADO (por que é necessário)\n5. ALTERNATIVAS JÁ TENTADAS E SEUS RESULTADOS\n6. URGÊNCIA OU ELETIVIDADE\n7. CONSEQUÊNCIAS GRAVES DO NÃO ATENDIMENTO\n8. FUNDAMENTAÇÃO LEGAL (ANS e CF)\n9. IDENTIFICAÇÃO E ASSINATURA DO MÉDICO${ANTI}\nDADOS:\n[INSIRA: paciente, diagnóstico, procedimento solicitado e histórico]`},
+
+{titulo:'Laudo de Incapacidade Laboral INSS',area:'medico',nivel:'premium',tag:'Laudo Pericial',
+desc:'Laudo robusto de incapacidade para benefício previdenciário. Para médicos que precisam garantir o direito dos pacientes ao INSS.',
+preview:'PERSONA: Você é médico(a) especialista em perícias previdenciárias.\nTAREFA: Laudo de incapacidade laboral para INSS.\nBASE: Lei 8.213/91...',
+prompt:`PERSONA: Você é médico(a) especialista em perícias previdenciárias com profundo conhecimento da Lei 8.213/91.\nTAREFA: Redigir laudo de incapacidade laboral para concessão de benefício no INSS.\nBASE LEGAL: Lei 8.213/91 arts. 59 a 63 (auxílio-doença) e 42 a 47 (aposentadoria por invalidez).\nESTRUTURA:\n1. IDENTIFICAÇÃO DO PERICIADO E FUNÇÃO EXERCIDA\n2. ANAMNESE DETALHADA\n3. HISTÓRICO DE TRATAMENTOS E INTERNAÇÕES\n4. EXAME FÍSICO PERICIAL (dados objetivos)\n5. DOCUMENTOS MÉDICOS ANALISADOS\n6. DIAGNÓSTICO (CID-10 completo com código)\n7. ANÁLISE DA CAPACIDADE LABORATIVA (total, parcial, temporária ou permanente)\n8. CONCLUSÃO E PRAZO SUGERIDO DE AFASTAMENTO${ANTI}\nDADOS:\n[INSIRA: periciado, diagnóstico, função, exames e documentos]`},
+
+{titulo:'Atestado Médico com Validade Legal',area:'medico',nivel:'basico',tag:'Atestado',
+desc:'Atestado conforme Resolução CFM para afastamentos, escolas e órgãos. Para médicos que precisam de documentação rápida e correta.',
+preview:'PERSONA: Você é médico(a) com CRM ativo.\nTAREFA: Atestado médico com plena validade legal.\nBASE: Resolução CFM 1.658/2002...',
+prompt:`PERSONA: Você é médico(a) com CRM ativo, conhecedor(a) da Resolução CFM 1.658/2002.\nTAREFA: Redigir atestado médico com plena validade legal.\nESTRUTURA:\n1. IDENTIFICAÇÃO DO PACIENTE (nome completo, data de nascimento)\n2. DIAGNÓSTICO OU CID-10 (somente se o paciente autorizar)\n3. PERÍODO DE AFASTAMENTO (data de início e fim)\n4. RECOMENDAÇÕES ESPECÍFICAS (repouso, restrições)\n5. IDENTIFICAÇÃO DO MÉDICO (nome, CRM, especialidade)\n6. DATA E LOCAL${ANTI}\nDADOS:\n[INSIRA: paciente, diagnóstico, período e CRM]`},
+
+{titulo:'Laudo Psiquiátrico Forense',area:'medico',nivel:'premium',tag:'Laudo Pericial',
+desc:'Laudo psiquiátrico forense para processos criminais, interdição e capacidade civil. Para psiquiatras que atuam no campo jurídico.',
+preview:'PERSONA: Você é psiquiatra forense com CRM ativo.\nTAREFA: Laudo psiquiátrico para fins judiciais.\nESTRUTURA:\n1. Identificação do examinado\n2. Motivo do exame...',
+prompt:`PERSONA: Você é psiquiatra forense com CRM ativo e experiência em laudos para processos judiciais.\nTAREFA: Elaborar laudo psiquiátrico forense completo.\nESTRUTURA:\n1. IDENTIFICAÇÃO DO EXAMINADO E DO PROCESSO\n2. MOTIVO DO EXAME E QUESITOS FORMULADOS\n3. ANAMNESE PSIQUIÁTRICA (entrevistas e informações colhidas)\n4. EXAME DO ESTADO MENTAL (detalhado e objetivo)\n5. HISTÓRICO DE TRATAMENTOS E INTERNAÇÕES\n6. DIAGNÓSTICO (CID-10 e/ou DSM-5)\n7. RESPOSTA FUNDAMENTADA A CADA QUESITO\n8. CONCLUSÃO DO PERITO${ANTI}\nDADOS:\n[INSIRA: examinado, processo, quesitos e observações clínicas]`},
+
+{titulo:'Evolução de Prontuário Médico',area:'medico',nivel:'basico',tag:'Prontuário',
+desc:'Registro de evolução diária estruturado e seguro juridicamente. Para médicos que precisam de prontuário impecável e rápido.',
+preview:'PERSONA: Você é médico(a) assistente hospitalar.\nTAREFA: Evolução de prontuário completa e segura.\nESTRUTURA (SOAP):\nS — Subjetivo...',
+prompt:`PERSONA: Você é médico(a) assistente com CRM ativo, treinado(a) em documentação clínica segura.\nTAREFA: Redigir evolução de prontuário médico completa, usando o método SOAP.\nESTRUTURA SOAP:\nS — SUBJETIVO: queixas e relato do paciente\nO — OBJETIVO: exame físico, sinais vitais e exames\nA — AVALIAÇÃO: diagnóstico e raciocínio clínico\nP — PLANO: conduta, medicações, solicitações e observações${ANTI}\nDADOS:\n[INSIRA: paciente, data, queixas, exame físico e exames do dia]`},
+
+// ══ NEGÓCIOS E RH ══
+{titulo:'Proposta Comercial de Alto Impacto',area:'negocios',nivel:'intermediario',tag:'Vendas',
+desc:'Proposta focada em valor e ROI, não em preço. Para empresários que perdem contratos por propostas fracas e sem diferencial.',
+preview:'PERSONA: Você é consultor(a) comercial sênior especialista em B2B.\nTAREFA: Proposta comercial persuasiva focada em valor.\nESTRUTURA:\n1. Diagnóstico do problema do cliente...',
+prompt:`PERSONA: Você é consultor(a) comercial sênior com 20 anos em vendas B2B complexas. Fechou contratos milionários e sabe que proposta ganha focando no problema do cliente, não no produto.\nTAREFA: Redigir proposta comercial profissional e persuasiva.\nESTRUTURA:\n1. DIAGNÓSTICO DO PROBLEMA DO CLIENTE (mostre que entende a dor)\n2. APRESENTAÇÃO DA SOLUÇÃO PROPOSTA\n3. METODOLOGIA E COMO FUNCIONA\n4. BENEFÍCIOS CONCRETOS E ROI ESTIMADO\n5. DIFERENCIAIS (por que escolher você e não o concorrente)\n6. INVESTIMENTO E CONDIÇÕES DE PAGAMENTO\n7. CRONOGRAMA DE EXECUÇÃO\n8. PRÓXIMOS PASSOS E PRAZO DE VALIDADE${ANTI}\nDADOS:\n[INSIRA: empresa, solução, cliente, valores e diferenciais]`},
+
+{titulo:'Plano de Demissão Humanizada',area:'negocios',nivel:'avancado',tag:'RH',
+desc:'Roteiro completo de desligamento respeitoso com script, checklist e comunicação ao time. Para gestores que precisam demitir sem trauma.',
+preview:'PERSONA: Você é consultor(a) sênior de RH especialista em desligamentos.\nTAREFA: Plano completo de demissão humanizada.\nESTRUTURA:\n1. Roteiro da conversa...',
+prompt:`PERSONA: Você é consultor(a) sênior de RH especialista em gestão de pessoas e desligamentos humanizados.\nTAREFA: Elaborar plano completo de demissão humanizada.\nESTRUTURA:\n1. ROTEIRO DA CONVERSA DE DESLIGAMENTO (script palavra por palavra)\n2. COMUNICADO OFICIAL AO COLABORADOR\n3. CHECKLIST DE RH (documentos, cálculos, devoluções, sistemas)\n4. COMUNICAÇÃO À EQUIPE (como e o que comunicar)\n5. CARTA DE RECOMENDAÇÃO (se a situação permitir)\n6. OFFBOARDING (transferência de conhecimento e acessos)${ANTI}\nDADOS:\n[INSIRA: colaborador, cargo, tempo de empresa, motivo e benefícios acordados]`},
+
+{titulo:'Análise SWOT com Plano de Ação',area:'negocios',nivel:'intermediario',tag:'Estratégia',
+desc:'SWOT completa com cruzamento estratégico e prioridades de ação. Para gestores que precisam de visão estratégica clara.',
+preview:'PERSONA: Você é consultor(a) estratégico(a) sênior.\nTAREFA: Análise SWOT completa com recomendações práticas.\nESTRUTURA:\n1. Forças internas\n2. Fraquezas internas...',
+prompt:`PERSONA: Você é consultor(a) estratégico(a) sênior com MBA e 20 anos em estratégia empresarial.\nTAREFA: Elaborar análise SWOT completa com matriz de cruzamento e plano de ação.\nESTRUTURA:\n1. FORÇAS (Strengths) internas — listar e detalhar\n2. FRAQUEZAS (Weaknesses) internas — listar e detalhar\n3. OPORTUNIDADES (Opportunities) externas — listar e detalhar\n4. AMEAÇAS (Threats) externas — listar e detalhar\n5. CRUZAMENTO ESTRATÉGICO (SO: usar forças para aproveitar oportunidades / WO: superar fraquezas / ST: usar forças contra ameaças / WT: minimizar fraquezas e ameaças)\n6. PRIORIDADES DE AÇÃO (top 5 ações com responsável e prazo)${ANTI}\nDADOS:\n[INSIRA: empresa, setor, momento atual e concorrentes]`},
+
+{titulo:'Plano de Negócios para MEI e Pequenas Empresas',area:'negocios',nivel:'intermediario',tag:'Plano',
+desc:'Plano prático e aplicável para quem está começando. Para empreendedores que precisam de direção clara sem linguagem corporativa.',
+preview:'PERSONA: Você é consultor(a) especialista em pequenos negócios e MEI.\nTAREFA: Plano de negócios prático e aplicável.\nESTRUTURA:\n1. Descrição do negócio...',
+prompt:`PERSONA: Você é consultor(a) especialista em pequenos negócios, MEI e empreendedorismo popular. Fala a língua do empreendedor, sem jargão corporativo.\nTAREFA: Elaborar plano de negócios prático, simples e aplicável.\nESTRUTURA:\n1. DESCRIÇÃO DO NEGÓCIO (o que faz, como faz, por que é diferente)\n2. PÚBLICO-ALVO (quem são os clientes ideais)\n3. ANÁLISE DA CONCORRÊNCIA LOCAL (pontos fortes e fracos dos concorrentes)\n4. PRECIFICAÇÃO (como calcular o preço justo)\n5. CANAIS DE VENDA (onde e como vender)\n6. PROJEÇÃO FINANCEIRA SIMPLIFICADA (6 meses: receita esperada, custos fixos, variáveis e lucro)\n7. PRIMEIROS 30 DIAS — PLANO DE AÇÃO CONCRETO${ANTI}\nDADOS:\n[INSIRA: negócio, produto/serviço, público, localidade e investimento disponível]`},
+
+{titulo:'Script de Vendas por WhatsApp',area:'negocios',nivel:'intermediario',tag:'Vendas',
+desc:'Script completo para converter leads no WhatsApp. Para vendedores que travam na hora de responder e perdem vendas por isso.',
+preview:'PERSONA: Você é especialista em vendas digitais e WhatsApp Business.\nTAREFA: Script de vendas completo para WhatsApp.\nESTRUTURA:\n1. Primeiro contato (abertura)\n2. Diagnóstico...',
+prompt:`PERSONA: Você é especialista em vendas digitais e WhatsApp Business com profundo conhecimento em copywriting conversacional.\nTAREFA: Criar script completo de vendas para WhatsApp.\nESTRUTURA:\n1. PRIMEIRO CONTATO (resposta rápida que abre conversa sem parecer robô)\n2. DIAGNÓSTICO (3 perguntas para entender a necessidade real)\n3. APRESENTAÇÃO DA SOLUÇÃO (focada na dor identificada)\n4. PROVA SOCIAL (resultado ou depoimento)\n5. MANEJO DE OBJEÇÕES (listar as 5 principais objeções com resposta para cada uma)\n6. FECHAMENTO (como pedir a decisão sem pressionar)\n7. PÓS-VENDA IMEDIATO (confirmação e próximos passos)${ANTI}\nDADOS:\n[INSIRA: produto, preço, público e objeções que mais aparecem]`},
+
+// ══ MARKETING ══
+{titulo:'Copy para Página de Vendas',area:'marketing',nivel:'avancado',tag:'Copywriting',
+desc:'Copy de alta conversão com gatilhos e CTA irresistível. Para quem quer vender muito mais sem pagar agência de R$10.000.',
+preview:'PERSONA: Você é copywriter sênior especialista em páginas de alta conversão.\nTAREFA: Copy completa para página de vendas.\nESTRUTURA:\n1. Headline impactante (3 opções)\n2. Subheadline...',
+prompt:`PERSONA: Você é copywriter sênior com histórico comprovado de páginas que converteram R$1M+. Conhece os princípios de Cialdini, os frameworks AIDA, PAS e os gatilhos que fazem pessoas comprarem.\nTAREFA: Escrever copy completa para página de vendas de alta conversão.\nESTRUTURA:\n1. HEADLINE IMPACTANTE (escreva 3 opções e indique a melhor)\n2. SUBHEADLINE DE REFORÇO\n3. IDENTIFICAÇÃO DA DOR (o leitor precisa sentir que você leu sua mente)\n4. AGITAÇÃO (o que acontece se o problema não for resolvido)\n5. APRESENTAÇÃO DA SOLUÇÃO\n6. BENEFÍCIOS EM BULLETS (resultado, não característica)\n7. PROVA SOCIAL (como apresentar depoimentos)\n8. OFERTA E BÔNUS\n9. GARANTIA\n10. CTA COM URGÊNCIA${ANTI}\nDADOS:\n[INSIRA: produto, público, preço, garantia e diferenciais]`},
+
+{titulo:'Sequência de 7 E-mails de Vendas',area:'marketing',nivel:'avancado',tag:'E-mail Marketing',
+desc:'Sequência completa que nutre e converte leads automaticamente. Para quem quer vender dormindo sem saber nada de copywriting.',
+preview:'PERSONA: Você é especialista em e-mail marketing e automação de vendas.\nTAREFA: Sequência de 7 e-mails que nutrem e convertem.\nFLUXO: E1 boas-vindas → E2 dor → E3 prova...',
+prompt:`PERSONA: Você é especialista em e-mail marketing e automação de vendas com histórico de sequências que converteram acima de 5%.\nTAREFA: Criar sequência completa de 7 e-mails de nutrição e conversão.\nESTRUTURA DE CADA E-MAIL:\n- ASSUNTO (irresistível, personalizado com nome se possível)\n- ABERTURA (gancho que prende)\n- CORPO (valor, storytelling ou prova)\n- CTA (claro e único)\nFLUXO OBRIGATÓRIO:\nE1 — Boas-vindas e expectativas\nE2 — A dor real e o que acontece sem resolver\nE3 — Sua história e o porquê da solução\nE4 — Prova social (resultados e depoimentos)\nE5 — Conteúdo de valor que antecipa o produto\nE6 — Abertura da oferta com urgência\nE7 — Último aviso (escassez real)${ANTI}\nDADOS:\n[INSIRA: produto, público, oferta e prazo da campanha]`},
+
+{titulo:'Estratégia de Lançamento de Produto',area:'marketing',nivel:'premium',tag:'Lançamento',
+desc:'Plano completo de lançamento com pré, lançamento e pós. Para quem quer fazer um lançamento que gere resultado de verdade.',
+preview:'PERSONA: Você é especialista em lançamentos digitais.\nTAREFA: Estratégia completa de lançamento.\nESTRUTURA:\nFase 1 — Pré-lançamento (aquecimento)\nFase 2 — Lançamento (abertura)...',
+prompt:`PERSONA: Você é especialista em lançamentos digitais com experiência em produtos que faturaram mais de R$500K em uma semana.\nTAREFA: Criar estratégia completa de lançamento de produto.\nESTRUTURA:\nFASE 1 — PRÉ-LANÇAMENTO (2 semanas antes):\n- Conteúdos de aquecimento\n- E-mails de aquecimento\n- Criação de lista de espera\nFASE 2 — LANÇAMENTO (7 dias):\n- Dia de abertura do carrinho\n- Conteúdos diários\n- E-mails diários\n- Lives ou webinários\nFASE 3 — ÚLTIMAS HORAS:\n- Urgência e escassez real\n- E-mails de recuperação\nFASE 4 — PÓS-LANÇAMENTO:\n- Reativação de quem não comprou\n- Upsell e cross-sell\nPara cada fase: ações, conteúdos, e-mails e métricas.${ANTI}\nDADOS:\n[INSIRA: produto, público, preço, prazo e canais disponíveis]`},
+
+{titulo:'Roteiro de VSL — Vídeo de Vendas',area:'marketing',nivel:'avancado',tag:'Vídeo',
+desc:'Script completo de VSL que prende e converte. Para empreendedores que querem vender com vídeo sem saber roteirizar.',
+preview:'PERSONA: Você é roteirista especialista em VSL de alta conversão.\nTAREFA: Roteiro completo para vídeo de vendas.\nESTRUTURA:\n1. Gancho (10 segundos que prendem)...',
+prompt:`PERSONA: Você é roteirista especialista em VSL (Video Sales Letter) de alta conversão. Seus roteiros têm taxa de visualização acima de 60% e conversão acima de 3%.\nTAREFA: Criar roteiro completo de VSL.\nESTRUTURA:\n1. GANCHO (primeiros 10 segundos — o que faz o espectador não fechar)\n2. PROMESSA (o resultado que o espectador vai ter ao assistir até o fim)\n3. IDENTIFICAÇÃO COM O PROBLEMA (faça o espectador sentir que você o conhece)\n4. AGITAÇÃO DA DOR (o que acontece se nada mudar)\n5. APRESENTAÇÃO DA SOLUÇÃO (revele gradualmente)\n6. MECANISMO ÚNICO (por que funciona diferente)\n7. PROVA SOCIAL (resultados reais ou simulados com dados fictícios SINALIZADOS)\n8. OFERTA, BÔNUS E PREÇO\n9. GARANTIA\n10. URGÊNCIA E CTA FINAL${ANTI}\nDADOS:\n[INSIRA: produto, público, oferta, preço e garantia]`},
+
+{titulo:'Post Viral para Instagram e LinkedIn',area:'marketing',nivel:'basico',tag:'Conteúdo',
+desc:'Post com gancho, desenvolvimento e CTA de alto engajamento. Para crescer nas redes sem contratar social media.',
+preview:'PERSONA: Você é especialista em conteúdo viral para redes sociais.\nTAREFA: Post de alto engajamento para Instagram ou LinkedIn.\nESTRUTURA:\n1. Gancho que para o scroll...',
+prompt:`PERSONA: Você é especialista em conteúdo viral para redes sociais com metodologia própria de criação de posts que geram mais de 500 comentários.\nTAREFA: Criar post de alto engajamento para Instagram ou LinkedIn.\nESTRUTURA:\n1. GANCHO (primeira linha que para qualquer scroll — use dado chocante, pergunta provocadora ou afirmação polêmica)\n2. DESENVOLVIMENTO (storytelling, dados ou experiência pessoal)\n3. VIRADA (o insight ou lição inesperada)\n4. CTA (comentem, salvem, marquem alguém — escolha um e justifique)\n5. HASHTAGS (10 mais relevantes para o nicho)\nCRIE DUAS VERSÕES: uma mais conservadora e uma mais ousada.${ANTI}\nDADOS:\n[INSIRA: tema, nicho, plataforma e objetivo do post]`},
+
+// ══ CONTÁBIL ══
+{titulo:'Parecer Contábil Técnico',area:'contabil',nivel:'avancado',tag:'Parecer',
+desc:'Parecer com fundamentação NBC e legislação tributária. Para contadores que precisam de documentos sólidos que resistam a auditorias.',
+preview:'PERSONA: Você é contador(a) sênior com CRC ativo e 20 anos de experiência.\nTAREFA: Parecer contábil técnico fundamentado.\nESTRUTURA:\n1. Do objeto do parecer...',
+prompt:`PERSONA: Você é contador(a) sênior com CRC ativo, 20 anos de experiência e profundo conhecimento das normas NBC, IFRS e legislação tributária brasileira.\nTAREFA: Elaborar parecer contábil técnico completo e fundamentado.\nESTRUTURA:\n1. DO OBJETO DO PARECER (finalidade e escopo)\n2. DA DOCUMENTAÇÃO ANALISADA (listar com datas)\n3. DA FUNDAMENTAÇÃO (NBC aplicáveis, IFRS se pertinente, legislação tributária)\n4. DAS CONSTATAÇÕES (achados objetivos)\n5. DA CONCLUSÃO FUNDAMENTADA\n6. DAS RESSALVAS (se houver)\n7. IDENTIFICAÇÃO DO CONTADOR E CRC${ANTI}\nDADOS:\n[INSIRA: empresa, período, situação a ser analisada e documentos disponíveis]`},
+
+{titulo:'Planejamento Tributário Legal',area:'contabil',nivel:'premium',tag:'Tributário',
+desc:'Planejamento para redução legal da carga fiscal. Para empresas que pagam imposto a mais sem saber e perdem dinheiro todo mês.',
+preview:'PERSONA: Você é contador(a) tributarista sênior.\nTAREFA: Planejamento tributário legal e eficiente.\nBASE: IRPJ, CSLL, PIS, COFINS...',
+prompt:`PERSONA: Você é contador(a) tributarista sênior com CRC ativo e especialização em planejamento tributário. Já economizou milhões em impostos para empresas brasileiras de forma 100% legal.\nTAREFA: Elaborar planejamento tributário legal e eficiente.\nBASE LEGAL: IRPJ, CSLL, PIS, COFINS, ISS e legislação vigente.\nESTRUTURA:\n1. DIAGNÓSTICO FISCAL ATUAL (regime atual e carga tributária efetiva)\n2. COMPARATIVO DE REGIMES (Simples Nacional, Lucro Presumido, Lucro Real — com cálculo)\n3. OPORTUNIDADES DE ECONOMIA IDENTIFICADAS\n4. RECOMENDAÇÕES LEGAIS (benefícios fiscais, deduções, regimes especiais)\n5. PROJEÇÃO DE ECONOMIA ANUAL\n6. RISCOS E CUIDADOS${ANTI}\nDADOS:\n[INSIRA: empresa, CNAE, faturamento mensal, regime atual e despesas principais]`},
+
+{titulo:'Laudo Pericial Contábil Judicial',area:'contabil',nivel:'premium',tag:'Perícia',
+desc:'Laudo para processos judiciais com resposta a quesitos. Para contadores peritos que precisam de documentação incontestável no tribunal.',
+preview:'PERSONA: Você é contador(a) perito(a) judicial com CRC ativo.\nTAREFA: Laudo pericial contábil para processo judicial.\nBASE: CPC art. 473...',
+prompt:`PERSONA: Você é contador(a) perito(a) judicial com CRC ativo, nomeado(a) pelo juiz para perícia contábil.\nTAREFA: Elaborar laudo pericial contábil completo.\nBASE: CPC art. 473.\nESTRUTURA:\n1. IDENTIFICAÇÃO DO PERITO E DO PROCESSO\n2. DO OBJETO DA PERÍCIA\n3. DAS DILIGÊNCIAS REALIZADAS (documentos analisados, visitas, entrevistas)\n4. DOS QUESITOS E RESPOSTAS (cada quesito respondido com fundamentação)\n5. DA CONCLUSÃO DO PERITO (clara e objetiva)\n6. DOS DOCUMENTOS ANEXOS${ANTI}\nDADOS:\n[INSIRA: processo, partes, quesitos formulados e documentos disponíveis]`},
+
+{titulo:'Relatório Gerencial Mensal',area:'contabil',nivel:'intermediario',tag:'Relatório',
+desc:'Relatório com indicadores, análise de custos e alertas. Para empresários que querem entender a saúde financeira sem ser contador.',
+preview:'PERSONA: Você é controller(a) sênior.\nTAREFA: Relatório gerencial mensal completo.\nESTRUTURA:\n1. Resultado do mês vs. orçamento...',
+prompt:`PERSONA: Você é controller(a) e analista financeiro(a) sênior. Transforma números em linguagem de gestão que qualquer empresário entende.\nTAREFA: Elaborar relatório gerencial mensal completo e compreensível.\nESTRUTURA:\n1. RESUMO EXECUTIVO (o mês em 3 linhas — bom, ruim e urgente)\n2. RESULTADO DO MÊS VS. ORÇAMENTO (com variação percentual)\n3. ANÁLISE DO FATURAMENTO (por produto, serviço ou cliente)\n4. ANÁLISE DE CUSTOS E DESPESAS (fixos vs. variáveis, tendências)\n5. FLUXO DE CAIXA (posição atual e projeção 30 dias)\n6. INDICADORES FINANCEIROS (margem bruta, líquida, EBITDA)\n7. ALERTAS E PONTOS DE ATENÇÃO\n8. RECOMENDAÇÕES DE AÇÃO${ANTI}\nDADOS:\n[INSIRA: empresa, mês, faturamento, custos e situação financeira]`},
+
+// ══ PSICOLOGIA ══
+{titulo:'Relatório Psicológico Completo',area:'psicologia',nivel:'avancado',tag:'Relatório',
+desc:'Relatório conforme Resolução CFP 06/2019. Para psicólogos que precisam de documentação clínica impecável e defensável.',
+preview:'PERSONA: Você é psicólogo(a) com CRP ativo e 20 anos de experiência clínica.\nTAREFA: Relatório psicológico completo conforme CFP.\nBASE: Resolução CFP 06/2019...',
+prompt:`PERSONA: Você é psicólogo(a) com CRP ativo, 20 anos de experiência clínica e profundo conhecimento da Resolução CFP 06/2019.\nTAREFA: Elaborar relatório psicológico completo e defensável.\nBASE: Resolução CFP 06/2019.\nESTRUTURA:\n1. IDENTIFICAÇÃO (psicólogo, solicitante, avaliado, finalidade)\n2. PROCEDIMENTOS UTILIZADOS (instrumentos, entrevistas, observações)\n3. DADOS RELEVANTES (anamnese, histórico e contexto)\n4. ANÁLISE E INTERPRETAÇÃO DOS RESULTADOS\n5. CONCLUSÃO (objetiva e baseada nos dados)\n6. RECOMENDAÇÕES\n7. IDENTIFICAÇÃO DO PSICÓLOGO E CRP${ANTI}\nDADOS:\n[INSIRA: paciente, demanda, procedimentos realizados e observações]`},
+
+{titulo:'Laudo de Avaliação Neuropsicológica',area:'psicologia',nivel:'premium',tag:'Laudo',
+desc:'Avaliação de funções cognitivas com diagnóstico e intervenção. Para neuropsicólogos que precisam de documentação rigorosa.',
+preview:'PERSONA: Você é neuropsicólogo(a) com CRP ativo.\nTAREFA: Laudo de avaliação neuropsicológica completo.\nESTRUTURA:\n1. Identificação e motivo\n2. Instrumentos aplicados...',
+prompt:`PERSONA: Você é neuropsicólogo(a) com CRP ativo e especialização em avaliação cognitiva.\nTAREFA: Elaborar laudo de avaliação neuropsicológica completo e rigoroso.\nESTRUTURA:\n1. IDENTIFICAÇÃO E MOTIVO DA AVALIAÇÃO\n2. INSTRUMENTOS UTILIZADOS (lista com justificativa de escolha)\n3. AVALIAÇÃO DE FUNÇÕES COGNITIVAS:\n   - Atenção e concentração\n   - Memória (imediata, operacional, episódica)\n   - Linguagem e comunicação\n   - Funções executivas\n   - Praxias e gnosias\n4. ANÁLISE INTEGRADA DOS RESULTADOS\n5. HIPÓTESE DIAGNÓSTICA (CID-10 e DSM-5)\n6. RECOMENDAÇÕES DE INTERVENÇÃO${ANTI}\nDADOS:\n[INSIRA: paciente, motivo, instrumentos aplicados e resultados dos testes]`},
+
+{titulo:'Plano Terapêutico Individualizado',area:'psicologia',nivel:'avancado',tag:'Plano',
+desc:'Plano de intervenção com objetivos mensuráveis e critérios de alta. Para psicólogos que querem organizar o tratamento com clareza.',
+preview:'PERSONA: Você é psicólogo(a) clínico(a) com abordagem definida.\nTAREFA: Plano terapêutico individualizado completo.\nESTRUTURA:\n1. Demanda e queixa principal...',
+prompt:`PERSONA: Você é psicólogo(a) clínico(a) experiente com abordagem teórica sólida e foco em resultados mensuráveis.\nTAREFA: Elaborar plano terapêutico individualizado completo.\nESTRUTURA:\n1. DEMANDA E QUEIXA PRINCIPAL (na voz do paciente)\n2. HIPÓTESE DIAGNÓSTICA (CID-10 e/ou DSM-5 quando aplicável)\n3. OBJETIVOS TERAPÊUTICOS:\n   - Curto prazo (até 3 meses)\n   - Médio prazo (3 a 6 meses)\n   - Longo prazo (acima de 6 meses)\n4. ABORDAGEM E TÉCNICAS A UTILIZAR (com justificativa clínica)\n5. FREQUÊNCIA E DURAÇÃO ESTIMADA DAS SESSÕES\n6. CRITÉRIOS DE ALTA\n7. INDICADORES DE PROGRESSO${ANTI}\nDADOS:\n[INSIRA: paciente, queixa, abordagem, histórico e observações]`},
+
+{titulo:'Laudo Psicológico para Porte de Arma',area:'psicologia',nivel:'intermediario',tag:'Laudo Pericial',
+desc:'Laudo de aptidão psicológica conforme Resolução CFP 012/2011. Para psicólogos habilitados que atendem essa demanda.',
+preview:'PERSONA: Você é psicólogo(a) habilitado(a) para perícia de arma de fogo.\nTAREFA: Laudo de aptidão psicológica para porte de arma.\nBASE: Resolução CFP 012/2011...',
+prompt:`PERSONA: Você é psicólogo(a) habilitado(a) para realização de avaliação psicológica para porte de arma de fogo.\nTAREFA: Elaborar laudo de aptidão psicológica para porte ou posse de arma de fogo.\nBASE: Resolução CFP 012/2011 e Decreto 9.847/2019.\nESTRUTURA:\n1. IDENTIFICAÇÃO DO AVALIADO E FINALIDADE\n2. INSTRUMENTOS APLICADOS (apenas os autorizados pelo CFP)\n3. AVALIAÇÃO DO EQUILÍBRIO EMOCIONAL\n4. AVALIAÇÃO DA CAPACIDADE PSICOMOTORA\n5. AVALIAÇÃO DO SENSO DE REALIDADE E JULGAMENTO SOCIAL\n6. CONCLUSÃO: APTO(A) ou INAPTO(A) COM JUSTIFICATIVA${ANTI}\nDADOS:\n[INSIRA: avaliado, finalidade, instrumentos e resultados]`},
+
+// ══ EDUCAÇÃO ══
+{titulo:'Plano de Aula Completo BNCC',area:'educacao',nivel:'intermediario',tag:'Plano de Aula',
+desc:'Plano com objetivos, BNCC, metodologia ativa e avaliação. Para professores que economizam horas de planejamento toda semana.',
+preview:'PERSONA: Você é pedagogo(a) especialista em currículo e didática.\nTAREFA: Plano de aula completo alinhado à BNCC.\nESTRUTURA:\n1. Identificação\n2. Objetivos de aprendizagem...',
+prompt:`PERSONA: Você é pedagogo(a) especialista em currículo e didática com 20 anos de experiência em sala de aula e formação de professores.\nTAREFA: Elaborar plano de aula completo, aplicável e alinhado à BNCC.\nESTRUTURA:\n1. IDENTIFICAÇÃO (disciplina, ano/série, tema, duração)\n2. OBJETIVOS DE APRENDIZAGEM (o que o aluno vai saber e conseguir fazer)\n3. HABILIDADES BNCC (código e descrição exata)\n4. SEQUÊNCIA DIDÁTICA:\n   - Início: motivação e levantamento de conhecimento prévio\n   - Desenvolvimento: atividades e metodologia\n   - Fechamento: síntese e consolidação\n5. RECURSOS NECESSÁRIOS\n6. AVALIAÇÃO E CRITÉRIOS DE SUCESSO\n7. ADAPTAÇÕES PARA INCLUSÃO${ANTI}\nDADOS:\n[INSIRA: disciplina, ano, tema, contexto da turma e recursos disponíveis]`},
+
+{titulo:'Projeto Interdisciplinar BNCC',area:'educacao',nivel:'avancado',tag:'Projeto',
+desc:'Projeto didático com competências BNCC, cronograma e avaliação. Para coordenadores que criam projetos de impacto real.',
+preview:'PERSONA: Você é pedagogo(a) especialista em projetos interdisciplinares.\nTAREFA: Projeto didático completo alinhado à BNCC.\nESTRUTURA:\n1. Título e justificativa...',
+prompt:`PERSONA: Você é pedagogo(a) especialista em projetos educacionais interdisciplinares com experiência em escolas que transformam resultados pedagógicos.\nTAREFA: Elaborar projeto didático interdisciplinar completo alinhado à BNCC.\nESTRUTURA:\n1. TÍTULO E JUSTIFICATIVA (relevância do tema para os alunos)\n2. OBJETIVOS GERAIS E ESPECÍFICOS\n3. COMPETÊNCIAS E HABILIDADES BNCC (com códigos)\n4. CONTEÚDOS E DISCIPLINAS ENVOLVIDAS\n5. CRONOGRAMA DE ATIVIDADES (semana a semana)\n6. METODOLOGIA E RECURSOS\n7. PRODUTO FINAL (o que os alunos vão criar ou apresentar)\n8. AVALIAÇÃO (critérios e instrumentos)\n9. RECURSOS E ORÇAMENTO${ANTI}\nDADOS:\n[INSIRA: tema, ciclo escolar, disciplinas envolvidas e duração]`},
+
+// ══ ENGENHARIA ══
+{titulo:'Laudo Técnico de Vistoria',area:'engenharia',nivel:'avancado',tag:'Laudo',
+desc:'Laudo com base ABNT para patologias, vícios e irregularidades. Para engenheiros que precisam de documentação incontestável.',
+preview:'PERSONA: Você é engenheiro(a) civil sênior com CREA ativo.\nTAREFA: Laudo técnico de vistoria completo.\nREFERÊNCIAS: NBR aplicável...',
+prompt:`PERSONA: Você é engenheiro(a) civil sênior com CREA ativo e 20 anos de experiência em laudos técnicos e vistorias.\nTAREFA: Elaborar laudo técnico de vistoria completo e defensável.\nREFERÊNCIAS: NBR aplicáveis, legislação municipal e federal.\nESTRUTURA:\n1. IDENTIFICAÇÃO (solicitante, imóvel, finalidade)\n2. OBJETO E METODOLOGIA DA VISTORIA\n3. DESCRIÇÃO DO IMÓVEL (características físicas)\n4. REGISTRO DAS OCORRÊNCIAS (cada item com descrição, localização e gravidade)\n5. ANÁLISE TÉCNICA E CAUSAS PROVÁVEIS\n6. CLASSIFICAÇÃO DO RISCO (alto, médio, baixo)\n7. RECOMENDAÇÕES TÉCNICAS (ações corretivas)\n8. CONCLUSÃO\n9. RESPONSABILIDADE TÉCNICA E ART${ANTI}\nDADOS:\n[INSIRA: endereço, data, finalidade, observações e fotos descritas]`},
+
+{titulo:'Laudo Técnico de Engenharia Pericial',area:'engenharia',nivel:'premium',tag:'Laudo Pericial',
+desc:'Laudo pericial para processos judiciais e arbitragem. Para engenheiros peritos que precisam de documentação que resiste ao contraditório.',
+preview:'PERSONA: Você é engenheiro(a) perito(a) judicial com CREA ativo.\nTAREFA: Laudo técnico pericial completo.\nBASE: CPC arts. 473 e 478...',
+prompt:`PERSONA: Você é engenheiro(a) perito(a) judicial com CREA ativo e experiência em laudos periciais para tribunais e câmaras de arbitragem.\nTAREFA: Elaborar laudo técnico pericial de engenharia.\nBASE: CPC arts. 473 e 478; NBRs aplicáveis.\nESTRUTURA:\n1. IDENTIFICAÇÃO DO PERITO E DO PROCESSO\n2. DO OBJETO DA PERÍCIA\n3. DOS QUESITOS (listar todos)\n4. DAS DILIGÊNCIAS REALIZADAS (visitas, ensaios, documentos)\n5. ANÁLISE TÉCNICA (fundamentada em normas ABNT)\n6. RESPOSTAS AOS QUESITOS (cada um com fundamentação técnica)\n7. CONCLUSÃO DO PERITO\n8. DOCUMENTOS E FOTOS ANEXAS${ANTI}\nDADOS:\n[INSIRA: processo, partes, quesitos e informações técnicas]`},
+
+// ══ TI ══
+{titulo:'Documento de Requisitos de Software (SRS)',area:'ti',nivel:'premium',tag:'Documentação',
+desc:'Especificação técnica padrão IEEE 830 com requisitos funcionais e não funcionais. Para times que precisam de documentação séria.',
+preview:'PERSONA: Você é arquiteto(a) de software sênior.\nTAREFA: SRS completo padrão IEEE 830.\nESTRUTURA:\n1. Visão geral do sistema\n2. Requisitos funcionais...',
+prompt:`PERSONA: Você é arquiteto(a) de software sênior com 20 anos de experiência em projetos de grande escala. Conhece o padrão IEEE 830 de cor.\nTAREFA: Elaborar documento de especificação de requisitos de software (SRS) completo.\nPADRÃO: IEEE 830.\nESTRUTURA:\n1. VISÃO GERAL DO SISTEMA (propósito, escopo e definições)\n2. REQUISITOS FUNCIONAIS (RF001 em diante, com descrição, entrada, processamento e saída)\n3. REQUISITOS NÃO FUNCIONAIS (desempenho, segurança, usabilidade, escalabilidade)\n4. RESTRIÇÕES TÉCNICAS E DE NEGÓCIO\n5. CASOS DE USO PRINCIPAIS (diagrama textual)\n6. MATRIZ DE RASTREABILIDADE${ANTI}\nDADOS:\n[INSIRA: sistema, stakeholders, funcionalidades e restrições técnicas]`},
+
+{titulo:'Plano de Testes de Software',area:'ti',nivel:'avancado',tag:'QA',
+desc:'Plano de testes completo com casos de teste e critérios de aceite. Para times que querem qualidade de software sem improviso.',
+preview:'PERSONA: Você é QA Engineer sênior especialista em testes.\nTAREFA: Plano de testes de software completo.\nESTRUTURA:\n1. Escopo dos testes\n2. Estratégia de testes...',
+prompt:`PERSONA: Você é QA Engineer sênior com certificação ISTQB e 15 anos de experiência em testes de software.\nTAREFA: Elaborar plano de testes de software completo.\nESTRUTURA:\n1. ESCOPO DOS TESTES (o que será e o que não será testado)\n2. ESTRATÉGIA DE TESTES (unitários, integração, sistema, aceite)\n3. CASOS DE TESTE (para cada funcionalidade: pré-condição, passos, dado de entrada, resultado esperado, resultado obtido)\n4. CRITÉRIOS DE ENTRADA E SAÍDA (quando começar e quando parar de testar)\n5. AMBIENTE DE TESTES\n6. RISCOS E MITIGAÇÕES\n7. MÉTRICAS DE QUALIDADE${ANTI}\nDADOS:\n[INSIRA: sistema, funcionalidades a testar e ambiente]`},
+,
+// ══ MAIS JURÍDICO ══
+{titulo:'Ação de Cobrança Extrajudicial',area:'juridico',nivel:'intermediario',tag:'Cobrança',
+desc:'Carta de cobrança escalonada (1ª, 2ª e 3ª tentativa) antes de ir ao judiciário. Para quem tem dívida a receber e não sabe como cobrar com força legal.',
+preview:'PERSONA: Você é especialista em cobrança extrajudicial e inadimplência.\nTAREFA: Sequência de 3 cartas de cobrança escalonadas.\nESTRUTURA:\n1. Carta 1 — Lembrança amigável...',
+prompt:`PERSONA: Você é especialista em cobrança extrajudicial e direito do consumidor.\nTAREFA: Criar sequência de 3 cartas de cobrança escalonadas, da mais amigável à mais dura.\nESTRUTURA:\nCART A 1 — LEMBR ANÇA AMIGÁVEL (tom cordial, sem ameaça)\nCART A 2 — AVISO FORMAL (tom firme, prazo peremptório)\nCART A 3 — NOTIFICAÇÃO PRÉ-JUDICIAL (tom sério, anuncia ação judicial)\nCada carta deve ter: identificação das partes, valor do débito, prazo para pagamento e consequências.\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente valores ou datas não fornecidos.\n✅ Use APENAS os dados fornecidos.\nDADOS:\n[INSIRA: credor, devedor, valor, data do vencimento e histórico]`},
+
+{titulo:'Recurso em Processo do Consumidor',area:'juridico',nivel:'intermediario',tag:'Recurso',
+desc:'Recurso administrativo para PROCON e defesa em processos consumeristas. Para consumidores lesados que não sabem como se defender.',
+preview:'PERSONA: Você é advogado(a) especialista em direito do consumidor.\nTAREFA: Recurso administrativo no PROCON ou Juizado Especial.\nBASE: CDC Lei 8.078/90...',
+prompt:`PERSONA: Você é advogado(a) especialista em direito do consumidor e processos no PROCON e JEC.\nTAREFA: Redigir recurso administrativo ou inicial para defesa consumerista.\nBASE LEGAL: CDC Lei 8.078/90.\nESTRUTURA:\n1. IDENTIFICAÇÃO DO CONSUMIDOR E FORNECEDOR\n2. DOS FATOS (o problema ocorrido com datas e documentos)\n3. DA VIOLAÇÃO DO CDC (artigos específicos violados)\n4. DO DANO SOFRIDO (material e/ou moral)\n5. DOS PEDIDOS (restituição, reparação, indenização)\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA cite artigos do CDC que não existam.\n✅ Use APENAS os fatos fornecidos.\nDADOS:\n[INSIRA: consumidor, empresa, problema, datas e pedidos]`},
+
+// ══ MAIS MÉDICO ══
+{titulo:'Laudo para Cirurgia Bariátrica',area:'medico',nivel:'premium',tag:'Laudo',
+desc:'Laudo de indicação cirúrgica conforme Resolução CFM 2.131/2015. Para médicos que precisam documentar a indicação de forma incontestável.',
+preview:'PERSONA: Você é médico(a) especialista em cirurgia bariátrica ou endocrinologista.\nTAREFA: Laudo de indicação para cirurgia bariátrica.\nBASE: CFM 2.131/2015...',
+prompt:`PERSONA: Você é médico(a) especialista em cirurgia bariátrica ou endocrinologista com CRM ativo.\nTAREFA: Redigir laudo de indicação para cirurgia bariátrica.\nBASE: Resolução CFM 2.131/2015.\nESTRUTURA:\n1. IDENTIFICAÇÃO DO PACIENTE (nome, idade, peso, altura)\n2. IMC ATUAL E HISTÓRICO DE PESO\n3. COMORBIDADES RELACIONADAS À OBESIDADE (listar cada uma)\n4. TRATAMENTOS CLÍNICOS REALIZADOS E RESULTADOS\n5. CRITÉRIOS DA RESOLUÇÃO CFM (análise de elegibilidade)\n6. AVALIAÇÃO MULTIDISCIPLINAR (equipe envolvida)\n7. CONCLUSÃO E INDICAÇÃO CIRÚRGICA\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente IMC, peso ou comorbidades não informados.\n✅ Use APENAS os dados clínicos fornecidos.\nDADOS:\n[INSIRA: paciente, IMC, comorbidades, histórico e tratamentos anteriores]`},
+
+{titulo:'Anamnese Psiquiátrica Completa',area:'medico',nivel:'intermediario',tag:'Anamnese',
+desc:'Roteiro completo de anamnese psiquiátrica com todos os domínios. Para psiquiatras que precisam de documentação clínica estruturada.',
+preview:'PERSONA: Você é psiquiatra com CRM ativo e 20 anos de experiência.\nTAREFA: Anamnese psiquiátrica completa e estruturada.\nESTRUTURA:\n1. Queixa principal...',
+prompt:`PERSONA: Você é psiquiatra com CRM ativo e 20 anos de experiência clínica.\nTAREFA: Elaborar anamnese psiquiátrica completa e estruturada.\nESTRUTURA:\n1. QUEIXA PRINCIPAL (na voz do paciente)\n2. HISTÓRIA DA DOENÇA ATUAL (início, evolução, gatilhos)\n3. HISTÓRIA PSIQUIÁTRICA PRÉVIA (diagnósticos, internações, tratamentos)\n4. HISTÓRIA MÉDICA GERAL (doenças clínicas e medicamentos)\n5. HISTÓRIA FAMILIAR (transtornos mentais na família)\n6. HISTÓRIA PESSOAL E SOCIAL (infância, relacionamentos, trabalho)\n7. USO DE SUBSTÂNCIAS (álcool, drogas, tabaco)\n8. EXAME DO ESTADO MENTAL\n9. HIPÓTESE DIAGNÓSTICA (CID-10 e DSM-5)\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente diagnósticos ou dados não fornecidos.\n✅ Use APENAS as informações relatadas.\nDADOS:\n[INSIRA: informações fornecidas pelo paciente na consulta]`},
+
+// ══ MAIS NEGÓCIOS ══
+{titulo:'Avaliação de Desempenho 360°',area:'negocios',nivel:'avancado',tag:'RH',
+desc:'Avaliação 360° completa com PDI e plano de feedback. Para gestores que querem desenvolvimento real da equipe, não burocracia.',
+preview:'PERSONA: Você é especialista em gestão de desempenho e desenvolvimento humano.\nTAREFA: Avaliação 360° completa com PDI.\nESTRUTURA:\n1. Autoavaliação...',
+prompt:`PERSONA: Você é especialista em gestão de desempenho e desenvolvimento humano com 20 anos de experiência em RH estratégico.\nTAREFA: Elaborar avaliação de desempenho 360° completa e justa.\nESTRUTURA:\n1. AUTOAVALIAÇÃO (pontos fortes e oportunidades de melhoria na visão do colaborador)\n2. AVALIAÇÃO DO GESTOR (competências técnicas e comportamentais — escala 1 a 5 com justificativa)\n3. AVALIAÇÃO DOS PARES (mínimo 3 perspectivas)\n4. AVALIAÇÃO DOS LIDERADOS (se aplicável)\n5. RESULTADOS VS. METAS DO PERÍODO\n6. PONTOS FORTES CONSOLIDADOS\n7. ÁREAS DE DESENVOLVIMENTO\n8. PDI (3 ações concretas com prazo e responsável)\n9. FEEDBACK FINAL (roteiro para a conversa)\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente avaliações ou metas não fornecidas.\n✅ Use APENAS os dados reais fornecidos.\nDADOS:\n[INSIRA: colaborador, cargo, período, metas e feedback recebido]`},
+
+{titulo:'Política de Remuneração e Benefícios',area:'negocios',nivel:'premium',tag:'RH',
+desc:'Política salarial completa com faixas, critérios e benefícios. Para empresas que perdem talentos por falta de clareza na remuneração.',
+preview:'PERSONA: Você é especialista em remuneração estratégica e atração de talentos.\nTAREFA: Política de remuneração e benefícios completa.\nESTRUTURA:\n1. Filosofia de remuneração...',
+prompt:`PERSONA: Você é especialista em remuneração estratégica e atração de talentos com experiência em empresas de 50 a 5.000 funcionários.\nTAREFA: Elaborar política de remuneração e benefícios completa.\nESTRUTURA:\n1. FILOSOFIA DE REMUNERAÇÃO (o que a empresa acredita sobre pagar)\n2. ESTRUTURA DE CARGOS E SALÁRIOS (faixas por nível)\n3. CRITÉRIOS DE PROGRESSÃO (como se evolui)\n4. REMUNERAÇÃO VARIÁVEL (bônus, comissão, PLR)\n5. BENEFÍCIOS OBRIGATÓRIOS E ESPONTÂNEOS\n6. REVISÃO SALARIAL (política e periodicidade)\n7. EQUIDADE E TRANSPARÊNCIA\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente valores ou benchmarks não fornecidos.\n✅ Use APENAS os dados da empresa fornecidos.\nDADOS:\n[INSIRA: empresa, setor, porte, cargos e faixas desejadas]`},
+
+// ══ MAIS MARKETING ══
+{titulo:'Persona de Comprador Detalhada',area:'marketing',nivel:'intermediario',tag:'Estratégia',
+desc:'Persona completa com dores, desejos, objeções e linguagem. Para quem quer parar de atirar para todo lado e falar direto com quem compra.',
+preview:'PERSONA: Você é especialista em pesquisa de mercado e comportamento do consumidor.\nTAREFA: Criar persona de comprador completa e detalhada.\nESTRUTURA:\n1. Dados demográficos...',
+prompt:`PERSONA: Você é especialista em pesquisa de mercado e comportamento do consumidor com metodologia própria de criação de personas.\nTAREFA: Criar persona de comprador completa, profunda e acionável.\nESTRUTURA:\n1. DADOS DEMOGRÁFICOS (nome fictício, idade, profissão, renda, cidade)\n2. DIA A DIA (como é a rotina típica desta pessoa)\n3. OBJETIVOS E SONHOS (o que ela quer alcançar)\n4. DORES E FRUSTRAÇÕES (o que a impede de chegar lá)\n5. COMPORTAMENTO DIGITAL (redes, horários, formatos de conteúdo)\n6. OBJEÇÕES DE COMPRA (por que ela NÃO compraria agora)\n7. O QUE A FAZ COMPRAR (gatilhos decisores)\n8. FRASE QUE RESUME A PERSONA\n9. COMO SE COMUNICAR COM ELA (tom, vocabulário, abordagem)\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados estatísticos sem base fornecida.\n✅ Use APENAS as informações do cliente e produto fornecidos.\nDADOS:\n[INSIRA: produto, público atual, dados de clientes e feedbacks reais]`},
+
+{titulo:'Estratégia de Conteúdo para YouTube',area:'marketing',nivel:'avancado',tag:'Conteúdo',
+desc:'Estratégia completa com pilares, títulos e roteiros. Para criadores que querem crescer no YouTube com método e não na sorte.',
+preview:'PERSONA: Você é estrategista de conteúdo especialista em YouTube.\nTAREFA: Estratégia completa de conteúdo para canal.\nESTRUTURA:\n1. Posicionamento do canal...',
+prompt:`PERSONA: Você é estrategista de conteúdo especialista em YouTube com experiência em canais que foram de zero a 100K inscritos.\nTAREFA: Criar estratégia completa de conteúdo para YouTube.\nESTRUTURA:\n1. POSICIONAMENTO DO CANAL (o que o canal faz, para quem e qual a promessa)\n2. ANÁLISE DA CONCORRÊNCIA (3 canais similares — o que fazem bem e mal)\n3. PILARES DE CONTEÚDO (4 temas principais e por que)\n4. TIPOS DE VÍDEOS (tutoriais, vlogs, listas, entrevistas — quando usar cada)\n5. CALENDÁRIO DE PUBLICAÇÃO (frequência e horários)\n6. 10 TÍTULOS MAGNÉTICOS para os primeiros vídeos\n7. ESTRUTURA DE ROTEIRO PADRÃO (gancho, desenvolvimento, CTA)\n8. ESTRATÉGIA DE MINIATURAS (o que funciona no nicho)\n9. MÉTRICAS DE SUCESSO (CTR, retenção, inscritos)\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente dados de outros canais sem informação fornecida.\n✅ Use APENAS o contexto do nicho fornecido.\nDADOS:\n[INSIRA: nicho, público, objetivo do canal e recursos disponíveis]`},
+
+// ══ MAIS CONTÁBIL ══
+{titulo:'Projeção de Fluxo de Caixa 12 Meses',area:'contabil',nivel:'avancado',tag:'Financeiro',
+desc:'Projeção mensal com cenários otimista e pessimista. Para empresários que querem antecipar problemas de caixa antes de quebrarem.',
+preview:'PERSONA: Você é analista financeiro(a) sênior especialista em fluxo de caixa.\nTAREFA: Projeção de fluxo de caixa para 12 meses com cenários.\nESTRUTURA:\n1. Premissas da projeção...',
+prompt:`PERSONA: Você é analista financeiro(a) sênior especialista em fluxo de caixa e modelagem financeira.\nTAREFA: Elaborar projeção de fluxo de caixa para 12 meses com análise de cenários.\nESTRUTURA:\n1. PREMISSAS DA PROJEÇÃO (crescimento esperado, sazonalidade, prazos)\n2. ENTRADAS MÊS A MÊS (receitas, recebimentos, outros)\n3. SAÍDAS MÊS A MÊS (custos fixos, variáveis, investimentos, impostos)\n4. FLUXO LÍQUIDO MENSAL\n5. SALDO ACUMULADO\n6. CENÁRIO PESSIMISTA (-20% receita, +10% custo)\n7. CENÁRIO OTIMISTA (+20% receita)\n8. PONTOS DE ATENÇÃO (meses de caixa negativo ou crítico)\n9. RECOMENDAÇÕES (captação, corte, antecipação)\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente números ou projeções sem base fornecida.\n✅ Calcule APENAS com os dados financeiros fornecidos.\nDADOS:\n[INSIRA: empresa, faturamento médio, custos fixos, variáveis e sazonalidade]`},
+
+// ══ MAIS PSICOLOGIA ══
+{titulo:'Laudo Psicológico para Adoção',area:'psicologia',nivel:'premium',tag:'Laudo Judicial',
+desc:'Avaliação psicológica para habilitação à adoção. Para psicólogos que atuam no sistema judiciário e precisam de laudos defensáveis.',
+preview:'PERSONA: Você é psicólogo(a) com experiência em psicologia jurídica e adoção.\nTAREFA: Laudo psicológico para processo de habilitação à adoção.\nESTRUTURA:\n1. Identificação dos requerentes...',
+prompt:`PERSONA: Você é psicólogo(a) com CRP ativo e experiência em psicologia jurídica e varas da infância.\nTAREFA: Elaborar laudo psicológico para habilitação à adoção.\nBASE: ECA e Resolução CFP 06/2019.\nESTRUTURA:\n1. IDENTIFICAÇÃO DOS REQUERENTES E DO PROCESSO\n2. METODOLOGIA DA AVALIAÇÃO (instrumentos e entrevistas)\n3. HISTÓRICO E DINÂMICA FAMILIAR\n4. MOTIVAÇÃO PARA ADOÇÃO (genuinidade e maturidade da decisão)\n5. CAPACIDADE DE ACOLHIMENTO (emocional, financeira, social)\n6. EXPECTATIVAS SOBRE A CRIANÇA (realismo e flexibilidade)\n7. REDE DE APOIO\n8. CONCLUSÃO E RECOMENDAÇÃO\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente características dos requerentes não observadas.\n✅ Use APENAS dados das entrevistas e avaliações fornecidos.\nDADOS:\n[INSIRA: requerentes, observações das entrevistas e instrumentos]`},
+
+{titulo:'Evolução de Sessão e Registro SOAP',area:'psicologia',nivel:'basico',tag:'Prontuário',
+desc:'Registro de sessão clínica estruturado e defensável eticamente. Para psicólogos que precisam de prontuário rápido e seguro.',
+preview:'PERSONA: Você é psicólogo(a) clínico(a) com CRP ativo.\nTAREFA: Registro de evolução de sessão psicológica.\nESTRUTURA:\n1. Data e sessão número...',
+prompt:`PERSONA: Você é psicólogo(a) clínico(a) com CRP ativo e prática em registro de prontuário seguro e ético.\nTAREFA: Redigir registro de evolução de sessão psicológica.\nESTRUTURA:\n1. DATA, NÚMERO DA SESSÃO E MODALIDADE\n2. CONTEÚDO TRAZIDO (o que o paciente trouxe — resumido)\n3. ESTADO EMOCIONAL OBSERVADO\n4. INTERVENÇÕES REALIZADAS (técnicas, interpretações, devoluções)\n5. RESPOSTA DO PACIENTE\n6. HIPÓTESES E OBSERVAÇÕES CLÍNICAS\n7. PLANO PARA PRÓXIMA SESSÃO\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente conteúdo não relatado na sessão.\n✅ Use APENAS o que foi observado e dito.\nDADOS:\n[INSIRA: conteúdo da sessão, estado do paciente e intervenções]`},
+
+// ══ MAIS EDUCAÇÃO ══
+{titulo:'Matriz de Avaliação por Rubrica',area:'educacao',nivel:'intermediario',tag:'Avaliação',
+desc:'Rubrica de avaliação clara e justa com critérios por nível. Para professores que querem avaliar com transparência e sem subjetividade.',
+preview:'PERSONA: Você é pedagogo(a) especialista em avaliação educacional.\nTAREFA: Matriz de avaliação por rubrica completa.\nESTRUTURA:\n1. Critérios de avaliação...',
+prompt:`PERSONA: Você é pedagogo(a) especialista em avaliação educacional e instrumentos de medição de aprendizagem.\nTAREFA: Criar matriz de avaliação por rubrica completa e justa.\nESTRUTURA:\nPARA CADA CRITÉRIO DE AVALIAÇÃO:\n- Nome do critério e peso\n- Nível 1 — Insuficiente (descrição do desempenho esperado)\n- Nível 2 — Em desenvolvimento (descrição)\n- Nível 3 — Satisfatório (descrição)\n- Nível 4 — Excelente (descrição)\nAO FINAL: tabela de pontuação total e conversão para nota.\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente critérios ou descritores sem base fornecida.\n✅ Use APENAS os objetivos e atividade fornecidos.\nDADOS:\n[INSIRA: atividade a avaliar, disciplina, critérios desejados e escala de nota]`},
+
+// ══ MAIS ENGENHARIA ══
+{titulo:'Memorial Descritivo de Obra',area:'engenharia',nivel:'intermediario',tag:'Memorial',
+desc:'Memorial descritivo completo para aprovação de projeto em prefeitura. Para engenheiros que precisam de documentação técnica rápida.',
+preview:'PERSONA: Você é engenheiro(a) civil com CREA ativo.\nTAREFA: Memorial descritivo de obra completo.\nESTRUTURA:\n1. Identificação do empreendimento...',
+prompt:`PERSONA: Você é engenheiro(a) civil com CREA ativo e experiência em aprovação de projetos em prefeituras e órgãos municipais.\nTAREFA: Elaborar memorial descritivo de obra completo.\nESTRUTURA:\n1. IDENTIFICAÇÃO DO EMPREENDIMENTO E PROPRIETÁRIO\n2. LOCALIZAÇÃO E DESCRIÇÃO DO TERRENO\n3. DESCRIÇÃO DA OBRA (uso, tipo de construção)\n4. FUNDAÇÕES E ESTRUTURA\n5. ALVENARIA E COBERTURA\n6. INSTALAÇÕES ELÉTRICAS E HIDROSSANITÁRIAS\n7. REVESTIMENTOS E ACABAMENTOS\n8. NORMAS TÉCNICAS APLICADAS (NBRs)\n9. RESPONSABILIDADE TÉCNICA E ART\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA cite NBRs que não existam.\n✅ Use APENAS os dados da obra fornecidos.\nDADOS:\n[INSIRA: empreendimento, proprietário, localização, tipo e área]`},
+
+// ══ MAIS TI ══
+{titulo:'Plano de Resposta a Incidentes de Segurança',area:'ti',nivel:'premium',tag:'Segurança',
+desc:'Plano completo de IR com playbooks e escalonamento. Para times de TI que precisam de protocolo sério antes do incidente acontecer.',
+preview:'PERSONA: Você é especialista em segurança da informação e resposta a incidentes.\nTAREFA: Plano de resposta a incidentes completo.\nESTRUTURA:\n1. Classificação de incidentes...',
+prompt:`PERSONA: Você é especialista sênior em segurança da informação e resposta a incidentes (CSIRT) com certificação CISSP.\nTAREFA: Criar plano de resposta a incidentes de segurança completo.\nESTRUTURA:\n1. CLASSIFICAÇÃO DE INCIDENTES (por severidade: crítico, alto, médio, baixo)\n2. PAPÉIS E RESPONSABILIDADES (quem faz o quê durante um incidente)\n3. PROCESSO DE DETECÇÃO E TRIAGEM\n4. FLUXO DE ESCALONAMENTO (quando acionar quem)\n5. PLAYBOOKS POR TIPO DE INCIDENTE:\n   - Ransomware\n   - Vazamento de dados\n   - DDoS\n   - Acesso não autorizado\n6. COMUNICAÇÃO (interna, jurídico, LGPD, imprensa)\n7. CONTENÇÃO, ERRADICAÇÃO E RECUPERAÇÃO\n8. PÓS-INCIDENTE (lições aprendidas)\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente ferramentas ou procedimentos não informados.\n✅ Use APENAS o contexto da empresa fornecido.\nDADOS:\n[INSIRA: empresa, infraestrutura, equipe e sistemas críticos]`},
+
+{titulo:'Arquitetura de Microsserviços',area:'ti',nivel:'premium',tag:'Arquitetura',
+desc:'Documento de arquitetura de microsserviços com padrões e decisões. Para arquitetos que precisam justificar decisões técnicas.',
+preview:'PERSONA: Você é arquiteto(a) de soluções sênior especialista em microsserviços.\nTAREFA: Documento de arquitetura de microsserviços.\nESTRUTURA:\n1. Visão geral e contexto...',
+prompt:`PERSONA: Você é arquiteto(a) de soluções sênior com experiência em sistemas distribuídos e microsserviços em escala.\nTAREFA: Criar documento de arquitetura de microsserviços (ADR — Architecture Decision Record).\nESTRUTURA:\n1. VISÃO GERAL E CONTEXTO DO SISTEMA\n2. PROBLEMAS QUE MOTIVARAM A ARQUITETURA\n3. DECOMPOSIÇÃO EM SERVIÇOS (cada serviço com responsabilidade única)\n4. COMUNICAÇÃO ENTRE SERVIÇOS (síncrona vs. assíncrona, protocolos)\n5. GERENCIAMENTO DE DADOS (um banco por serviço, SAGA, CQRS)\n6. PADRÕES UTILIZADOS (API Gateway, Circuit Breaker, Service Mesh)\n7. OBSERVABILIDADE (logs, métricas, tracing)\n8. SEGURANÇA (autenticação, autorização entre serviços)\n9. DECISÕES ARQUITETURAIS E TRADE-OFFS\n\n🛡️ REGRAS ANTI-ALUCINAÇÃO:\n⛔ NUNCA invente tecnologias ou decisões não informadas.\n✅ Use APENAS o contexto técnico fornecido.\nDADOS:\n[INSIRA: sistema, requisitos, escala esperada e stack tecnológico]`}
+
 ];
 
-// ── ESTADO ──
-let todosPrompts = [];
-let areaAtiva = 'todos';
-let pedidoAtual = null;
-let entregaOpc = 'email';
-let pedidoAdminAtual = null;
+let todosPrompts = [], areaAtiva = 'todos', pedidoAtual = null, entregaOpc = 'email', pedidoAdminAtual = null;
 
-// ── FIREBASE: CARREGAR PROMPTS ──
-function carregarPrompts() {
-    db.ref('promptus_prompts').once('value').then(snap => {
-        if (!snap.exists()) {
-            // Popula com prompts iniciais
-            PROMPTS_INICIAIS.forEach(p => {
-                db.ref('promptus_prompts').push({ ...p, criadoEm: Date.now() });
-            });
-            setTimeout(carregarPrompts, 1500);
+// ── INIT FIREBASE ──
+function carregarPrompts(){
+    db.ref('promptus_prompts_v2').once('value').then(snap=>{
+        if(!snap.exists()){
+            PROMPTS_BASE.forEach(p=>db.ref('promptus_prompts_v2').push({...p,criadoEm:Date.now()}));
+            setTimeout(carregarPrompts,2000);
             return;
         }
-        todosPrompts = [];
-        snap.forEach(child => {
-            todosPrompts.push({ id: child.key, ...child.val() });
-        });
-        renderFiltros();
-        renderPrompts();
-        renderAdminPrompts();
+        todosPrompts=[];
+        snap.forEach(c=>todosPrompts.push({id:c.key,...c.val()}));
+        document.getElementById('stat-prompts')&&(document.getElementById('stat-prompts').innerText=todosPrompts.length);
+        renderFiltros();renderPrompts();
     });
 }
 
-// ── RENDER FILTROS ──
-function renderFiltros() {
-    const wrap = document.getElementById('filtros-wrap');
-    if (!wrap) return;
-    wrap.innerHTML = '';
-    AREAS.forEach(a => {
-        const btn = document.createElement('button');
-        btn.className = 'filtro' + (a.key === areaAtiva ? ' ativo' : '');
-        btn.innerText = a.emoji + ' ' + a.label;
-        btn.onclick = () => { areaAtiva = a.key; renderFiltros(); renderPrompts(); };
-        wrap.appendChild(btn);
+// ── FILTROS ──
+function renderFiltros(){
+    const w=document.getElementById('filtros-wrap');if(!w)return;
+    w.innerHTML='';
+    AREAS.forEach(a=>{
+        const b=document.createElement('button');
+        b.className='filtro'+(a.key===areaAtiva?' ativo':'');
+        b.innerText=a.emoji+' '+a.label;
+        b.onclick=()=>{areaAtiva=a.key;renderFiltros();renderPrompts();};
+        w.appendChild(b);
     });
 }
 
 // ── RENDER PROMPTS ──
-function renderPrompts() {
-    const busca = (document.getElementById('busca')?.value || '').toLowerCase();
-    const grid = document.getElementById('prompts-grid');
-    const lbl = document.getElementById('grid-label');
-    if (!grid) return;
-
-    let lista = todosPrompts.filter(p => {
-        const mA = areaAtiva === 'todos' || p.area === areaAtiva;
-        const mB = !busca || p.titulo.toLowerCase().includes(busca) || p.desc.toLowerCase().includes(busca) || p.tag.toLowerCase().includes(busca);
-        return mA && mB;
+function renderPrompts(){
+    const busca=(document.getElementById('busca')?.value||'').toLowerCase();
+    const grid=document.getElementById('prompts-grid');
+    const lbl=document.getElementById('grid-label');
+    if(!grid)return;
+    let lista=todosPrompts.filter(p=>{
+        const mA=areaAtiva==='todos'||p.area===areaAtiva;
+        const mB=!busca||p.titulo.toLowerCase().includes(busca)||p.desc.toLowerCase().includes(busca)||p.tag.toLowerCase().includes(busca);
+        return mA&&mB;
     });
-
-    const areaLabel = AREAS.find(a => a.key === areaAtiva);
-    if (lbl) lbl.childNodes[0] && (lbl.innerHTML = (areaAtiva === 'todos' ? 'Todos os Prompts' : areaLabel?.label) + ' <span style="opacity:0.4;font-size:10px;">(' + lista.length + ')</span>');
-
-    grid.innerHTML = '';
-    if (lista.length === 0) { grid.innerHTML = '<div class="vazio">Nenhum prompt encontrado.</div>'; return; }
-
-    lista.forEach((p, i) => {
-        const preco = PRECOS_LABEL[p.nivel] || 'R$19,90';
-        const nivelTag = NIVEIS_TAG[p.nivel] || '';
-        const nivelLabel = NIVEIS_LABEL[p.nivel] || '';
-        const areaInfo = AREAS.find(a => a.key === p.area);
-        const card = document.createElement('div');
-        card.className = 'pcard';
-        card.style.animationDelay = (i * 0.04) + 's';
-        card.innerHTML = `
-            <div class="pcard-top">
-                <div class="pcard-area">${areaInfo?.emoji || ''} ${areaInfo?.label || ''}</div>
-                <div class="pcard-titulo">${p.titulo}</div>
-                <div class="pcard-desc">${p.desc}</div>
-            </div>
-            <div class="pcard-preview">
-                <div class="pcard-preview-texto">${p.preview || ''}</div>
-                <div class="pcard-preview-blur">
-                    <div class="lock-pill">🔒 Desbloqueado após compra</div>
-                </div>
-            </div>
-            <div class="pcard-bottom">
-                <div class="pcard-tags">
-                    <span class="tag ${nivelTag}">${nivelLabel}</span>
-                    <span class="tag">${p.tag}</span>
-                </div>
-                <div style="display:flex;align-items:center;gap:12px;">
-                    <span class="pcard-preco">${preco}</span>
-                    <button class="btn-comprar" onclick='abrirCompra(${JSON.stringify(p).replace(/'/g,"&apos;")})'>COMPRAR</button>
-                </div>
-            </div>`;
+    if(lbl){const aL=AREAS.find(a=>a.key===areaAtiva);lbl.innerHTML=(areaAtiva==='todos'?'Todos os Prompts':aL?.label)+' <span style="opacity:0.4;font-size:10px;">('+lista.length+')</span>';}
+    grid.innerHTML='';
+    if(lista.length===0){grid.innerHTML='<div class="vazio">Nenhum prompt encontrado.</div>';return;}
+    lista.forEach((p,i)=>{
+        const preco=PRECOS_LABEL[p.nivel]||'R$19,90';
+        const nTag=NIVEIS_TAG[p.nivel]||'';
+        const nLbl=NIVEIS_LABEL[p.nivel]||'';
+        const aI=AREAS.find(a=>a.key===p.area);
+        const card=document.createElement('div');
+        card.className='pcard';
+        card.style.animationDelay=(i*0.03)+'s';
+        card.innerHTML=`<div class="pcard-top"><div class="pcard-area">${aI?.emoji||''} ${aI?.label||''}</div><div class="pcard-titulo">${p.titulo}</div><div class="pcard-desc">${p.desc}</div></div><div class="pcard-preview"><div class="pcard-preview-texto">${p.preview||''}</div><div class="pcard-preview-blur"><div class="lock-pill">🔒 Desbloqueado após compra</div></div></div><div class="pcard-bottom"><div class="pcard-tags"><span class="tag ${nTag}">${nLbl}</span><span class="tag">${p.tag}</span></div><div style="display:flex;align-items:center;gap:10px;"><span class="pcard-preco">${preco}</span><button class="btn-comprar" onclick='abrirCompra(${JSON.stringify(p).replace(/'/g,"&apos;")})'>COMPRAR</button></div></div>`;
         grid.appendChild(card);
     });
 }
-function filtrarPrompts() { renderPrompts(); }
+function filtrarPrompts(){renderPrompts();}
 
 // ── COMPRA ──
-function abrirCompra(p) {
-    pedidoAtual = p;
-    document.getElementById('s1-titulo').innerText = p.titulo;
-    document.getElementById('s1-erro').innerText = '';
-    document.getElementById('s1-nome').value = '';
-    document.getElementById('s1-email').value = '';
-    document.getElementById('s1-whats').value = '';
-    selecionarEntrega('email');
+function abrirCompra(p){
+    pedidoAtual=p;
+    document.getElementById('s1-titulo').innerText=p.titulo;
+    document.getElementById('s1-erro').innerText='';
+    ['s1-nome','s1-email','s1-whats'].forEach(id=>document.getElementById(id).value='');
+    selEntrega('email');
     mostrarStep('step1');
     document.getElementById('overlay-compra').classList.add('show');
 }
 
-function selecionarEntrega(tipo) {
-    entregaOpc = tipo;
-    ['email','whats','ambos'].forEach(t => {
-        document.getElementById('opt-'+t).classList.toggle('sel', t === tipo);
-    });
+function selEntrega(t){
+    entregaOpc=t;
+    ['email','whats','ambos'].forEach(x=>document.getElementById('opt-'+x).classList.toggle('sel',x===t));
 }
 
-function irParaPix() {
-    const nome = document.getElementById('s1-nome').value.trim();
-    const email = document.getElementById('s1-email').value.trim();
-    const whats = document.getElementById('s1-whats').value.trim();
-    const erro = document.getElementById('s1-erro');
-
-    if (!nome) { erro.innerText = 'INFORME SEU NOME'; return; }
-    if (!email) { erro.innerText = 'INFORME SEU E-MAIL'; return; }
-    if (!whats) { erro.innerText = 'INFORME SEU WHATSAPP'; return; }
-
-    document.getElementById('s2-titulo').innerText = pedidoAtual.titulo;
-    document.getElementById('s2-preco').innerText = PRECOS_LABEL[pedidoAtual.nivel] || 'R$19,90';
-    const entregaTexto = entregaOpc === 'email' ? 'E-mail' : entregaOpc === 'whats' ? 'WhatsApp' : 'E-mail e WhatsApp';
-    document.getElementById('s2-entrega').innerText = entregaTexto;
-    const preco = PRECOS_LABEL[pedidoAtual.nivel] || 'R$19,90';
-    const msgWhats = encodeURIComponent(`Olá! Acabei de comprar o prompt "${pedidoAtual.titulo}" (${preco}) na PROMPTUS Store. Segue o comprovante do Pix. Nome: ${nome}`);
-    document.getElementById('btn-whats-comprovante').href = `https://wa.me/5511978857415?text=${msgWhats}`;
+function irParaPix(){
+    const nome=document.getElementById('s1-nome').value.trim();
+    const email=document.getElementById('s1-email').value.trim();
+    const whats=document.getElementById('s1-whats').value.trim();
+    const erro=document.getElementById('s1-erro');
+    if(!nome){erro.innerText='INFORME SEU NOME';return;}
+    if(!email||!email.includes('@')){erro.innerText='INFORME UM E-MAIL VÁLIDO';return;}
+    if(!whats||whats.length<10){erro.innerText='INFORME UM WHATSAPP VÁLIDO';return;}
+    const preco=PRECOS_LABEL[pedidoAtual.nivel]||'R$19,90';
+    const entTxt=entregaOpc==='email'?'E-mail':entregaOpc==='whats'?'WhatsApp':'E-mail e WhatsApp';
+    document.getElementById('s2-titulo').innerText=pedidoAtual.titulo;
+    document.getElementById('s2-preco').innerText=preco;
+    document.getElementById('s2-entrega').innerText=entTxt;
+    const msg=encodeURIComponent('Olá Cássia! Acabei de comprar o prompt "'+pedidoAtual.titulo+'" ('+preco+') na PROMPTUS Store. Segue o comprovante do Pix. Meu nome: '+nome+'. WhatsApp: '+whats);
+    document.getElementById('btn-wa-comprovante').href='https://wa.me/'+WA_CASSIA+'?text='+msg;
     mostrarStep('step2');
 }
 
-function confirmarPagamento() {
-    const nome = document.getElementById('s1-nome').value.trim();
-    const email = document.getElementById('s1-email').value.trim();
-    const whats = document.getElementById('s1-whats').value.trim();
-    const entregaTexto = entregaOpc === 'email' ? 'E-mail' : entregaOpc === 'whats' ? 'WhatsApp' : 'E-mail e WhatsApp';
-
-    const pedido = {
-        promptId: pedidoAtual.id,
-        promptTitulo: pedidoAtual.titulo,
-        promptCompleto: pedidoAtual.prompt,
-        nome, email, whats,
-        entrega: entregaTexto,
-        preco: PRECOS_LABEL[pedidoAtual.nivel],
-        status: 'pendente',
-        criadoEm: Date.now()
+function confirmarPagamento(){
+    const nome=document.getElementById('s1-nome').value.trim();
+    const email=document.getElementById('s1-email').value.trim();
+    const whats=document.getElementById('s1-whats').value.trim();
+    const entTxt=entregaOpc==='email'?'E-mail':entregaOpc==='whats'?'WhatsApp':'E-mail e WhatsApp';
+    const preco=PRECOS_LABEL[pedidoAtual.nivel]||'R$19,90';
+    const pedido={
+        promptId:pedidoAtual.id||'',
+        promptTitulo:pedidoAtual.titulo,
+        promptArea:pedidoAtual.area,
+        promptCompleto:pedidoAtual.prompt||'',
+        cliente:{nome,email,whats},
+        entrega:entTxt,
+        preco,
+        status:'pendente',
+        criadoEm:Date.now()
     };
-
-    db.ref('promptus_pedidos').push(pedido).then(() => {
-        document.getElementById('s3-entrega').innerText = entregaTexto;
+    db.ref('promptus_pedidos_v2').push(pedido).then(()=>{
+        document.getElementById('s3-entrega').innerText=entTxt;
         mostrarStep('step3');
-    }).catch(() => showToast('ERRO AO REGISTRAR. TENTE NOVAMENTE.'));
+        showToast('PEDIDO REGISTRADO COM SUCESSO!');
+    }).catch(()=>showToast('ERRO AO REGISTRAR. TENTE NOVAMENTE.'));
 }
 
-function mostrarStep(id) {
-    ['step1','step2','step3'].forEach(s => {
-        document.getElementById(s).classList.toggle('ativo', s === id);
-    });
-}
+function mostrarStep(id){['step1','step2','step3'].forEach(s=>document.getElementById(s).classList.toggle('ativo',s===id));}
+function fecharOverlay(){document.getElementById('overlay-compra').classList.remove('show');setTimeout(()=>mostrarStep('step1'),300);}
 
-function fecharOverlay() {
-    document.getElementById('overlay-compra').classList.remove('show');
-    setTimeout(() => mostrarStep('step1'), 300);
-}
-
-function copiarPix() {
-    const btn = document.getElementById('btn-copiar-pix');
-    const ok = () => { btn.innerText = '✓ CHAVE COPIADA!'; btn.classList.add('copied'); showToast('CHAVE PIX COPIADA!'); setTimeout(() => { btn.innerText = '📋 COPIAR CHAVE PIX'; btn.classList.remove('copied'); }, 3000); };
-    if (navigator.clipboard) navigator.clipboard.writeText(PIX_CHAVE).then(ok).catch(() => fallback(PIX_CHAVE, ok));
-    else fallback(PIX_CHAVE, ok);
+function copiarPix(){
+    const btn=document.getElementById('btn-copiar-pix');
+    const ok=()=>{btn.innerText='✓ COPIADO!';showToast('CHAVE PIX COPIADA!');setTimeout(()=>btn.innerText='📋 COPIAR CHAVE PIX',3000);};
+    if(navigator.clipboard)navigator.clipboard.writeText('39521484829').then(ok).catch(()=>fallback('39521484829',ok));
+    else fallback('39521484829',ok);
 }
 
 // ── ADMIN ──
-function irParaAdminLogin() { mostrarPagina('page-admin-login'); }
+function irParaAdminLogin(){mostrarPagina('page-admin-login');}
+function irParaLoja(){mostrarPagina('page-loja');}
 
-function loginAdmin() {
-    const senha = document.getElementById('admin-senha').value;
-    if (senha === ADMIN_SENHA) {
-        document.getElementById('admin-erro').innerText = '';
-        mostrarPagina('page-admin');
-        carregarPedidos();
-        renderAdminPrompts();
-    } else {
-        document.getElementById('admin-erro').innerText = 'SENHA INCORRETA';
-    }
+function loginAdmin(){
+    const s=document.getElementById('admin-senha').value;
+    if(s===ADMIN_SENHA){document.getElementById('admin-erro').innerText='';mostrarPagina('page-admin');carregarPedidos();}
+    else document.getElementById('admin-erro').innerText='SENHA INCORRETA';
 }
 
-function logoutAdmin() { mostrarPagina('page-admin-login'); }
-function irParaLoja() { mostrarPagina('page-loja'); }
-
-function mudarTab(tab, el) {
-    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('ativo'));
-    document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('ativo'));
+function mudarTab(tab,el){
+    document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('ativo'));
+    document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('ativo'));
     el.classList.add('ativo');
-    document.getElementById('panel-' + tab).classList.add('ativo');
-    if (tab === 'pedidos') carregarPedidos();
-    if (tab === 'prompts') renderAdminPrompts();
+    document.getElementById('panel-'+tab).classList.add('ativo');
+    if(tab==='pedidos')carregarPedidos();
 }
 
-function carregarPedidos() {
-    db.ref('promptus_pedidos').orderByChild('criadoEm').once('value').then(snap => {
-        const grid = document.getElementById('pedidos-grid');
-        if (!grid) return;
-        if (!snap.exists()) { grid.innerHTML = '<div style="text-align:center;padding:40px;color:var(--sub);">Nenhum pedido ainda.</div>'; return; }
-
-        let pedidos = [];
-        snap.forEach(c => pedidos.push({ id: c.key, ...c.val() }));
+function carregarPedidos(){
+    db.ref('promptus_pedidos_v2').orderByChild('criadoEm').once('value').then(snap=>{
+        const grid=document.getElementById('pedidos-grid');if(!grid)return;
+        if(!snap.exists()){grid.innerHTML='<div style="text-align:center;padding:40px;color:var(--sub);">Nenhum pedido ainda. Divulgue sua loja! 🚀</div>';atualizarStats([]);return;}
+        let pedidos=[];
+        snap.forEach(c=>pedidos.push({id:c.key,...c.val()}));
         pedidos.reverse();
-
-        const pendentes = pedidos.filter(p => p.status === 'pendente').length;
-        const receita = pedidos.reduce((acc, p) => acc + parseFloat((p.preco || 'R$0').replace('R$','').replace(',','.') || 0), 0);
-        document.getElementById('stat-pedidos').innerText = pedidos.length;
-        document.getElementById('stat-pendentes').innerText = pendentes;
-        document.getElementById('stat-receita').innerText = 'R$' + receita.toFixed(2).replace('.',',');
-
-        grid.innerHTML = '';
-        pedidos.forEach(p => {
-            const div = document.createElement('div');
-            div.className = 'pedido-card';
-            const data = new Date(p.criadoEm).toLocaleString('pt-BR');
-            div.innerHTML = `
-                <div class="pedido-info">
-                    <h3>${p.promptTitulo}</h3>
-                    <div class="pedido-meta">
-                        <span>👤 ${p.nome}</span>
-                        <span>📧 ${p.email}</span>
-                        <span>💬 ${p.whats}</span>
-                        <span>📦 ${p.entrega}</span>
-                        <span>🕐 ${data}</span>
-                    </div>
-                </div>
-                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-                    <span class="pedido-preco">${p.preco}</span>
-                    <span class="pedido-status ${p.status === 'pendente' ? 'status-pendente' : 'status-entregue'}">${p.status === 'pendente' ? '⏳ Pendente' : '✅ Entregue'}</span>
-                    <div class="pedido-acoes">
-                        <button class="btn-ver-pedido" onclick='abrirPedidoAdmin(${JSON.stringify(p).replace(/'/g,"&apos;")})'>VER / ENTREGAR</button>
-                    </div>
-                </div>`;
+        atualizarStats(pedidos);
+        grid.innerHTML='';
+        pedidos.forEach(p=>{
+            const data=new Date(p.criadoEm).toLocaleString('pt-BR');
+            const isPend=p.status==='pendente';
+            const div=document.createElement('div');
+            div.className='pedido-card';
+            div.innerHTML=`<div class="pedido-header"><div><div class="pedido-titulo">${p.promptTitulo}</div><div class="pedido-meta"><span>👤 ${p.cliente?.nome||p.nome||'-'}</span><span>📧 ${p.cliente?.email||p.email||'-'}</span><span>💬 ${p.cliente?.whats||p.whats||'-'}</span><span>📦 ${p.entrega}</span><span>🕐 ${data}</span></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;"><span class="pedido-preco">${p.preco}</span><span class="pedido-status ${isPend?'status-pendente':'status-entregue'}">${isPend?'⏳ Pendente':'✅ Entregue'}</span></div></div><div class="pedido-acoes"><button class="btn-ver-pedido" onclick='abrirPedidoAdmin(${JSON.stringify(p).replace(/'/g,"&apos;")})'>VER / ENTREGAR</button></div>`;
             grid.appendChild(div);
         });
     });
 }
 
-function abrirPedidoAdmin(p) {
-    pedidoAdminAtual = p;
-    document.getElementById('op-prompt').innerText = p.promptTitulo;
-    document.getElementById('op-nome').innerText = p.nome;
-    document.getElementById('op-email').innerText = p.email;
-    document.getElementById('op-whats').innerText = p.whats;
-    document.getElementById('op-entrega').innerText = p.entrega;
-    document.getElementById('op-preco').innerText = p.preco;
-    document.getElementById('op-data').innerText = new Date(p.criadoEm).toLocaleString('pt-BR');
-    document.getElementById('op-prompt-completo').innerText = p.promptCompleto || 'Prompt não encontrado.';
-    document.getElementById('btn-marcar-entregue').style.display = p.status === 'entregue' ? 'none' : 'block';
+function atualizarStats(pedidos){
+    const el=id=>document.getElementById(id);
+    if(el('stat-total'))el('stat-total').innerText=pedidos.length;
+    if(el('stat-pend'))el('stat-pend').innerText=pedidos.filter(p=>p.status==='pendente').length;
+    if(el('stat-receita')){
+        const r=pedidos.reduce((a,p)=>a+parseFloat((p.preco||'0').replace('R$','').replace(',','.')),0);
+        el('stat-receita').innerText='R$'+r.toFixed(2).replace('.',',');
+    }
+}
+
+function abrirPedidoAdmin(p){
+    pedidoAdminAtual=p;
+    document.getElementById('op-titulo').innerText=p.promptTitulo;
+    document.getElementById('op-nome').innerText=p.cliente?.nome||p.nome||'-';
+    document.getElementById('op-email').innerText=p.cliente?.email||p.email||'-';
+    document.getElementById('op-whats').innerText=p.cliente?.whats||p.whats||'-';
+    document.getElementById('op-entrega').innerText=p.entrega;
+    document.getElementById('op-preco').innerText=p.preco;
+    document.getElementById('op-data').innerText=new Date(p.criadoEm).toLocaleString('pt-BR');
+    document.getElementById('op-prompt-txt').innerText=p.promptCompleto||'Prompt não encontrado.';
+    const waCliente=p.cliente?.whats||p.whats||'';
+    const waNum=waCliente.replace(/\D/g,'');
+    const msgEntrega=encodeURIComponent('Olá '+( p.cliente?.nome||p.nome||'')+', aqui está seu prompt "'+p.promptTitulo+'" da PROMPTUS Store! 🎉\n\n'+( p.promptCompleto||''));
+    document.getElementById('btn-wa-entregar').href='https://wa.me/55'+waNum+'?text='+msgEntrega;
+    document.getElementById('btn-marcar').style.display=p.status==='entregue'?'none':'block';
     document.getElementById('overlay-pedido').classList.add('show');
 }
 
-function fecharOverlayPedido() { document.getElementById('overlay-pedido').classList.remove('show'); }
-
-function copiarPromptAdmin() {
-    const texto = document.getElementById('op-prompt-completo').innerText;
-    const btn = document.getElementById('btn-copiar-prompt-admin');
-    const ok = () => { btn.innerText = '✓ PROMPT COPIADO! AGORA ENVIE PARA O CLIENTE.'; btn.classList.add('green'); showToast('PROMPT COPIADO!'); setTimeout(() => { btn.innerText = '📋 COPIAR PROMPT PARA ENVIAR'; btn.classList.remove('green'); }, 4000); };
-    if (navigator.clipboard) navigator.clipboard.writeText(texto).then(ok).catch(() => fallback(texto, ok));
-    else fallback(texto, ok);
+function copiarPromptAdmin(){
+    const txt=document.getElementById('op-prompt-txt').innerText;
+    const btn=document.getElementById('btn-copiar-admin');
+    const ok=()=>{btn.innerText='✓ COPIADO! ENVIE AO CLIENTE';showToast('PROMPT COPIADO!');setTimeout(()=>btn.innerText='📋 COPIAR PROMPT',4000);};
+    if(navigator.clipboard)navigator.clipboard.writeText(txt).then(ok).catch(()=>fallback(txt,ok));
+    else fallback(txt,ok);
 }
 
-function marcarEntregue() {
-    if (!pedidoAdminAtual) return;
-    db.ref('promptus_pedidos/' + pedidoAdminAtual.id).update({ status: 'entregue' }).then(() => {
-        showToast('PEDIDO MARCADO COMO ENTREGUE!');
-        fecharOverlayPedido();
+function marcarEntregue(){
+    if(!pedidoAdminAtual)return;
+    db.ref('promptus_pedidos_v2/'+pedidoAdminAtual.id).update({status:'entregue'}).then(()=>{
+        showToast('✅ PEDIDO MARCADO COMO ENTREGUE!');
+        document.getElementById('overlay-pedido').classList.remove('show');
         carregarPedidos();
     });
 }
 
-// SALVAR PROMPT
-function salvarPrompt() {
-    const titulo = document.getElementById('f-titulo').value.trim();
-    const area = document.getElementById('f-area').value;
-    const nivel = document.getElementById('f-nivel').value;
-    const tag = document.getElementById('f-tag').value.trim();
-    const desc = document.getElementById('f-desc').value.trim();
-    const preview = document.getElementById('f-preview').value.trim();
-    const prompt = document.getElementById('f-prompt').value.trim();
-    const erro = document.getElementById('f-erro');
-
-    if (!titulo || !tag || !desc || !preview || !prompt) { erro.innerText = 'PREENCHA TODOS OS CAMPOS'; return; }
-
-    db.ref('promptus_prompts').push({ titulo, area, nivel, tag, desc, preview, prompt, criadoEm: Date.now() }).then(() => {
-        showToast('PROMPT SALVO COM SUCESSO!');
-        erro.innerText = '';
-        ['f-titulo','f-tag','f-desc','f-preview','f-prompt'].forEach(id => document.getElementById(id).value = '');
+function salvarPrompt(){
+    const titulo=document.getElementById('f-titulo').value.trim();
+    const area=document.getElementById('f-area').value;
+    const nivel=document.getElementById('f-nivel').value;
+    const tag=document.getElementById('f-tag').value.trim();
+    const desc=document.getElementById('f-desc').value.trim();
+    const preview=document.getElementById('f-preview').value.trim();
+    const prompt=document.getElementById('f-prompt').value.trim();
+    const erro=document.getElementById('f-erro');
+    if(!titulo||!tag||!desc||!preview||!prompt){erro.innerText='PREENCHA TODOS OS CAMPOS';return;}
+    db.ref('promptus_prompts_v2').push({titulo,area,nivel,tag,desc,preview,prompt,criadoEm:Date.now()}).then(()=>{
+        showToast('PROMPT SALVO NA LOJA!');erro.innerText='';
+        ['f-titulo','f-tag','f-desc','f-preview','f-prompt'].forEach(id=>document.getElementById(id).value='');
         carregarPrompts();
-    }).catch(() => { erro.innerText = 'ERRO AO SALVAR. TENTE NOVAMENTE.'; });
-}
-
-function renderAdminPrompts() {
-    const grid = document.getElementById('admin-prompts-grid');
-    if (!grid) return;
-    if (todosPrompts.length === 0) { grid.innerHTML = '<div class="vazio">Nenhum prompt cadastrado.</div>'; return; }
-    grid.innerHTML = '';
-    todosPrompts.forEach(p => {
-        const areaInfo = AREAS.find(a => a.key === p.area);
-        const card = document.createElement('div');
-        card.className = 'pcard';
-        card.innerHTML = `
-            <div class="pcard-top">
-                <div class="pcard-area">${areaInfo?.emoji || ''} ${areaInfo?.label || ''}</div>
-                <div class="pcard-titulo">${p.titulo}</div>
-                <div class="pcard-desc" style="font-size:11px;">${p.desc}</div>
-            </div>
-            <div class="pcard-bottom">
-                <span class="tag ${NIVEIS_TAG[p.nivel] || ''}">${NIVEIS_LABEL[p.nivel] || ''}</span>
-                <span class="pcard-preco">${PRECOS_LABEL[p.nivel] || ''}</span>
-            </div>`;
-        grid.appendChild(card);
-    });
-}
-
-// ── NAVEGAÇÃO ──
-function mostrarPagina(id) {
-    document.querySelectorAll('.page').forEach(p => { p.classList.remove('ativa'); p.style.display = 'none'; });
-    const pg = document.getElementById(id);
-    pg.style.display = 'block';
-    pg.classList.add('ativa');
-    window.scrollTo(0, 0);
+    }).catch(()=>{erro.innerText='ERRO AO SALVAR. TENTE NOVAMENTE.';});
 }
 
 // ── UTILS ──
-function fallback(texto, cb) {
-    const ta = document.createElement('textarea');
-    ta.value = texto; document.body.appendChild(ta); ta.select();
-    try { document.execCommand('copy'); cb(); } catch(e){}
-    document.body.removeChild(ta);
+function mostrarPagina(id){
+    document.querySelectorAll('.page').forEach(p=>{p.classList.remove('ativa');p.style.display='none';});
+    const pg=document.getElementById(id);pg.style.display='block';pg.classList.add('ativa');window.scrollTo(0,0);
 }
-function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.innerText = msg; t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
-}
-document.getElementById('overlay-compra').addEventListener('click', e => { if (e.target === document.getElementById('overlay-compra')) fecharOverlay(); });
-document.getElementById('overlay-pedido').addEventListener('click', e => { if (e.target === document.getElementById('overlay-pedido')) fecharOverlayPedido(); });
+function fallback(t,cb){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');cb();}catch(e){}document.body.removeChild(ta);}
+function showToast(msg){const t=document.getElementById('toast');t.innerText=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
 
-// ── INIT ──
+document.getElementById('overlay-compra').addEventListener('click',e=>{if(e.target===document.getElementById('overlay-compra'))fecharOverlay();});
+document.getElementById('overlay-pedido').addEventListener('click',e=>{if(e.target===document.getElementById('overlay-pedido'))document.getElementById('overlay-pedido').classList.remove('show');});
+
 carregarPrompts();
 </script>
 </body>
