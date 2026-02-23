@@ -425,12 +425,6 @@ var WA="5511978857415",SENHA="C@ssia#2025!Store",FB="https://cassia-v9-default-r
 var VENDIDOS={avancado:{min:47,max:89},intermediario:{min:120,max:210},basico:{min:180,max:320},premium:{min:28,max:65}};
 function getVendidos(nivel,titulo){var seed=0;for(var i=0;i<titulo.length;i++)seed+=titulo.charCodeAt(i);var r=VENDIDOS[nivel]||{min:50,max:150};return r.min+((seed*7)%(r.max-r.min));}function faqToggle(btn){var a=btn.nextElementSibling,ic=btn.querySelector(".faq-ic");var isOpen=a.classList.contains("open");document.querySelectorAll(".faq-a").forEach(function(x){x.classList.remove("open");});document.querySelectorAll(".faq-ic").forEach(function(x){x.classList.remove("open");});if(!isOpen){a.classList.add("open");ic.classList.add("open");}}
 
-;
-  var r=t[nivel]||[50,150];
-  var s=0;for(var i=0;i<titulo.length;i++)s+=titulo.charCodeAt(i);
-  return r[0]+((s*7)%(r[1]-r[0]));
-}
-
 function abrirPrivacidade(){document.getElementById('modal-priv').classList.add('on');document.body.style.overflow='hidden';}
 function abrirTermos(){document.getElementById('modal-termos').classList.add('on');document.body.style.overflow='hidden';}
 function abrirFAQ(){var el=document.querySelector('.faq-wrap');if(el)el.scrollIntoView({behavior:'smooth'});}
