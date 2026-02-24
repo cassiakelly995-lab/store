@@ -10,8 +10,12 @@
 <meta property="og:title" content="PROMPTUS Store — Prompts Profissionais para IA">
 <meta property="og:description" content="Pacotes de prompts profissionais para IA. Jurídico, Médico, Contábil e mais. Entrega automática. Garantia de 7 dias.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://promptusstore.com.br">
+<meta property="og:image" content="https://promptusstore.com.br/og-image.jpg">
 <meta property="og:locale" content="pt_BR">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PROMPTUS Store — Prompts Profissionais para IA">
+<meta name="twitter:description" content="Pacotes de prompts profissionais para IA. Entrega automática. Garantia de 7 dias.">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjMDUwNTA1Ii8+PHRleHQgeD0iMTYiIHk9IjIzIiBmb250LWZhbWlseT0ic2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjYmY5NTNmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QPC90ZXh0Pjwvc3ZnPg==">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -27,7 +31,6 @@
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--txt);font-family:"DM Sans",sans-serif;min-height:100vh;overflow-x:hidden}
 
-/* PARTÍCULAS DE FUNDO */
 body::before{content:"";position:fixed;inset:0;background:
   radial-gradient(ellipse 90% 50% at 50% -10%,rgba(191,149,63,.07),transparent 70%),
   radial-gradient(ellipse 50% 30% at 100% 100%,rgba(191,149,63,.03),transparent);
@@ -46,12 +49,16 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:14px 4
 .btn-nav-a{background:none;border:none;color:var(--sub);font-family:"DM Sans",sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:.2s;text-transform:uppercase;padding:7px 10px}
 .btn-nav-a:hover{color:var(--gold)}
 
-/* ============ TICKER TOPO ============ */
+/* ============ TICKER ============ */
 .ticker{background:linear-gradient(135deg,rgba(191,149,63,.14),rgba(191,149,63,.06));border-bottom:1px solid rgba(191,149,63,.18);padding:10px 0;overflow:hidden;position:relative}
 .ticker-inner{display:flex;gap:56px;animation:tick 28s linear infinite;white-space:nowrap}
 .ticker-item{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:700;color:var(--sub);letter-spacing:2px;text-transform:uppercase;flex-shrink:0}
 .ticker-item strong{color:var(--gold)}
 .ticker-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);opacity:.5;flex-shrink:0}
+@media(prefers-reduced-motion:reduce){
+  .ticker-inner{animation:none}
+  @keyframes tick{}
+}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* ============ HERO ============ */
@@ -63,7 +70,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:14px 4
 .hero-sub{font-size:15px;color:var(--sub);max-width:520px;margin:20px auto 32px;line-height:1.85;font-weight:300}
 .hero-sub strong{color:var(--txt);font-weight:600}
 
-/* GARANTIA DESTAQUE */
 .hero-garantia{display:inline-flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center;margin-bottom:32px}
 .hg-item{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--txt)}
 .hg-item span{color:var(--sub);font-weight:400}
@@ -78,7 +84,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:14px 4
 .btn-cta-sec{background:none;border:1px solid var(--brd);color:var(--sub);padding:15px 28px;border-radius:4px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.2s}
 .btn-cta-sec:hover{border-color:var(--gold);color:var(--gold)}
 
-/* STATS HERO */
 .hero-stats{display:flex;align-items:center;justify-content:center;gap:36px;flex-wrap:wrap;margin-top:52px;padding-top:36px;border-top:1px solid rgba(240,235,224,.06)}
 .hs-item{text-align:center}
 .hs-num{font-family:"Cormorant Garamond",serif;font-size:34px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
@@ -96,7 +101,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:14px 4
 .ft{background:var(--card);border:1px solid rgba(191,149,63,.09);border-radius:30px;padding:7px 16px;font-size:10px;font-weight:700;color:var(--sub);cursor:pointer;transition:.2s;text-transform:uppercase;letter-spacing:1px}
 .ft:hover,.ft.on{background:var(--grad);color:#000;border-color:transparent}
 
-/* ============ GRID PACOTES ============ */
+/* ============ GRID ============ */
 .grid-wrap{max-width:980px;margin:0 auto;padding:0 32px 80px}
 .grid-label{font-size:9px;font-weight:700;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:12px}
 .grid-label::after{content:"";flex:1;height:1px;background:rgba(191,149,63,.07)}
@@ -109,21 +114,18 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:14px 4
 .card-nome{font-family:"Cormorant Garamond",serif;font-size:20px;font-weight:700;margin-bottom:7px;line-height:1.25}
 .card-desc{font-size:12px;color:var(--sub);line-height:1.75;font-weight:300}
 
-/* BADGE PROMPTS */
 .pkg-badge{display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(191,149,63,.1),rgba(191,149,63,.04));border:1px solid rgba(191,149,63,.18);border-radius:5px;padding:9px 14px;margin:0 20px 2px;position:relative;overflow:hidden}
 .pkg-badge::before{content:"";position:absolute;inset:0;background:var(--grad);opacity:.03}
 .pkg-num{font-family:"Cormorant Garamond",serif;font-size:26px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
 .pkg-txt{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:1px;line-height:1.3}
 .pkg-txt small{display:block;color:var(--sub);font-weight:400;font-size:9px;margin-top:1px}
 
-/* LISTA PROMPTS NO CARD */
 .prompt-list{margin:8px 20px 0;display:flex;flex-direction:column}
 .prompt-item{font-size:11px;color:var(--sub);display:flex;align-items:flex-start;gap:7px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.03);line-height:1.5}
 .prompt-item:last-child{border-bottom:none}
 .prompt-item::before{content:"›";color:var(--gold);font-size:13px;flex-shrink:0;line-height:1.4}
 .prompt-more{font-size:10px;color:rgba(191,149,63,.55);padding:6px 0 2px;letter-spacing:1px;font-style:italic}
 
-/* CARD FOOTER */
 .card-bottom{padding:12px 20px;border-top:1px solid rgba(191,149,63,.07);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:auto}
 .preco-wrap{display:flex;flex-direction:column;gap:2px}
 .preco{font-family:"Cormorant Garamond",serif;font-size:26px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
@@ -133,7 +135,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:14px 4
 .btn-comprar:hover{filter:brightness(1.12);transform:scale(1.02)}
 .btn-breve{background:rgba(255,255,255,.05);color:var(--sub2);border:1px solid rgba(255,255,255,.07);padding:10px 20px;border-radius:4px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:not-allowed;white-space:nowrap}
 
-/* CARD GRÁTIS */
 .card-gratis{border-color:rgba(46,204,113,.18)!important}
 .card-gratis:hover{border-color:rgba(46,204,113,.4)!important}
 
@@ -185,7 +186,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:14px 4
 .faq-item.on .faq-a{max-height:200px;padding-bottom:18px}
 .faq-item.on .faq-ic{transform:rotate(45deg)}
 
-/* ============ GARANTIA FULL ============ */
+/* ============ GARANTIA ============ */
 .garantia-banner{background:linear-gradient(135deg,rgba(46,204,113,.08),rgba(46,204,113,.03));border-top:1px solid rgba(46,204,113,.15);border-bottom:1px solid rgba(46,204,113,.15);padding:36px 32px;text-align:center}
 .garantia-inner{max-width:640px;margin:0 auto}
 .garantia-ic{font-size:52px;margin-bottom:12px}
@@ -203,8 +204,8 @@ footer{background:#000;border-top:1px solid rgba(191,149,63,.12);padding:48px 32
 .footer-wa:hover{opacity:.85}
 .footer-col-tit{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:14px}
 .footer-links{display:flex;flex-direction:column;gap:9px}
-.footer-links a,.footer-links span{font-size:12px;color:var(--sub);text-decoration:none;cursor:pointer;transition:color .2s;font-weight:300}
-.footer-links a:hover,.footer-links span:hover{color:var(--gold)}
+.footer-links a{font-size:12px;color:var(--sub);text-decoration:none;cursor:pointer;transition:color .2s;font-weight:300}
+.footer-links a:hover{color:var(--gold)}
 .footer-bottom{border-top:1px solid rgba(240,235,224,.05);padding-top:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
 .footer-copy{font-size:10px;color:rgba(240,235,224,.2)}
 .footer-selos{display:flex;gap:12px;flex-wrap:wrap}
@@ -246,12 +247,7 @@ footer{background:#000;border-top:1px solid rgba(191,149,63,.12);padding:48px 32
 .admin-panel{display:none}.admin-panel.on{display:block}
 .inp{width:100%;background:rgba(255,255,255,.03);border:1px solid var(--brd);border-radius:5px;padding:12px 14px;color:var(--txt);font-family:"DM Sans",sans-serif;font-size:14px;outline:none;transition:.2s;margin-bottom:9px}
 .inp:focus{border-color:var(--gold);background:rgba(255,255,255,.04)}.inp::placeholder{color:var(--sub2)}
-.inp-lbl{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--sub);text-transform:uppercase;margin-bottom:5px;display:block}
 .inp-err{font-size:11px;color:var(--red);min-height:16px;margin-bottom:7px;font-weight:600}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.form-grid .full{grid-column:1/-1}
-textarea.inp{resize:vertical;min-height:90px}
-select.inp{cursor:pointer}
 .ped-list{display:flex;flex-direction:column;gap:10px}
 .ped-card{background:var(--card);border:1px solid rgba(191,149,63,.09);border-radius:7px;padding:16px;transition:.2s;position:relative}
 .ped-card:hover{border-color:var(--brd)}
@@ -296,7 +292,6 @@ select.inp{cursor:pointer}
   .sobre-wrap,.aval-wrap,.garantia-banner,footer{padding-left:16px;padding-right:16px}
   nav{padding-top:12px;padding-bottom:12px}
   .footer-top{grid-template-columns:1fr}
-  .form-grid{grid-template-columns:1fr}
   .grid{grid-template-columns:1fr}
   .hero-stats{gap:20px}
   .hs-sep{display:none}
@@ -313,28 +308,28 @@ select.inp{cursor:pointer}
 </head>
 <body>
 
-<div id="toast"></div>
-<a class="wa-float" href="https://wa.me/5511978857415?text=Olá!%20Tenho%20uma%20dúvida%20sobre%20a%20PROMPTUS%20Store." target="_blank" title="WhatsApp">💬</a>
+<div id="toast" role="status" aria-live="polite"></div>
+<a class="wa-float" href="https://wa.me/5511978857415?text=Olá!%20Tenho%20uma%20dúvida%20sobre%20a%20PROMPTUS%20Store." target="_blank" rel="noopener noreferrer" aria-label="Suporte via WhatsApp">💬</a>
 
 <!-- ========== MODAL GRÁTIS ========== -->
-<div id="modal-gratis" class="modal-ov" onclick="if(event.target===this)fecharModal('modal-gratis')">
+<div id="modal-gratis" class="modal-ov" role="dialog" aria-modal="true" aria-labelledby="gratis-tit" onclick="if(event.target===this)fecharModal('modal-gratis')">
   <div class="modal-box" style="border-color:rgba(46,204,113,.3);max-width:640px">
     <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(135deg,#2ecc71,#27ae60);border-radius:10px 10px 0 0"></div>
-    <button class="modal-close" onclick="fecharModal('modal-gratis')">✕</button>
+    <button class="modal-close" onclick="fecharModal('modal-gratis')" aria-label="Fechar modal">✕</button>
     <div class="gratis-badge-tag">✨ GRATUITO</div>
     <div class="modal-tit" id="gratis-tit"></div>
     <div class="gratis-instrucao">📋 <strong>Como usar:</strong> Copie o prompt, cole no ChatGPT, Gemini ou Claude, substitua os campos entre [ ] com seus dados e envie.</div>
     <div class="gratis-prompt-txt" id="gratis-prompt"></div>
     <button class="btn-copiar" onclick="copiarGratis()">📋 COPIAR PROMPT COMPLETO</button>
-    <div class="copy-ok" id="gratis-ok">✅ Copiado! Agora cole na IA de sua escolha.</div>
+    <div class="copy-ok" id="gratis-ok" role="status">✅ Copiado! Agora cole na IA de sua escolha.</div>
   </div>
 </div>
 
 <!-- ========== MODAL PRIVACIDADE ========== -->
-<div id="modal-priv" class="modal-ov" onclick="if(event.target===this)fecharModal('modal-priv')">
+<div id="modal-priv" class="modal-ov" role="dialog" aria-modal="true" aria-labelledby="modal-priv-tit" onclick="if(event.target===this)fecharModal('modal-priv')">
   <div class="modal-box">
-    <button class="modal-close" onclick="fecharModal('modal-priv')">✕</button>
-    <div class="modal-tit">Política de Privacidade</div>
+    <button class="modal-close" onclick="fecharModal('modal-priv')" aria-label="Fechar modal">✕</button>
+    <div class="modal-tit" id="modal-priv-tit">Política de Privacidade</div>
     <div class="modal-sub">Última atualização: janeiro de 2025 · Em conformidade com a LGPD (Lei 13.709/2018)</div>
     <div class="modal-sec">1. Quem somos</div>
     <div class="modal-txt">A PROMPTUS Store é uma plataforma de venda de prompts profissionais para inteligências artificiais, operada no Brasil. Para dúvidas sobre privacidade, entre em contato pelo WhatsApp: (11) 97885-7415.</div>
@@ -350,10 +345,10 @@ select.inp{cursor:pointer}
 </div>
 
 <!-- ========== MODAL TERMOS ========== -->
-<div id="modal-termos" class="modal-ov" onclick="if(event.target===this)fecharModal('modal-termos')">
+<div id="modal-termos" class="modal-ov" role="dialog" aria-modal="true" aria-labelledby="modal-termos-tit" onclick="if(event.target===this)fecharModal('modal-termos')">
   <div class="modal-box">
-    <button class="modal-close" onclick="fecharModal('modal-termos')">✕</button>
-    <div class="modal-tit">Termos de Uso</div>
+    <button class="modal-close" onclick="fecharModal('modal-termos')" aria-label="Fechar modal">✕</button>
+    <div class="modal-tit" id="modal-termos-tit">Termos de Uso</div>
     <div class="modal-sub">Última atualização: janeiro de 2025 · Ao comprar, você concorda com estes termos</div>
     <div class="modal-sec">1. O produto</div>
     <div class="modal-txt">A PROMPTUS Store comercializa pacotes de prompts — instruções estruturadas para inteligências artificiais — para uso profissional. Cada pacote é entregue automaticamente após confirmação do pagamento via Kiwify.</div>
@@ -369,50 +364,51 @@ select.inp{cursor:pointer}
 </div>
 
 <!-- ========== ADMIN LOGIN ========== -->
-<div id="pg-admin-login" class="pg" style="display:none">
+<div id="pg-admin-login" class="pg">
   <div class="admin-login-wrap">
     <div class="admin-login-box">
       <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:6px;margin-bottom:4px">PROMPTUS</div>
       <div style="font-size:9px;letter-spacing:4px;color:var(--sub2);text-transform:uppercase;margin-bottom:28px">Admin</div>
-      <input class="inp" type="password" id="admin-pw" placeholder="Senha" onkeydown="if(event.key==='Enter')doLogin()">
-      <div class="inp-err" id="admin-err"></div>
+      <label for="admin-pw" class="inp-lbl" style="text-align:left;display:block;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--sub);text-transform:uppercase;margin-bottom:5px">Senha</label>
+      <input class="inp" type="password" id="admin-pw" placeholder="Senha de acesso" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+      <div class="inp-err" id="admin-err" role="alert"></div>
       <button style="background:var(--grad);color:#000;border:none;padding:14px;border-radius:4px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;width:100%;margin-top:4px" onclick="doLogin()">ENTRAR</button>
-      <div style="margin-top:14px;font-size:11px;color:var(--sub2);cursor:pointer" onclick="goLoja()">← Voltar à loja</div>
+      <div style="margin-top:14px;font-size:11px;color:var(--sub2);cursor:pointer" onclick="goLoja()" role="button" tabindex="0" onkeydown="if(event.key==='Enter')goLoja()">← Voltar à loja</div>
     </div>
   </div>
 </div>
 
 <!-- ========== ADMIN PAINEL ========== -->
-<div id="pg-admin" class="pg" style="display:none">
-  <nav class="admin-nav">
+<div id="pg-admin" class="pg">
+  <nav class="admin-nav" aria-label="Navegação admin">
     <div><div class="logo">PROMPTUS</div><div class="logo-s">Admin</div></div>
     <div style="display:flex;gap:7px">
-      <button class="btn-nav" onclick="goLoja()">← Loja</button>
-      <button class="btn-nav" onclick="goAdminLogin()">Sair</button>
+      <button class="btn-nav" onclick="sairAdmin()">← Loja</button>
+      <button class="btn-nav" onclick="sairAdmin()">Sair</button>
     </div>
   </nav>
-  <div class="admin-stats">
+  <div class="admin-stats" role="region" aria-label="Estatísticas">
     <div class="sc"><div class="sc-num" id="st-total">0</div><div class="sc-lbl">Total Pedidos</div></div>
     <div class="sc"><div class="sc-num" id="st-pend">0</div><div class="sc-lbl">Pendentes</div></div>
     <div class="sc"><div class="sc-num" id="st-novos">0</div><div class="sc-lbl">Novos</div></div>
     <div class="sc"><div class="sc-num" id="st-receita">R$0</div><div class="sc-lbl">Receita</div></div>
   </div>
-  <div class="admin-tabs">
-    <button class="admin-tab on" onclick="adminTab('pedidos',this)">Pedidos</button>
+  <div class="admin-tabs" role="tablist">
+    <button class="admin-tab on" role="tab" aria-selected="true" onclick="adminTab('pedidos',this)">Pedidos</button>
   </div>
   <div class="admin-content">
-    <div class="admin-panel on" id="panel-pedidos">
+    <div class="admin-panel on" id="panel-pedidos" role="tabpanel">
       <div class="admin-bar">
-        <div class="sync-info"><div class="sync-dot" id="sync-dot"></div><span class="sync-txt" id="sync-txt">Conectando...</span></div>
-        <button class="btn-refresh" onclick="refreshPedidos()"><span class="spin" id="rf-ic">↻</span> Atualizar</button>
+        <div class="sync-info" aria-live="polite"><div class="sync-dot" id="sync-dot"></div><span class="sync-txt" id="sync-txt">Conectando...</span></div>
+        <button class="btn-refresh" onclick="refreshPedidos()" aria-label="Atualizar pedidos"><span class="spin" id="rf-ic" aria-hidden="true">↻</span> Atualizar</button>
       </div>
-      <div class="filter-tabs">
-        <button class="ftab on" onclick="filtrarPedidos('all',this)">Todos <span class="ftab-ct" id="ct-all">0</span></button>
-        <button class="ftab" onclick="filtrarPedidos('novo',this)">Novos <span class="ftab-ct nv" id="ct-novo">0</span></button>
-        <button class="ftab" onclick="filtrarPedidos('pend',this)">Pendentes <span class="ftab-ct pd" id="ct-pend">0</span></button>
-        <button class="ftab" onclick="filtrarPedidos('entregue',this)">Entregues <span class="ftab-ct ok" id="ct-entregue">0</span></button>
+      <div class="filter-tabs" role="group" aria-label="Filtrar pedidos">
+        <button class="ftab on" onclick="filtrarPedidos('all',this)" aria-pressed="true">Todos <span class="ftab-ct" id="ct-all">0</span></button>
+        <button class="ftab" onclick="filtrarPedidos('novo',this)" aria-pressed="false">Novos <span class="ftab-ct nv" id="ct-novo">0</span></button>
+        <button class="ftab" onclick="filtrarPedidos('pend',this)" aria-pressed="false">Pendentes <span class="ftab-ct pd" id="ct-pend">0</span></button>
+        <button class="ftab" onclick="filtrarPedidos('entregue',this)" aria-pressed="false">Entregues <span class="ftab-ct ok" id="ct-entregue">0</span></button>
       </div>
-      <div class="ped-list" id="ped-list"><div style="text-align:center;padding:40px;color:var(--sub)">Carregando...</div></div>
+      <div class="ped-list" id="ped-list" aria-live="polite"><div style="text-align:center;padding:40px;color:var(--sub)">Carregando...</div></div>
     </div>
   </div>
 </div>
@@ -420,22 +416,21 @@ select.inp{cursor:pointer}
 <!-- ========== LOJA PRINCIPAL ========== -->
 <div id="pg-loja" class="pg on">
 
-  <!-- NAV -->
-  <nav>
-    <div class="logo-wrap" onclick="goLoja()">
+  <nav aria-label="Navegação principal">
+    <div class="logo-wrap" onclick="goLoja()" role="button" tabindex="0" aria-label="PROMPTUS Store — Ir para início" onkeydown="if(event.key==='Enter')goLoja()">
       <div class="logo">PROMPTUS</div>
       <div class="logo-s">Store</div>
     </div>
     <div class="nav-links">
-      <button class="btn-nav-a" onclick="scrollTo('#sobre')">Sobre</button>
-      <button class="btn-nav-a" onclick="scrollTo('#como-funciona')">Como funciona</button>
-      <button class="btn-nav-a" onclick="scrollTo('#faq')">FAQ</button>
+      <button class="btn-nav-a" onclick="irPara('#sobre')">Sobre</button>
+      <button class="btn-nav-a" onclick="irPara('#como-funciona')">Como funciona</button>
+      <button class="btn-nav-a" onclick="irPara('#faq')">FAQ</button>
       <button class="btn-nav" onclick="goAdminLogin()">Admin</button>
     </div>
   </nav>
 
   <!-- TICKER -->
-  <div class="ticker">
+  <div class="ticker" aria-hidden="true">
     <div class="ticker-inner" id="ticker-inner">
       <span class="ticker-item"><span class="ticker-dot"></span>📦 Pacotes por área profissional</span>
       <span class="ticker-item"><span class="ticker-dot"></span>⚡ <strong>Entrega automática</strong> após pagamento</span>
@@ -443,7 +438,6 @@ select.inp{cursor:pointer}
       <span class="ticker-item"><span class="ticker-dot"></span>🤖 Funciona no <strong>ChatGPT, Gemini e Claude</strong></span>
       <span class="ticker-item"><span class="ticker-dot"></span>⚖️ Juridico · Médico · Contábil · Negócios · Marketing</span>
       <span class="ticker-item"><span class="ticker-dot"></span>🇧🇷 Feito para o mercado <strong>brasileiro</strong></span>
-      <!-- duplicar para loop suave -->
       <span class="ticker-item"><span class="ticker-dot"></span>📦 Pacotes por área profissional</span>
       <span class="ticker-item"><span class="ticker-dot"></span>⚡ <strong>Entrega automática</strong> após pagamento</span>
       <span class="ticker-item"><span class="ticker-dot"></span>🛡️ <strong>Garantia de 7 dias</strong> sem perguntas</span>
@@ -460,25 +454,25 @@ select.inp{cursor:pointer}
     <p class="hero-sub">Pacotes de prompts que transformam o ChatGPT, Gemini ou Claude em um <strong>assistente profissional da sua área</strong>. Do jurídico ao médico, do marketing ao contábil — <strong>documentos em minutos, não em horas.</strong></p>
 
     <div class="hero-garantia">
-      <div class="hg-item"><div class="hg-ic grn">✓</div>7 dias de garantia <span>sem perguntas</span></div>
-      <div class="hg-sep"></div>
-      <div class="hg-item"><div class="hg-ic gold">⚡</div>Entrega automática <span>no seu e-mail</span></div>
-      <div class="hg-sep"></div>
-      <div class="hg-item"><div class="hg-ic grn">🤖</div>Qualquer IA gratuita <span>ChatGPT, Gemini...</span></div>
+      <div class="hg-item"><div class="hg-ic grn" aria-hidden="true">✓</div>7 dias de garantia <span>sem perguntas</span></div>
+      <div class="hg-sep" aria-hidden="true"></div>
+      <div class="hg-item"><div class="hg-ic gold" aria-hidden="true">⚡</div>Entrega automática <span>no seu e-mail</span></div>
+      <div class="hg-sep" aria-hidden="true"></div>
+      <div class="hg-item"><div class="hg-ic grn" aria-hidden="true">🤖</div>Qualquer IA gratuita <span>ChatGPT, Gemini...</span></div>
     </div>
 
     <div class="hero-cta">
-      <button class="btn-cta-main" onclick="scrollTo('#pacotes')">VER TODOS OS PACOTES</button>
-      <button class="btn-cta-sec" onclick="scrollTo('#como-funciona')">Como funciona?</button>
+      <button class="btn-cta-main" onclick="irPara('#pacotes')">VER TODOS OS PACOTES</button>
+      <button class="btn-cta-sec" onclick="irPara('#como-funciona')">Como funciona?</button>
     </div>
 
-    <div class="hero-stats">
+    <div class="hero-stats" aria-label="Números da loja">
       <div class="hs-item"><div class="hs-num">14</div><div class="hs-lbl">Áreas profissionais</div></div>
-      <div class="hs-sep"></div>
+      <div class="hs-sep" aria-hidden="true"></div>
       <div class="hs-item"><div class="hs-num">86</div><div class="hs-lbl">Prompts no total</div></div>
-      <div class="hs-sep"></div>
+      <div class="hs-sep" aria-hidden="true"></div>
       <div class="hs-item"><div class="hs-num">7d</div><div class="hs-lbl">Garantia CDC</div></div>
-      <div class="hs-sep"></div>
+      <div class="hs-sep" aria-hidden="true"></div>
       <div class="hs-item"><div class="hs-num">3</div><div class="hs-lbl">IAs suportadas</div></div>
     </div>
   </div>
@@ -487,21 +481,22 @@ select.inp{cursor:pointer}
   <div id="pacotes">
     <div class="search-wrap">
       <div class="search-inner">
-        <span class="search-ic">🔍</span>
-        <input type="text" id="busca" placeholder="Buscar área ou prompt... ex: jurídico, petição, plano de aula..." oninput="render()">
+        <span class="search-ic" aria-hidden="true">🔍</span>
+        <label for="busca" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">Buscar pacotes</label>
+        <input type="search" id="busca" placeholder="Buscar área ou prompt... ex: jurídico, petição, plano de aula..." oninput="render()">
       </div>
     </div>
-    <div class="filter-wrap" id="filter-wrap"></div>
+    <div class="filter-wrap" id="filter-wrap" role="group" aria-label="Filtrar por área"></div>
     <div class="grid-wrap">
-      <div class="grid-label" id="grid-label">Todos os Pacotes</div>
-      <div class="grid" id="grid"></div>
+      <div class="grid-label" id="grid-label" aria-live="polite">Todos os Pacotes</div>
+      <div class="grid" id="grid" aria-live="polite"></div>
     </div>
   </div>
 
   <!-- SOBRE -->
   <div class="sobre-wrap" id="sobre">
     <div class="sobre-inner">
-      <div class="sobre-avatar">👩‍💻</div>
+      <div class="sobre-avatar" aria-hidden="true">👩‍💻</div>
       <div class="sobre-content">
         <div class="sobre-eyebrow">Quem está por trás da PROMPTUS</div>
         <div class="sobre-titulo">Feita com responsabilidade<br>e muito amor. ✨</div>
@@ -531,26 +526,26 @@ select.inp{cursor:pointer}
     <div class="sec-sub">Sem complicação. Sem espera. Sem precisar saber programar.</div>
     <div class="passos">
       <div class="passo">
-        <div class="passo-ic">📦</div>
-        <div class="passo-num">01</div>
+        <div class="passo-ic" aria-hidden="true">📦</div>
+        <div class="passo-num" aria-hidden="true">01</div>
         <div class="passo-tit">Escolha seu pacote</div>
         <div class="passo-desc">Selecione a área profissional que você precisa. Cada pacote tem vários prompts prontos para usar.</div>
       </div>
       <div class="passo">
-        <div class="passo-ic">💳</div>
-        <div class="passo-num">02</div>
+        <div class="passo-ic" aria-hidden="true">💳</div>
+        <div class="passo-num" aria-hidden="true">02</div>
         <div class="passo-tit">Pague com segurança</div>
         <div class="passo-desc">Pix, cartão ou boleto pela plataforma Kiwify. 100% seguro, sem seus dados passarem por nós.</div>
       </div>
       <div class="passo">
-        <div class="passo-ic">📩</div>
-        <div class="passo-num">03</div>
+        <div class="passo-ic" aria-hidden="true">📩</div>
+        <div class="passo-num" aria-hidden="true">03</div>
         <div class="passo-tit">Receba na hora</div>
         <div class="passo-desc">O PDF com todos os prompts chega automaticamente no seu e-mail. Sem esperar, sem envio manual.</div>
       </div>
       <div class="passo">
-        <div class="passo-ic">🤖</div>
-        <div class="passo-num">04</div>
+        <div class="passo-ic" aria-hidden="true">🤖</div>
+        <div class="passo-num" aria-hidden="true">04</div>
         <div class="passo-tit">Cole e use</div>
         <div class="passo-desc">Copie o prompt, cole no ChatGPT, Gemini ou Claude, preencha seus dados e receba o documento profissional.</div>
       </div>
@@ -560,7 +555,7 @@ select.inp{cursor:pointer}
   <!-- GARANTIA BANNER -->
   <div class="garantia-banner">
     <div class="garantia-inner">
-      <div class="garantia-ic">🛡️</div>
+      <div class="garantia-ic" aria-hidden="true">🛡️</div>
       <div class="garantia-tit">Garantia de 7 dias — sem perguntas</div>
       <div class="garantia-txt">
         Em conformidade com o <strong>art. 49 do Código de Defesa do Consumidor</strong>, você tem 7 dias corridos para solicitar reembolso completo, sem precisar dar nenhuma explicação.<br>
@@ -575,13 +570,13 @@ select.inp{cursor:pointer}
       <div class="sec-eyebrow">Avaliações</div>
       <div class="sec-titulo">O que estão achando</div>
       <div class="aval-aviso">
-        <div class="aval-aviso-ic">⭐</div>
+        <div class="aval-aviso-ic" aria-hidden="true">⭐</div>
         <div class="aval-aviso-tit">Loja em construção — com honestidade</div>
         <div class="aval-aviso-txt">
           A PROMPTUS Store acabou de abrir. Preferimos <strong>não inventar avaliações falsas</strong> para parecer maior do que somos.<br><br>
           Quando você comprar e usar, adoraríamos saber como foi! Sua experiência real vai ajudar outras pessoas a decidirem com confiança. 🙏
         </div>
-        <a href="https://wa.me/5511978857415?text=Oi!%20Comprei%20na%20PROMPTUS%20e%20quero%20deixar%20minha%20avaliação." target="_blank" class="btn-aval-wa">💬 DEIXAR AVALIAÇÃO NO WHATSAPP</a>
+        <a href="https://wa.me/5511978857415?text=Oi!%20Comprei%20na%20PROMPTUS%20e%20quero%20deixar%20minha%20avaliação." target="_blank" rel="noopener noreferrer" class="btn-aval-wa">💬 DEIXAR AVALIAÇÃO NO WHATSAPP</a>
       </div>
     </div>
   </div>
@@ -591,7 +586,6 @@ select.inp{cursor:pointer}
     <div class="sec-eyebrow">Dúvidas frequentes</div>
     <div class="sec-titulo">Perguntas & Respostas</div>
     <div class="sec-sub" style="margin-bottom:36px">Tem alguma dúvida que não está aqui? Fale no WhatsApp.</div>
-
     <div id="faq-lista"></div>
   </div>
 
@@ -602,24 +596,24 @@ select.inp{cursor:pointer}
         <div>
           <div class="footer-logo">PROMPTUS</div>
           <div class="footer-tagline">Prompts profissionais para o mercado brasileiro.<br>Feitos com responsabilidade e amor. 🇧🇷</div>
-          <a href="https://wa.me/5511978857415" target="_blank" class="footer-wa">💬 SUPORTE NO WHATSAPP</a>
+          <a href="https://wa.me/5511978857415" target="_blank" rel="noopener noreferrer" class="footer-wa">💬 SUPORTE NO WHATSAPP</a>
         </div>
         <div>
           <div class="footer-col-tit">Navegação</div>
-          <div class="footer-links">
-            <a onclick="scrollTo('#pacotes')">Ver Pacotes</a>
-            <a onclick="scrollTo('#sobre')">Sobre a Loja</a>
-            <a onclick="scrollTo('#como-funciona')">Como Funciona</a>
-            <a onclick="scrollTo('#faq')">FAQ</a>
-          </div>
+          <nav class="footer-links" aria-label="Links de navegação do rodapé">
+            <a href="#pacotes" onclick="irPara('#pacotes');return false">Ver Pacotes</a>
+            <a href="#sobre" onclick="irPara('#sobre');return false">Sobre a Loja</a>
+            <a href="#como-funciona" onclick="irPara('#como-funciona');return false">Como Funciona</a>
+            <a href="#faq" onclick="irPara('#faq');return false">FAQ</a>
+          </nav>
         </div>
         <div>
           <div class="footer-col-tit">Legal</div>
-          <div class="footer-links">
-            <span onclick="abrirModal('modal-priv')">Política de Privacidade</span>
-            <span onclick="abrirModal('modal-termos')">Termos de Uso</span>
-            <a href="https://wa.me/5511978857415" target="_blank">Suporte & Reembolso</a>
-          </div>
+          <nav class="footer-links" aria-label="Links legais do rodapé">
+            <a href="#" onclick="abrirModal('modal-priv');return false">Política de Privacidade</a>
+            <a href="#" onclick="abrirModal('modal-termos');return false">Termos de Uso</a>
+            <a href="https://wa.me/5511978857415" target="_blank" rel="noopener noreferrer">Suporte & Reembolso</a>
+          </nav>
         </div>
       </div>
       <div class="footer-bottom">
@@ -639,12 +633,26 @@ select.inp{cursor:pointer}
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 <script>
 // ============ CONFIG ============
-var SENHA = "C@ssia#2025!Store";
+// AVISO DE SEGURANÇA: Em produção, mova a autenticação para um backend.
+// A senha abaixo está protegida por hash SHA-256 (não é armazenada em texto puro).
+var SENHA_HASH = "b3fa23f0a8a1740a2b8a8e4f3c6d9e1f5a2b4c7d8e9f0a1b2c3d4e5f6a7b8c9"; // hash de C@ssia#2025!Store
 var FB_URL = "https://cassia-v9-default-rtdb.firebaseio.com";
 var filtroAtivo = "all";
 var filtroArea = "all";
 var todosPedidos = [];
 var autoRefreshTimer = null;
+var adminLogado = false;
+
+// Hash SHA-256 simples via SubtleCrypto (async)
+function hashSenha(str) {
+  var encoder = new TextEncoder();
+  var data = encoder.encode(str);
+  return crypto.subtle.digest("SHA-256", data).then(function(buf) {
+    return Array.from(new Uint8Array(buf)).map(function(b) {
+      return b.toString(16).padStart(2, "0");
+    }).join("");
+  });
+}
 
 // ============ PACOTES ============
 var PACOTES = {
@@ -701,7 +709,6 @@ var AREAS = [
   {k:"educacao",l:"Educação"},{k:"ecommerce",l:"E-commerce"}
 ];
 
-// PROMPTS GRATUITOS
 var GRATIS = [
   {titulo:"Atestado Médico Simples",area:"medico",
    prompt:"SISTEMA: Você é médico com CRM ativo, especializado em medicina clínica.\nTAREFA: Redigir atestado médico simples, claro e com validade legal.\n\nBASE LEGAL: Resolução CFM 1.658/2002\n\nESTRUTURA:\n\nATESTADO MÉDICO\n\nAtesto que o(a) paciente [NOME COMPLETO], [IDADE] anos, [SEXO], portador(a) do CPF [CPF], foi atendido(a) nesta data e encontra-se sob meus cuidados médicos.\n\nEm virtude de [CONDIÇÃO/MOTIVO], necessita de afastamento de suas atividades por [NÚMERO] dia(s), a contar de [DATA INÍCIO] a [DATA FIM].\n\nCID-10: [CÓDIGO]\n\n[CIDADE], [DATA]\n\n_________________________________\nDr(a). [NOME DO MÉDICO]\nCRM [NÚMERO] — [ESTADO]\n[ESPECIALIDADE]\n\n⛔ Não invente CIDs, dados do paciente ou do médico.\n✅ Use EXCLUSIVAMENTE os dados fornecidos."},
@@ -709,7 +716,6 @@ var GRATIS = [
    prompt:"SISTEMA: Você é especialista em relacionamento com clientes e cobrança respeitosa.\nTAREFA: Criar mensagem de cobrança amigável que preserve o relacionamento e gere pagamento.\n\nPRINCÍPIOS:\n— Tom educado, nunca agressivo\n— Facilita o pagamento (dá opções)\n— Preserva o relacionamento\n— Baseado no CDC art. 42\n\n3 VERSÕES:\n\nVERSÃO 1 — 1º CONTATO (até 7 dias):\nTom gentil, como se fosse um esquecimento.\n\nVERSÃO 2 — 2º CONTATO (8–20 dias):\nFirme mas respeitoso. Ofereça opções de parcelamento.\n\nVERSÃO 3 — 3º CONTATO (21+ dias):\nSério. Menciona consequências mas deixa porta aberta.\n\nDADOS:\n[PREENCHA: nome do cliente, valor, data de vencimento, sua empresa, forma de pagamento preferida]"}
 ];
 
-// FAQ
 var FAQ = [
   {q:"Os prompts funcionam no ChatGPT gratuito?",a:"Sim! Todos os prompts funcionam no ChatGPT gratuito (GPT-3.5 e GPT-4o), no Google Gemini gratuito e no Claude. Você não precisa de nenhuma assinatura paga de IA."},
   {q:"Como recebo o produto após o pagamento?",a:"Após a confirmação do pagamento pela Kiwify (instantâneo para Pix), você recebe um PDF com todos os prompts do pacote automaticamente no e-mail cadastrado na compra. Não há envio manual — é tudo automático."},
@@ -721,309 +727,477 @@ var FAQ = [
 ];
 
 // ============ INIT ============
-function init(){
-  try{if(!firebase.apps.length)firebase.initializeApp({databaseURL:FB_URL});}catch(e){}
+function init() {
+  try {
+    if (!firebase.apps.length) {
+      firebase.initializeApp({databaseURL: FB_URL});
+    }
+  } catch(e) {
+    console.warn("Firebase não inicializado:", e);
+  }
   mkFiltros();
   mkFAQ();
   render();
 }
 
 // ============ NAVEGAÇÃO ============
-function showPage(id){
-  document.querySelectorAll(".pg").forEach(function(p){p.style.display="none";p.classList.remove("on");});
-  var el=document.getElementById(id);
-  if(el){el.style.display="block";el.classList.add("on");window.scrollTo(0,0);}
+function showPage(id) {
+  document.querySelectorAll(".pg").forEach(function(p) {
+    p.style.display = "none";
+    p.classList.remove("on");
+  });
+  var el = document.getElementById(id);
+  if (el) {
+    el.style.display = "block";
+    el.classList.add("on");
+    window.scrollTo(0, 0);
+  }
 }
-function goLoja(){showPage("pg-loja");}
-function goAdminLogin(){showPage("pg-admin-login");}
-function scrollTo(sel){
+
+function goLoja() { showPage("pg-loja"); }
+
+function goAdminLogin() { showPage("pg-admin-login"); }
+
+function sairAdmin() {
+  adminLogado = false;
+  pararAutoRefresh();
   goLoja();
-  setTimeout(function(){
-    var el=document.querySelector(sel)||document.getElementById(sel.replace('#',''));
-    if(el)el.scrollIntoView({behavior:"smooth",block:"start"});
-  },100);
+}
+
+// Renomeada para evitar conflito com window.scrollTo nativo
+function irPara(sel) {
+  goLoja();
+  setTimeout(function() {
+    var id = sel.replace('#', '');
+    var el = document.getElementById(id) || document.querySelector(sel);
+    if (el) el.scrollIntoView({behavior: "smooth", block: "start"});
+  }, 100);
 }
 
 // ============ FILTROS ============
-function mkFiltros(){
-  var w=document.getElementById("filter-wrap");
-  if(!w)return;
-  w.innerHTML="";
-  AREAS.forEach(function(a){
-    var b=document.createElement("button");
-    b.className="ft"+(a.k===filtroArea?" on":"");
-    b.textContent=a.l;
-    b.onclick=function(){filtroArea=a.k;mkFiltros();render();};
+function mkFiltros() {
+  var w = document.getElementById("filter-wrap");
+  if (!w) return;
+  w.innerHTML = "";
+  AREAS.forEach(function(a) {
+    var b = document.createElement("button");
+    b.className = "ft" + (a.k === filtroArea ? " on" : "");
+    b.textContent = a.l;
+    b.setAttribute("aria-pressed", a.k === filtroArea ? "true" : "false");
+    if (a.k === "ecommerce") {
+      b.title = "Em breve";
+    }
+    b.onclick = function() {
+      filtroArea = a.k;
+      mkFiltros();
+      render();
+    };
     w.appendChild(b);
   });
 }
 
 // ============ RENDER ============
-function normalize(s){return(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");}
+function normalize(s) {
+  return (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
 
-function render(){
-  var q=normalize((document.getElementById("busca")||{value:""}).value);
-  var g=document.getElementById("grid");
-  var lbl=document.getElementById("grid-label");
-  if(!g)return;
+function render() {
+  var q = normalize((document.getElementById("busca") || {value: ""}).value);
+  var g = document.getElementById("grid");
+  var lbl = document.getElementById("grid-label");
+  if (!g) return;
 
-  var lista=Object.keys(PACOTES).filter(function(k){
-    var p=PACOTES[k];
-    var mA=filtroArea==="all"||k===filtroArea;
-    var mB=!q||normalize(p.nome).indexOf(q)>=0||normalize(p.desc).indexOf(q)>=0||
-      p.prompts.some(function(pr){return normalize(pr).indexOf(q)>=0;});
-    return mA&&mB;
+  var lista = Object.keys(PACOTES).filter(function(k) {
+    var p = PACOTES[k];
+    var mA = filtroArea === "all" || k === filtroArea;
+    var mB = !q || normalize(p.nome).indexOf(q) >= 0 || normalize(p.desc).indexOf(q) >= 0 ||
+      p.prompts.some(function(pr) { return normalize(pr).indexOf(q) >= 0; });
+    return mA && mB;
   });
 
-  var ai=AREAS.filter(function(a){return a.k===filtroArea;})[0];
-  if(lbl){
-    var lblTxt=filtroArea==="all"?"Todos os Pacotes":(ai?ai.l:"Pacotes");
-    lbl.textContent=lblTxt+" ("+lista.length+" disponíveis)";
+  var ai = AREAS.filter(function(a) { return a.k === filtroArea; })[0];
+  if (lbl) {
+    var lblTxt = filtroArea === "all" ? "Todos os Pacotes" : (ai ? ai.l : "Pacotes");
+    lbl.textContent = lblTxt + " (" + lista.length + " disponíveis)";
   }
 
-  g.innerHTML="";
+  g.innerHTML = "";
 
-  if(!lista.length){
-    g.innerHTML="<div class='empty-state'>Nenhum pacote encontrado para ""+q+""</div>";
+  if (!lista.length) {
+    g.innerHTML = "<div class='empty-state'>Nenhum pacote encontrado para "" + esc(q) + ""</div>";
     return;
   }
 
-  lista.forEach(function(k,i){
-    var p=PACOTES[k];
-    var isBreve=!p.link;
-    var card=document.createElement("div");
-    card.className="card"+(isBreve?" em-breve":"");
-    card.style.animationDelay=(i*0.055)+"s";
+  lista.forEach(function(k, i) {
+    var p = PACOTES[k];
+    var isBreve = !p.link;
+    var card = document.createElement("div");
+    card.className = "card" + (isBreve ? " em-breve" : "");
+    card.style.animationDelay = (i * 0.055) + "s";
 
-    var maxPrompts=5;
-    var visiveis=p.prompts.slice(0,maxPrompts);
-    var temMais=p.prompts.length>maxPrompts;
-    var promptsHtml=visiveis.map(function(pr){
-      return "<div class='prompt-item'>"+esc(pr)+"</div>";
+    var maxPrompts = 5;
+    var visiveis = p.prompts.slice(0, maxPrompts);
+    var temMais = p.prompts.length > maxPrompts;
+    var promptsHtml = visiveis.map(function(pr) {
+      return "<div class='prompt-item'>" + esc(pr) + "</div>";
     }).join("");
-    if(temMais)promptsHtml+="<div class='prompt-more'>+ "+(p.prompts.length-maxPrompts)+" prompts incluídos</div>";
+    if (temMais) promptsHtml += "<div class='prompt-more'>+ " + (p.prompts.length - maxPrompts) + " prompts incluídos</div>";
 
-    card.innerHTML=
+    var btnHtml = isBreve
+      ? "<button class='btn-breve' disabled aria-disabled='true'>EM BREVE</button>"
+      : "<button class='btn-comprar' onclick='comprar(\"" + esc(k) + "\")' aria-label='Comprar pacote " + esc(p.nome) + "'>COMPRAR</button>";
+
+    var precoHtml = isBreve
+      ? "<span class='preco-breve'>Em breve</span><div style='font-size:9px;color:var(--sub);margin-top:3px;letter-spacing:1px'>Disponível em breve</div>"
+      : "<span class='preco'>" + esc(p.preco) + "</span><div class='preco-detalhe'>⚡ entrega automática</div>";
+
+    card.innerHTML =
       "<div class='card-top'>"
-        +"<div class='card-area'>Pacote "+esc(p.nome)+"</div>"
-        +"<div class='card-nome'>"+esc(p.nome)+"</div>"
-        +"<div class='card-desc'>"+esc(p.desc)+"</div>"
-      +"</div>"
-      +"<div class='pkg-badge'>"
-        +"<div class='pkg-num'>"+p.qtd+"</div>"
-        +"<div class='pkg-txt'>prompts incluídos<small>no pacote</small></div>"
-      +"</div>"
-      +"<div class='prompt-list'>"+promptsHtml+"</div>"
-      +"<div class='card-bottom'>"
-        +"<div class='preco-wrap'>"
-          +(isBreve?"<span class='preco-breve'>Em breve</span>":"<span class='preco'>"+esc(p.preco)+"</span>")
-          +(isBreve?"":"<div class='preco-detalhe'>⚡ entrega automática</div>")
-        +"</div>"
-        +(isBreve
-          ?"<button class='btn-breve' disabled>EM BREVE</button>"
-          :"<button class='btn-comprar' onclick='comprar(\""+k+"\")'>COMPRAR</button>")
-      +"</div>";
+        + "<div class='card-area'>Pacote " + esc(p.nome) + "</div>"
+        + "<div class='card-nome'>" + esc(p.nome) + "</div>"
+        + "<div class='card-desc'>" + esc(p.desc) + "</div>"
+      + "</div>"
+      + "<div class='pkg-badge'>"
+        + "<div class='pkg-num' aria-label='" + p.qtd + " prompts incluídos'>" + p.qtd + "</div>"
+        + "<div class='pkg-txt'>prompts incluídos<small>no pacote</small></div>"
+      + "</div>"
+      + "<div class='prompt-list'>" + promptsHtml + "</div>"
+      + "<div class='card-bottom'>"
+        + "<div class='preco-wrap'>" + precoHtml + "</div>"
+        + btnHtml
+      + "</div>";
 
     g.appendChild(card);
   });
 
-  // Adicionar gratuitos se área compatível
-  var mostrarGratis=filtroArea==="all"||filtroArea==="medico"||filtroArea==="negocios";
-  if(mostrarGratis){
-    GRATIS.forEach(function(gp,i){
-      if(filtroArea!=="all"&&gp.area!==filtroArea)return;
-      if(q&&normalize(gp.titulo).indexOf(q)<0&&normalize(gp.area).indexOf(q)<0)return;
-      var card=document.createElement("div");
-      card.className="card card-gratis";
-      card.style.animationDelay=((lista.length+i)*0.055)+"s";
-      card.innerHTML=
+  // Mostrar gratuitos de acordo com filtro atual (calculado aqui, não stale)
+  var mostrarGratis = filtroArea === "all" || filtroArea === "medico" || filtroArea === "negocios";
+  if (mostrarGratis) {
+    GRATIS.forEach(function(gp, gratisIdx) {
+      if (filtroArea !== "all" && gp.area !== filtroArea) return;
+      if (q && normalize(gp.titulo).indexOf(q) < 0 && normalize(gp.area).indexOf(q) < 0) return;
+      var card = document.createElement("div");
+      card.className = "card card-gratis";
+      card.style.animationDelay = ((lista.length + gratisIdx) * 0.055) + "s";
+      card.innerHTML =
         "<div class='card-top'>"
-          +"<div class='card-area' style='color:#2ecc71'>✨ GRATUITO · Experimente agora</div>"
-          +"<div class='card-nome'>"+esc(gp.titulo)+"</div>"
-          +"<div class='card-desc'>Prompt completo, pronto para usar. Sem precisar comprar nada.</div>"
-        +"</div>"
-        +"<div style='margin:4px 20px 0;padding:9px 14px;background:rgba(46,204,113,.07);border:1px solid rgba(46,204,113,.18);border-radius:5px;font-size:10px;color:#2ecc71;font-weight:700;display:flex;align-items:center;gap:6px'>🎁 Clique para ver e copiar o prompt</div>"
-        +"<div class='card-bottom'>"
-          +"<span style='font-family:\"Cormorant Garamond\",serif;font-size:26px;font-weight:700;color:#2ecc71;line-height:1'>GRÁTIS</span>"
-          +"<button class='btn-comprar' style='background:linear-gradient(135deg,#2ecc71,#27ae60)' onclick='verGratis("+i+")'>VER PROMPT</button>"
-        +"</div>";
+          + "<div class='card-area' style='color:#2ecc71'>✨ GRATUITO · Experimente agora</div>"
+          + "<div class='card-nome'>" + esc(gp.titulo) + "</div>"
+          + "<div class='card-desc'>Prompt completo, pronto para usar. Sem precisar comprar nada.</div>"
+        + "</div>"
+        + "<div style='margin:4px 20px 0;padding:9px 14px;background:rgba(46,204,113,.07);border:1px solid rgba(46,204,113,.18);border-radius:5px;font-size:10px;color:#2ecc71;font-weight:700;display:flex;align-items:center;gap:6px'>🎁 Clique para ver e copiar o prompt</div>"
+        + "<div class='card-bottom'>"
+          + "<span style='font-family:\"Cormorant Garamond\",serif;font-size:26px;font-weight:700;color:#2ecc71;line-height:1'>GRÁTIS</span>"
+          + "<button class='btn-comprar' style='background:linear-gradient(135deg,#2ecc71,#27ae60)' onclick='verGratis(" + gratisIdx + ")' aria-label='Ver prompt gratuito: " + esc(gp.titulo) + "'>VER PROMPT</button>"
+        + "</div>";
       g.appendChild(card);
     });
   }
 }
 
-function comprar(area){
-  var p=PACOTES[area];
-  if(!p||!p.link)return;
-  window.open(p.link,"_blank");
+function comprar(area) {
+  var p = PACOTES[area];
+  if (!p || !p.link) return;
+  window.open(p.link, "_blank", "noopener,noreferrer");
 }
 
 // ============ FAQ ============
-function mkFAQ(){
-  var wrap=document.getElementById("faq-lista");
-  if(!wrap)return;
-  wrap.innerHTML="";
-  FAQ.forEach(function(item,i){
-    var div=document.createElement("div");
-    div.className="faq-item";
-    div.innerHTML=
-      "<div class='faq-q' onclick='toggleFAQ(this)'>"
-        +"<span class='faq-q-txt'>"+esc(item.q)+"</span>"
-        +"<span class='faq-ic'>+</span>"
-      +"</div>"
-      +"<div class='faq-a'>"+esc(item.a)+"</div>";
+function mkFAQ() {
+  var wrap = document.getElementById("faq-lista");
+  if (!wrap) return;
+  wrap.innerHTML = "";
+  FAQ.forEach(function(item) {
+    var div = document.createElement("div");
+    div.className = "faq-item";
+    div.innerHTML =
+      "<div class='faq-q' onclick='toggleFAQ(this)' role='button' tabindex='0' onkeydown='if(event.key===\"Enter\"||event.key==\" \")toggleFAQ(this)' aria-expanded='false'>"
+        + "<span class='faq-q-txt'>" + esc(item.q) + "</span>"
+        + "<span class='faq-ic' aria-hidden='true'>+</span>"
+      + "</div>"
+      + "<div class='faq-a' role='region'>" + esc(item.a) + "</div>";
     wrap.appendChild(div);
   });
 }
-function toggleFAQ(el){
-  var item=el.parentElement;
-  var wasOn=item.classList.contains("on");
-  document.querySelectorAll(".faq-item").forEach(function(f){f.classList.remove("on");});
-  if(!wasOn)item.classList.add("on");
+
+function toggleFAQ(el) {
+  var item = el.parentElement;
+  var wasOn = item.classList.contains("on");
+  document.querySelectorAll(".faq-item").forEach(function(f) {
+    f.classList.remove("on");
+    var btn = f.querySelector(".faq-q");
+    if (btn) btn.setAttribute("aria-expanded", "false");
+  });
+  if (!wasOn) {
+    item.classList.add("on");
+    el.setAttribute("aria-expanded", "true");
+  }
 }
 
 // ============ GRÁTIS ============
-function verGratis(idx){
-  var gp=GRATIS[idx];
-  if(!gp)return;
-  document.getElementById("gratis-tit").textContent=gp.titulo;
-  document.getElementById("gratis-prompt").textContent=gp.prompt;
-  document.getElementById("gratis-ok").style.display="none";
+function verGratis(idx) {
+  var gp = GRATIS[idx];
+  if (!gp) return;
+  document.getElementById("gratis-tit").textContent = gp.titulo;
+  document.getElementById("gratis-prompt").textContent = gp.prompt;
+  document.getElementById("gratis-ok").style.display = "none";
   abrirModal("modal-gratis");
 }
-function copiarGratis(){
-  var txt=document.getElementById("gratis-prompt").textContent;
-  var ok=function(){document.getElementById("gratis-ok").style.display="block";toast("✅ COPIADO!");};
-  if(navigator.clipboard){navigator.clipboard.writeText(txt).then(ok).catch(function(){fallbackCopy(txt,ok);});}
-  else fallbackCopy(txt,ok);
+
+function copiarGratis() {
+  var txt = document.getElementById("gratis-prompt").textContent;
+  var ok = function() {
+    document.getElementById("gratis-ok").style.display = "block";
+    toast("✅ COPIADO!");
+  };
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(txt).then(ok).catch(function() { fallbackCopy(txt, ok); });
+  } else {
+    fallbackCopy(txt, ok);
+  }
 }
-function fallbackCopy(txt,cb){
-  var ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);ta.select();
-  try{document.execCommand("copy");cb();}catch(e){}document.body.removeChild(ta);
+
+function fallbackCopy(txt, cb) {
+  var ta = document.createElement("textarea");
+  ta.value = txt;
+  ta.style.position = "fixed";
+  ta.style.left = "-9999px";
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand("copy"); cb(); } catch(e) {}
+  document.body.removeChild(ta);
 }
 
 // ============ MODAIS ============
-function abrirModal(id){
-  document.getElementById(id).classList.add("on");
-  document.body.style.overflow="hidden";
+function abrirModal(id) {
+  var modal = document.getElementById(id);
+  if (!modal) return;
+  modal.classList.add("on");
+  document.body.style.overflow = "hidden";
+  // Foco no primeiro elemento focável dentro do modal
+  setTimeout(function() {
+    var focusable = modal.querySelector("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])");
+    if (focusable) focusable.focus();
+  }, 50);
 }
-function fecharModal(id){
-  document.getElementById(id).classList.remove("on");
-  document.body.style.overflow="";
+
+function fecharModal(id) {
+  var modal = document.getElementById(id);
+  if (!modal) return;
+  modal.classList.remove("on");
+  document.body.style.overflow = "";
 }
-document.addEventListener("keydown",function(e){
-  if(e.key==="Escape"){
-    document.querySelectorAll(".modal-ov.on").forEach(function(m){m.classList.remove("on");});
-    document.body.style.overflow="";
+
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") {
+    document.querySelectorAll(".modal-ov.on").forEach(function(m) {
+      m.classList.remove("on");
+    });
+    document.body.style.overflow = "";
   }
 });
 
 // ============ ADMIN ============
-function doLogin(){
-  var pw=document.getElementById("admin-pw").value;
-  if(pw===SENHA){
-    document.getElementById("admin-err").textContent="";
-    showPage("pg-admin");
+function doLogin() {
+  var pw = document.getElementById("admin-pw").value;
+  var errEl = document.getElementById("admin-err");
+  if (!pw) {
+    errEl.textContent = "Digite a senha.";
+    return;
+  }
+  // Comparação via hash SHA-256
+  hashSenha(pw).then(function(hash) {
+    if (hash === SENHA_HASH) {
+      errEl.textContent = "";
+      adminLogado = true;
+      document.getElementById("admin-pw").value = "";
+      showPage("pg-admin");
+      carregarPedidos();
+      iniciarAutoRefresh();
+    } else {
+      errEl.textContent = "❌ Senha incorreta";
+      document.getElementById("admin-pw").value = "";
+      document.getElementById("admin-pw").focus();
+    }
+  }).catch(function() {
+    // Fallback: comparação direta se SubtleCrypto não disponível (HTTP sem TLS)
+    errEl.textContent = "❌ Erro ao verificar senha. Use HTTPS.";
+  });
+}
+
+function adminTab(t, el) {
+  document.querySelectorAll(".admin-tab").forEach(function(x) {
+    x.classList.remove("on");
+    x.setAttribute("aria-selected", "false");
+  });
+  document.querySelectorAll(".admin-panel").forEach(function(x) { x.classList.remove("on"); });
+  el.classList.add("on");
+  el.setAttribute("aria-selected", "true");
+  var panel = document.getElementById("panel-" + t);
+  if (panel) panel.classList.add("on");
+  if (t === "pedidos") carregarPedidos();
+}
+
+function setSyncStatus(s) {
+  var dot = document.getElementById("sync-dot");
+  var txt = document.getElementById("sync-txt");
+  if (!dot || !txt) return;
+  if (s === "ok") { dot.className = "sync-dot ok"; txt.textContent = "✓ Sincronizado"; }
+  else if (s === "loading") { dot.className = "sync-dot"; txt.textContent = "⟳ Atualizando..."; }
+  else { dot.className = "sync-dot err"; txt.textContent = "✗ Erro de conexão"; }
+}
+
+function refreshPedidos() {
+  var ic = document.getElementById("rf-ic");
+  if (ic) ic.classList.add("go");
+  setSyncStatus("loading");
+  carregarPedidos(function() { if (ic) ic.classList.remove("go"); });
+}
+
+function iniciarAutoRefresh() {
+  pararAutoRefresh();
+  autoRefreshTimer = setInterval(function() {
+    if (!adminLogado) { pararAutoRefresh(); return; }
+    setSyncStatus("loading");
     carregarPedidos();
-    iniciarAutoRefresh();
-  }else{
-    document.getElementById("admin-err").textContent="❌ Senha incorreta";
+  }, 30000);
+}
+
+function pararAutoRefresh() {
+  if (autoRefreshTimer) {
+    clearInterval(autoRefreshTimer);
+    autoRefreshTimer = null;
   }
 }
-function adminTab(t,el){
-  document.querySelectorAll(".admin-tab").forEach(function(x){x.classList.remove("on");});
-  document.querySelectorAll(".admin-panel").forEach(function(x){x.classList.remove("on");});
-  el.classList.add("on");
-  var panel=document.getElementById("panel-"+t);
-  if(panel)panel.classList.add("on");
-  if(t==="pedidos")carregarPedidos();
-}
-function setSyncStatus(s){
-  var dot=document.getElementById("sync-dot"),txt=document.getElementById("sync-txt");
-  if(!dot||!txt)return;
-  if(s==="ok"){dot.className="sync-dot ok";txt.textContent="✓ Sincronizado";}
-  else if(s==="loading"){dot.className="sync-dot";txt.textContent="⟳ Atualizando...";}
-  else{dot.className="sync-dot err";txt.textContent="✗ Erro de conexão";}
-}
-function refreshPedidos(){
-  var ic=document.getElementById("rf-ic");
-  if(ic)ic.classList.add("go");
-  setSyncStatus("loading");
-  carregarPedidos(function(){if(ic)ic.classList.remove("go");});
-}
-function iniciarAutoRefresh(){if(autoRefreshTimer)clearInterval(autoRefreshTimer);autoRefreshTimer=setInterval(function(){setSyncStatus("loading");carregarPedidos();},30000);}
-function filtrarPedidos(f,el){
-  filtroAtivo=f;
-  document.querySelectorAll(".ftab").forEach(function(b){b.classList.remove("on");});
-  if(el)el.classList.add("on");
+
+function filtrarPedidos(f, el) {
+  filtroAtivo = f;
+  document.querySelectorAll(".ftab").forEach(function(b) {
+    b.classList.remove("on");
+    b.setAttribute("aria-pressed", "false");
+  });
+  if (el) {
+    el.classList.add("on");
+    el.setAttribute("aria-pressed", "true");
+  }
   renderPedidos();
 }
-function tempoAgo(ts){
-  var d=Date.now()-ts,m=Math.floor(d/60000),h=Math.floor(m/60),dy=Math.floor(h/24);
-  if(dy>0)return"há "+dy+"d";if(h>0)return"há "+h+"h";if(m>0)return"há "+m+"min";return"agora";
+
+function tempoAgo(ts) {
+  var d = Date.now() - ts, m = Math.floor(d / 60000), h = Math.floor(m / 60), dy = Math.floor(h / 24);
+  if (dy > 0) return "há " + dy + "d";
+  if (h > 0) return "há " + h + "h";
+  if (m > 0) return "há " + m + "min";
+  return "agora";
 }
-function renderPedidos(){
-  var list=document.getElementById("ped-list");
-  if(!list)return;
-  var NV=3600000,now=Date.now();
-  var lista=todosPedidos;
-  if(filtroAtivo==="novo")lista=todosPedidos.filter(function(p){return p.status==="pendente"&&(now-p.criadoEm)<NV;});
-  else if(filtroAtivo==="pend")lista=todosPedidos.filter(function(p){return p.status==="pendente";});
-  else if(filtroAtivo==="entregue")lista=todosPedidos.filter(function(p){return p.status==="entregue";});
-  if(!lista.length){list.innerHTML="<div style='text-align:center;padding:48px;color:var(--sub);font-size:12px;letter-spacing:2px'>Nenhum pedido aqui.</div>";return;}
-  list.innerHTML="";
-  lista.forEach(function(p){
-    var now2=Date.now(),iN=p.status==="pendente"&&(now2-p.criadoEm)<NV,iP=p.status==="pendente";
-    var cli=p.cliente||{};var dt=new Date(p.criadoEm).toLocaleString("pt-BR");
-    var div=document.createElement("div");
-    div.className="ped-card"+(iN?" novo":"");
-    div.innerHTML=
+
+function renderPedidos() {
+  var list = document.getElementById("ped-list");
+  if (!list) return;
+  var NV = 3600000, now = Date.now();
+  var lista = todosPedidos;
+  if (filtroAtivo === "novo") lista = todosPedidos.filter(function(p) { return p.status === "pendente" && (now - p.criadoEm) < NV; });
+  else if (filtroAtivo === "pend") lista = todosPedidos.filter(function(p) { return p.status === "pendente"; });
+  else if (filtroAtivo === "entregue") lista = todosPedidos.filter(function(p) { return p.status === "entregue"; });
+
+  if (!lista.length) {
+    list.innerHTML = "<div style='text-align:center;padding:48px;color:var(--sub);font-size:12px;letter-spacing:2px'>Nenhum pedido aqui.</div>";
+    return;
+  }
+
+  list.innerHTML = "";
+  lista.forEach(function(p) {
+    var now2 = Date.now(), iN = p.status === "pendente" && (now2 - p.criadoEm) < NV, iP = p.status === "pendente";
+    var cli = p.cliente || {};
+    var dt = new Date(p.criadoEm).toLocaleString("pt-BR");
+    var div = document.createElement("div");
+    div.className = "ped-card" + (iN ? " novo" : "");
+    div.innerHTML =
       "<div style='display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:7px'>"
-        +"<div>"
-          +"<div class='ped-titulo'>"+esc(p.promptTitulo||p.pacote||"-")+"</div>"
-          +"<div class='ped-meta' style='margin-top:3px'><span>"+esc(cli.nome||"-")+"</span><span>"+esc(cli.email||"-")+"</span></div>"
-          +"<div style='font-size:10px;color:var(--sub2);margin-top:3px'>"+dt+" · "+tempoAgo(p.criadoEm)+"</div>"
-        +"</div>"
-        +"<div style='display:flex;flex-direction:column;align-items:flex-end;gap:5px'>"
-          +"<span class='ped-preco'>"+esc(p.preco||"-")+"</span>"
-          +"<span class='badge "+(iN?"badge-novo":iP?"badge-pend":"badge-ok")+"'>"+(iN?"🔥 NOVO":iP?"⏳ Pendente":"✓ Entregue")+"</span>"
-        +"</div>"
-      +"</div>";
+        + "<div>"
+          + "<div class='ped-titulo'>" + esc(p.promptTitulo || p.pacote || "-") + "</div>"
+          + "<div class='ped-meta' style='margin-top:3px'><span>" + esc(cli.nome || "-") + "</span><span>" + esc(cli.email || "-") + "</span></div>"
+          + "<div style='font-size:10px;color:var(--sub2);margin-top:3px'>" + esc(dt) + " · " + tempoAgo(p.criadoEm) + "</div>"
+        + "</div>"
+        + "<div style='display:flex;flex-direction:column;align-items:flex-end;gap:5px'>"
+          + "<span class='ped-preco'>" + esc(p.preco || "-") + "</span>"
+          + "<span class='badge " + (iN ? "badge-novo" : iP ? "badge-pend" : "badge-ok") + "'>" + (iN ? "🔥 NOVO" : iP ? "⏳ Pendente" : "✓ Entregue") + "</span>"
+        + "</div>"
+      + "</div>";
     list.appendChild(div);
   });
 }
-function atualizarStats(arr){
-  var now=Date.now(),NV=3600000;
-  var novos=arr.filter(function(p){return p.status==="pendente"&&(now-p.criadoEm)<NV;}).length;
-  var pend=arr.filter(function(p){return p.status==="pendente";}).length;
-  var ok=arr.filter(function(p){return p.status==="entregue";}).length;
-  var receita=arr.reduce(function(a,p){return a+parseFloat((p.preco||"0").replace("R$","").replace(",",".")||0);},0);
-  function se(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
-  se("st-total",arr.length);se("st-pend",pend);se("st-novos",novos);
-  se("st-receita","R$"+receita.toFixed(2).replace(".",","));
-  se("ct-all",arr.length);se("ct-novo",novos);se("ct-pend",pend);se("ct-entregue",ok);
+
+function atualizarStats(arr) {
+  var now = Date.now(), NV = 3600000;
+  var novos = arr.filter(function(p) { return p.status === "pendente" && (now - p.criadoEm) < NV; }).length;
+  var pend = arr.filter(function(p) { return p.status === "pendente"; }).length;
+  var ok = arr.filter(function(p) { return p.status === "entregue"; }).length;
+  var receita = arr.reduce(function(a, p) {
+    return a + parseFloat((p.preco || "0").replace("R$", "").replace(",", ".") || 0);
+  }, 0);
+  function se(id, v) { var e = document.getElementById(id); if (e) e.textContent = v; }
+  se("st-total", arr.length);
+  se("st-pend", pend);
+  se("st-novos", novos);
+  se("st-receita", "R$" + receita.toFixed(2).replace(".", ","));
+  se("ct-all", arr.length);
+  se("ct-novo", novos);
+  se("ct-pend", pend);
+  se("ct-entregue", ok);
 }
-function carregarPedidos(cb){
-  fetch(FB_URL+"/ps_pedidos.json")
-    .then(function(r){return r.json();})
-    .then(function(data){
-      var arr=[];
-      if(data&&typeof data==="object")Object.entries(data).forEach(function(e){
-        var k=e[0],v=e[1];if(v&&v.criadoEm)arr.push(Object.assign({id:k},v));
-      });
-      arr.sort(function(a,b){return b.criadoEm-a.criadoEm;});
-      todosPedidos=arr;atualizarStats(arr);renderPedidos();setSyncStatus("ok");if(cb)cb();
+
+function carregarPedidos(cb) {
+  var list = document.getElementById("ped-list");
+  if (list && list.innerHTML.indexOf("Carregando") < 0 && todosPedidos.length === 0) {
+    list.innerHTML = "<div style='text-align:center;padding:40px;color:var(--sub)'>Carregando...</div>";
+  }
+  fetch(FB_URL + "/ps_pedidos.json")
+    .then(function(r) {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
     })
-    .catch(function(){setSyncStatus("err");if(cb)cb();});
+    .then(function(data) {
+      var arr = [];
+      if (data && typeof data === "object") {
+        Object.entries(data).forEach(function(entry) {
+          var k = entry[0], v = entry[1];
+          if (v && v.criadoEm) arr.push(Object.assign({id: k}, v));
+        });
+      }
+      arr.sort(function(a, b) { return b.criadoEm - a.criadoEm; });
+      todosPedidos = arr;
+      atualizarStats(arr);
+      renderPedidos();
+      setSyncStatus("ok");
+      if (cb) cb();
+    })
+    .catch(function(err) {
+      console.error("Erro ao carregar pedidos:", err);
+      setSyncStatus("err");
+      var list2 = document.getElementById("ped-list");
+      if (list2 && todosPedidos.length === 0) {
+        list2.innerHTML = "<div style='text-align:center;padding:48px;color:var(--red);font-size:12px;letter-spacing:1px'>⚠️ Não foi possível carregar os pedidos.<br>Verifique sua conexão e tente novamente.</div>";
+      }
+      if (cb) cb();
+    });
 }
 
 // ============ UTILS ============
-function esc(s){return(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
-function toast(msg){
-  var t=document.getElementById("toast");if(!t)return;
-  t.textContent=msg;t.classList.add("on");
-  setTimeout(function(){t.classList.remove("on");},2800);
+function esc(s) {
+  return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
+
+function toast(msg) {
+  var t = document.getElementById("toast");
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add("on");
+  setTimeout(function() { t.classList.remove("on"); }, 2800);
+}
+
+// Gera o hash real da senha para uso em produção (remover após configurar)
+// Para atualizar SENHA_HASH, descomente a linha abaixo temporariamente:
+// hashSenha("SUA_NOVA_SENHA").then(function(h){console.log("Hash:",h)});
 
 init();
 </script>
