@@ -2,557 +2,852 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<meta name="description" content="Prompts profissionais para IA — Jurídico, Médico, Contábil, Negócios e mais. Funciona no ChatGPT, Gemini e Claude. Entrega automática. Garantia de 7 dias.">
-<meta name="keywords" content="prompts profissionais, prompt jurídico, prompt médico, ChatGPT, Gemini, Claude, inteligência artificial, documentos profissionais">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>PROMPTUS Store | Prompts Profissionais para IA</title>
+<meta name="description" content="Pacotes de prompts profissionais para IA — Jurídico, Médico, Contábil, Negócios e mais. Funciona no ChatGPT, Gemini e Claude. Entrega automática. Garantia de 7 dias.">
+<meta name="keywords" content="prompts profissionais, prompt jurídico, prompt médico, ChatGPT, Gemini, Claude, inteligência artificial, documentos profissionais, Brasil">
 <meta name="author" content="PROMPTUS Store">
 <meta property="og:title" content="PROMPTUS Store — Prompts Profissionais para IA">
-<meta property="og:description" content="Pacotes de prompts profissionais para áreas Jurídica, Médica, Contábil, Negócios e mais. Entrega automática após o pagamento.">
+<meta property="og:description" content="Pacotes de prompts profissionais para IA. Jurídico, Médico, Contábil e mais. Entrega automática. Garantia de 7 dias.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="PROMPTUS Store — Prompts Profissionais">
-<meta name="twitter:description" content="Pacotes de prompts profissionais para IA. Jurídico, Médico, Contábil e mais. Funciona no ChatGPT, Gemini e Claude.">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjMDUwNTA1Ii8+PHRleHQgeD0iMTYiIHk9IjIzIiBmb250LWZhbWlseT0ic2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjYmY5NTNmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QPC90ZXh0Pjwvc3ZnPg==">
-<link rel="shortcut icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjMDUwNTA1Ii8+PHRleHQgeD0iMTYiIHk9IjIzIiBmb250LWZhbWlseT0ic2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjYmY5NTNmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QPC90ZXh0Pjwvc3ZnPg==">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>PROMPTUS Store | Prompts Profissionais</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#050505;--card:#0d0d0d;--brd:rgba(191,149,63,.22);--gold:#bf953f;--grad:linear-gradient(135deg,#bf953f,#fcf6ba 50%,#b38728);--txt:#f0ebe0;--sub:rgba(240,235,224,.38);--grn:#2ecc71;--red:#e74c3c}
-body{background:var(--bg);color:var(--txt);font-family:"DM Sans",sans-serif;min-height:100vh}
-body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse 80% 40% at 50% -5%,rgba(191,149,63,.06),transparent);pointer-events:none;z-index:0}
+:root{
+  --bg:#050505;--card:#0d0d0d;--card2:#111;
+  --brd:rgba(191,149,63,.22);--brd2:rgba(191,149,63,.1);
+  --gold:#bf953f;--gold2:#fcf6ba;
+  --grad:linear-gradient(135deg,#bf953f,#fcf6ba 50%,#b38728);
+  --txt:#f0ebe0;--sub:rgba(240,235,224,.42);--sub2:rgba(240,235,224,.2);
+  --grn:#2ecc71;--red:#e74c3c;--blue:#3498db;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:"DM Sans",sans-serif;min-height:100vh;overflow-x:hidden}
+
+/* PARTÍCULAS DE FUNDO */
+body::before{content:"";position:fixed;inset:0;background:
+  radial-gradient(ellipse 90% 50% at 50% -10%,rgba(191,149,63,.07),transparent 70%),
+  radial-gradient(ellipse 50% 30% at 100% 100%,rgba(191,149,63,.03),transparent);
+  pointer-events:none;z-index:0}
+
 .pg{display:none;position:relative;z-index:1}.pg.on{display:block}
-nav{display:flex;align-items:center;justify-content:space-between;padding:15px 36px;border-bottom:1px solid var(--brd);background:rgba(5,5,5,.96);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px}
-.logo{font-family:"Cormorant Garamond",serif;font-size:23px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:6px;cursor:pointer}
-.logo-s{font-size:8px;letter-spacing:5px;color:var(--sub);text-transform:uppercase}
-.btn{background:none;border:1px solid var(--brd);color:var(--sub);padding:7px 15px;border-radius:3px;font-family:"DM Sans",sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:.2s;text-transform:uppercase}
-.btn:hover{border-color:var(--gold);color:var(--gold)}
-.bgold{background:var(--grad);color:#000;border:none;padding:13px 20px;border-radius:3px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:10px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:.2s;width:100%;display:block;text-align:center;margin-bottom:8px}
-.bgold:hover{filter:brightness(1.1)}
-.bwa{background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border:none;padding:13px;border-radius:3px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;width:100%;display:block;text-align:center;text-decoration:none;margin-bottom:8px}
 
-/* BANNER PACOTES */
-.banner-pacotes{background:linear-gradient(135deg,rgba(191,149,63,.12),rgba(191,149,63,.04));border-bottom:1px solid rgba(191,149,63,.2);padding:12px 36px;display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap}
-.bp-item{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--sub);font-weight:500}
-.bp-ic{font-size:16px}
-.bp-item strong{color:var(--gold)}
+/* ============ NAV ============ */
+nav{display:flex;align-items:center;justify-content:space-between;padding:14px 40px;border-bottom:1px solid var(--brd2);background:rgba(5,5,5,.97);backdrop-filter:blur(24px);position:sticky;top:0;z-index:200;flex-wrap:wrap;gap:8px}
+.logo-wrap{cursor:pointer}
+.logo{font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:6px;line-height:1}
+.logo-s{font-size:8px;letter-spacing:5px;color:var(--sub2);text-transform:uppercase;margin-top:1px}
+.nav-links{display:flex;align-items:center;gap:6px}
+.btn-nav{background:none;border:1px solid var(--brd2);color:var(--sub);padding:7px 16px;border-radius:3px;font-family:"DM Sans",sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:.2s;text-transform:uppercase}
+.btn-nav:hover{border-color:var(--gold);color:var(--gold)}
+.btn-nav-a{background:none;border:none;color:var(--sub);font-family:"DM Sans",sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:.2s;text-transform:uppercase;padding:7px 10px}
+.btn-nav-a:hover{color:var(--gold)}
 
-.hero{text-align:center;padding:64px 20px 36px;max-width:960px;margin:0 auto}
-.htag{font-size:9px;font-weight:700;letter-spacing:6px;color:var(--gold);text-transform:uppercase;margin-bottom:16px}
-.hero h1{font-family:"Cormorant Garamond",serif;font-size:clamp(42px,7vw,78px);font-weight:900;line-height:1.02;margin-bottom:14px}
-.hero h1 em{font-style:italic;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero p{font-size:15px;color:var(--sub);max-width:440px;margin:0 auto 16px;line-height:1.8;font-weight:300}
-.hbadge{display:inline-flex;align-items:center;gap:7px;background:rgba(46,204,113,.07);border:1px solid rgba(46,204,113,.22);border-radius:20px;padding:6px 15px;font-size:9px;font-weight:700;color:var(--grn);letter-spacing:3px;text-transform:uppercase}
-.sw{max-width:960px;margin:0 auto;padding:0 30px 14px}
-.sw input{width:100%;background:var(--card);border:1px solid var(--brd);border-radius:4px;padding:13px 18px;color:var(--txt);font-family:"DM Sans",sans-serif;font-size:14px;outline:none;transition:.2s}
-.sw input:focus{border-color:var(--gold)}.sw input::placeholder{color:var(--sub)}
-.fw{max-width:960px;margin:0 auto;padding:0 30px 20px;display:flex;gap:7px;flex-wrap:wrap}
-.ft{background:var(--card);border:1px solid rgba(191,149,63,.1);border-radius:30px;padding:6px 14px;font-size:10px;font-weight:700;color:var(--sub);cursor:pointer;transition:.2s;text-transform:uppercase;letter-spacing:1px}
+/* ============ TICKER TOPO ============ */
+.ticker{background:linear-gradient(135deg,rgba(191,149,63,.14),rgba(191,149,63,.06));border-bottom:1px solid rgba(191,149,63,.18);padding:10px 0;overflow:hidden;position:relative}
+.ticker-inner{display:flex;gap:56px;animation:tick 28s linear infinite;white-space:nowrap}
+.ticker-item{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:700;color:var(--sub);letter-spacing:2px;text-transform:uppercase;flex-shrink:0}
+.ticker-item strong{color:var(--gold)}
+.ticker-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);opacity:.5;flex-shrink:0}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ============ HERO ============ */
+.hero{text-align:center;padding:80px 20px 52px;max-width:1000px;margin:0 auto;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:9px;font-weight:700;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:22px;padding:6px 16px;border:1px solid rgba(191,149,63,.25);border-radius:20px;background:rgba(191,149,63,.06)}
+.hero-eyebrow::before{content:"✦";font-size:8px}
+.hero h1{font-family:"Cormorant Garamond",serif;font-size:clamp(44px,8vw,88px);font-weight:900;line-height:1;margin-bottom:6px;letter-spacing:-1px}
+.hero h1 .line2{font-style:italic;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block}
+.hero-sub{font-size:15px;color:var(--sub);max-width:520px;margin:20px auto 32px;line-height:1.85;font-weight:300}
+.hero-sub strong{color:var(--txt);font-weight:600}
+
+/* GARANTIA DESTAQUE */
+.hero-garantia{display:inline-flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center;margin-bottom:32px}
+.hg-item{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--txt)}
+.hg-item span{color:var(--sub);font-weight:400}
+.hg-ic{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.hg-ic.grn{background:rgba(46,204,113,.12);border:1px solid rgba(46,204,113,.3)}
+.hg-ic.gold{background:rgba(191,149,63,.12);border:1px solid rgba(191,149,63,.3)}
+.hg-sep{width:1px;height:24px;background:rgba(240,235,224,.1)}
+
+.hero-cta{display:flex;align-items:center;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-cta-main{background:var(--grad);color:#000;border:none;padding:15px 36px;border-radius:4px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:12px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:.25s;box-shadow:0 4px 24px rgba(191,149,63,.25)}
+.btn-cta-main:hover{filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 8px 32px rgba(191,149,63,.35)}
+.btn-cta-sec{background:none;border:1px solid var(--brd);color:var(--sub);padding:15px 28px;border-radius:4px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.2s}
+.btn-cta-sec:hover{border-color:var(--gold);color:var(--gold)}
+
+/* STATS HERO */
+.hero-stats{display:flex;align-items:center;justify-content:center;gap:36px;flex-wrap:wrap;margin-top:52px;padding-top:36px;border-top:1px solid rgba(240,235,224,.06)}
+.hs-item{text-align:center}
+.hs-num{font-family:"Cormorant Garamond",serif;font-size:34px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.hs-lbl{font-size:10px;color:var(--sub);font-weight:500;letter-spacing:1px;margin-top:3px}
+.hs-sep{width:1px;height:40px;background:rgba(240,235,224,.08)}
+
+/* ============ BUSCA & FILTROS ============ */
+.search-wrap{max-width:980px;margin:0 auto;padding:0 32px 14px}
+.search-inner{position:relative}
+.search-inner input{width:100%;background:var(--card2);border:1px solid var(--brd2);border-radius:6px;padding:14px 18px 14px 46px;color:var(--txt);font-family:"DM Sans",sans-serif;font-size:14px;outline:none;transition:.25s}
+.search-inner input:focus{border-color:var(--gold);background:var(--card);box-shadow:0 0 0 3px rgba(191,149,63,.06)}
+.search-inner input::placeholder{color:var(--sub2)}
+.search-ic{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;opacity:.4}
+.filter-wrap{max-width:980px;margin:0 auto;padding:0 32px 24px;display:flex;gap:7px;flex-wrap:wrap}
+.ft{background:var(--card);border:1px solid rgba(191,149,63,.09);border-radius:30px;padding:7px 16px;font-size:10px;font-weight:700;color:var(--sub);cursor:pointer;transition:.2s;text-transform:uppercase;letter-spacing:1px}
 .ft:hover,.ft.on{background:var(--grad);color:#000;border-color:transparent}
-.gw{max-width:960px;margin:0 auto;padding:0 30px 60px}
-.glbl{font-size:9px;font-weight:700;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px}
-.glbl::after{content:"";flex:1;height:1px;background:rgba(191,149,63,.08)}
 
-/* GRID DE PACOTES */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:12px}
-.card{background:var(--card);border:1px solid rgba(191,149,63,.09);border-radius:8px;overflow:hidden;transition:all .22s;animation:up .3s ease both}
-.card:hover{border-color:var(--brd);transform:translateY(-2px);box-shadow:0 14px 44px rgba(0,0,0,.7)}
-.card.em-breve{opacity:.6;cursor:not-allowed}
-.ct{padding:19px 19px 11px}
-.ca{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:7px;display:flex;align-items:center;justify-content:space-between}
-.cn{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:700;margin-bottom:6px;line-height:1.3}
-.cd{font-size:12px;color:var(--sub);line-height:1.7;font-weight:300}
+/* ============ GRID PACOTES ============ */
+.grid-wrap{max-width:980px;margin:0 auto;padding:0 32px 80px}
+.grid-label{font-size:9px;font-weight:700;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.grid-label::after{content:"";flex:1;height:1px;background:rgba(191,149,63,.07)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(295px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid rgba(191,149,63,.08);border-radius:10px;overflow:hidden;transition:all .25s;animation:fadeUp .35s ease both;display:flex;flex-direction:column}
+.card:hover{border-color:rgba(191,149,63,.28);transform:translateY(-3px);box-shadow:0 20px 60px rgba(0,0,0,.8)}
+.card.em-breve{opacity:.55}
+.card-top{padding:20px 20px 12px;flex:1}
+.card-area{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px}
+.card-nome{font-family:"Cormorant Garamond",serif;font-size:20px;font-weight:700;margin-bottom:7px;line-height:1.25}
+.card-desc{font-size:12px;color:var(--sub);line-height:1.75;font-weight:300}
 
-/* BADGE PACOTE */
-.pkg-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(191,149,63,.08);border:1px solid rgba(191,149,63,.2);border-radius:4px;padding:8px 12px;margin:9px 19px 0;font-size:10px;color:var(--gold);font-weight:700;letter-spacing:1px}
-.pkg-count{font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:900;margin-right:2px}
+/* BADGE PROMPTS */
+.pkg-badge{display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(191,149,63,.1),rgba(191,149,63,.04));border:1px solid rgba(191,149,63,.18);border-radius:5px;padding:9px 14px;margin:0 20px 2px;position:relative;overflow:hidden}
+.pkg-badge::before{content:"";position:absolute;inset:0;background:var(--grad);opacity:.03}
+.pkg-num{font-family:"Cormorant Garamond",serif;font-size:26px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.pkg-txt{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:1px;line-height:1.3}
+.pkg-txt small{display:block;color:var(--sub);font-weight:400;font-size:9px;margin-top:1px}
 
-/* PROMPT PREVIEW LIST */
-.prompt-list{margin:10px 19px;display:flex;flex-direction:column;gap:4px}
-.prompt-item{font-size:10px;color:var(--sub);display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+/* LISTA PROMPTS NO CARD */
+.prompt-list{margin:8px 20px 0;display:flex;flex-direction:column}
+.prompt-item{font-size:11px;color:var(--sub);display:flex;align-items:flex-start;gap:7px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.03);line-height:1.5}
 .prompt-item:last-child{border-bottom:none}
-.prompt-item::before{content:"›";color:var(--gold);font-size:12px;flex-shrink:0}
-.prompt-item.locked{color:rgba(240,235,224,.18)}
-.prompt-item.locked::before{content:"🔒";font-size:9px}
-.show-more{font-size:9px;color:rgba(191,149,63,.5);padding:4px 0;letter-spacing:1px;cursor:default}
+.prompt-item::before{content:"›";color:var(--gold);font-size:13px;flex-shrink:0;line-height:1.4}
+.prompt-more{font-size:10px;color:rgba(191,149,63,.55);padding:6px 0 2px;letter-spacing:1px;font-style:italic}
 
-.cb{padding:10px 19px;border-top:1px solid rgba(191,149,63,.07);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:7px;margin-top:8px}
-.preco{font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.preco-breve{font-family:"Cormorant Garamond",serif;font-size:16px;font-weight:700;color:var(--sub)}
-.bcmp{background:var(--grad);color:#000;border:none;padding:9px 18px;border-radius:3px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.2s}
-.bcmp:hover{filter:brightness(1.1)}
-.bcmp-breve{background:rgba(255,255,255,.06);color:var(--sub);border:1px solid rgba(255,255,255,.08);padding:9px 18px;border-radius:3px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:not-allowed}
+/* CARD FOOTER */
+.card-bottom{padding:12px 20px;border-top:1px solid rgba(191,149,63,.07);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:auto}
+.preco-wrap{display:flex;flex-direction:column;gap:2px}
+.preco{font-family:"Cormorant Garamond",serif;font-size:26px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.preco-detalhe{font-size:9px;color:var(--grn);font-weight:700;letter-spacing:1px;display:flex;align-items:center;gap:4px}
+.preco-breve{font-family:"Cormorant Garamond",serif;font-size:16px;font-weight:700;color:var(--sub2)}
+.btn-comprar{background:var(--grad);color:#000;border:none;padding:10px 20px;border-radius:4px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.2s;white-space:nowrap}
+.btn-comprar:hover{filter:brightness(1.12);transform:scale(1.02)}
+.btn-breve{background:rgba(255,255,255,.05);color:var(--sub2);border:1px solid rgba(255,255,255,.07);padding:10px 20px;border-radius:4px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:not-allowed;white-space:nowrap}
 
-/* ENTREGA AUTOMATICA badge */
-.entrega-badge{display:inline-flex;align-items:center;gap:5px;font-size:9px;color:var(--grn);font-weight:700;letter-spacing:1px;margin-top:4px}
+/* CARD GRÁTIS */
+.card-gratis{border-color:rgba(46,204,113,.18)!important}
+.card-gratis:hover{border-color:rgba(46,204,113,.4)!important}
 
-.empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--sub);font-size:12px;letter-spacing:3px}
+.empty-state{grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--sub);font-size:12px;letter-spacing:3px}
 
-/* MODAL GRATIS */
-.ov-gratis{position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:400;display:none;align-items:center;justify-content:center;padding:20px}
-.ov-gratis.on{display:flex}
-.gratis-box{background:var(--card);border:1px solid rgba(46,204,113,.3);border-radius:8px;padding:32px;max-width:620px;width:100%;position:relative;max-height:90vh;overflow-y:auto}
-.gratis-box::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(135deg,#2ecc71,#27ae60);border-radius:8px 8px 0 0}
-.gratis-tit{font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:700;margin-bottom:4px}
-.gratis-badge{display:inline-block;background:rgba(46,204,113,.12);border:1px solid rgba(46,204,113,.35);color:#2ecc71;font-size:9px;font-weight:900;letter-spacing:2px;padding:3px 10px;border-radius:20px;text-transform:uppercase;margin-bottom:16px}
-.gratis-prompt{background:#000;border:1px solid rgba(46,204,113,.15);border-radius:6px;padding:16px;font-size:11px;color:var(--sub);line-height:1.8;white-space:pre-wrap;word-break:break-word;margin:12px 0;max-height:300px;overflow-y:auto}
-.btn-gratis-copy{background:linear-gradient(135deg,#2ecc71,#27ae60);border:none;color:#fff;padding:12px 28px;border-radius:3px;font-family:"DM Sans",sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;cursor:pointer;width:100%;margin-top:8px;text-transform:uppercase}
-.btn-gratis-copy:hover{opacity:.85}
-.gratis-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--sub);font-size:22px;cursor:pointer;line-height:1}
-.gratis-instrucao{font-size:11px;color:var(--sub);line-height:1.7;margin-bottom:12px;padding:10px 14px;background:rgba(46,204,113,.05);border-radius:4px;border-left:3px solid #2ecc71}
+/* ============ SOBRE ============ */
+.sobre-wrap{background:linear-gradient(135deg,rgba(191,149,63,.05),rgba(191,149,63,.02));border-top:1px solid var(--brd2);border-bottom:1px solid var(--brd2);padding:72px 32px}
+.sobre-inner{max-width:820px;margin:0 auto;display:flex;align-items:flex-start;gap:48px;flex-wrap:wrap}
+.sobre-avatar{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,rgba(191,149,63,.2),rgba(191,149,63,.06));border:2px solid rgba(191,149,63,.3);display:flex;align-items:center;justify-content:center;font-size:42px;flex-shrink:0}
+.sobre-content{flex:1;min-width:260px}
+.sobre-eyebrow{font-size:9px;font-weight:700;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:10px}
+.sobre-titulo{font-family:"Cormorant Garamond",serif;font-size:30px;font-weight:700;margin-bottom:16px;line-height:1.2}
+.sobre-texto{font-size:13px;color:var(--sub);line-height:1.9;font-weight:300;margin-bottom:16px}
+.sobre-texto strong{color:var(--txt);font-weight:600}
+.sobre-valores{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.sv-item{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:700;color:var(--sub);letter-spacing:1px;background:rgba(191,149,63,.06);border:1px solid rgba(191,149,63,.15);border-radius:20px;padding:5px 12px}
 
-/* COMO FUNCIONA */
-.como-wrap{max-width:960px;margin:0 auto;padding:48px 30px 40px}
-.sec-tit{font-family:"Cormorant Garamond",serif;font-size:32px;font-weight:700;text-align:center;margin-bottom:8px}
-.sec-sub{font-size:13px;color:var(--sub);text-align:center;margin-bottom:36px;font-weight:300}
-.passos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
-.passo-item{background:var(--card);border:1px solid rgba(191,149,63,.1);border-radius:8px;padding:24px 20px}
-.passo-num{font-family:"Cormorant Garamond",serif;font-size:42px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:10px}
-.passo-tit{font-size:14px;font-weight:700;margin-bottom:6px}
-.passo-desc{font-size:12px;color:var(--sub);line-height:1.7;font-weight:300}
+/* ============ COMO FUNCIONA ============ */
+.como-wrap{max-width:980px;margin:0 auto;padding:72px 32px 60px}
+.sec-eyebrow{font-size:9px;font-weight:700;letter-spacing:5px;color:var(--gold);text-transform:uppercase;text-align:center;margin-bottom:10px}
+.sec-titulo{font-family:"Cormorant Garamond",serif;font-size:38px;font-weight:700;text-align:center;margin-bottom:8px;line-height:1.1}
+.sec-sub{font-size:13px;color:var(--sub);text-align:center;margin-bottom:48px;font-weight:300;line-height:1.8}
+.passos{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:rgba(191,149,63,.08);border-radius:10px;overflow:hidden}
+.passo{background:var(--card);padding:28px 24px;position:relative}
+.passo-num{font-family:"Cormorant Garamond",serif;font-size:54px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:12px;opacity:.7}
+.passo-tit{font-size:14px;font-weight:700;margin-bottom:8px;color:var(--txt)}
+.passo-desc{font-size:12px;color:var(--sub);line-height:1.75;font-weight:300}
+.passo-ic{font-size:24px;margin-bottom:8px}
 
-/* MODALS LEGAIS */
-.modal-legal{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:600;display:none;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
-.modal-legal.on{display:flex}
-.legal-box{background:var(--card);border:1px solid var(--brd);border-radius:8px;padding:36px 32px;max-width:680px;width:100%;margin:auto;position:relative}
-.legal-box::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);border-radius:8px 8px 0 0}
-.legal-tit{font-family:"Cormorant Garamond",serif;font-size:26px;font-weight:700;margin-bottom:6px}
-.legal-sub{font-size:11px;color:var(--sub);margin-bottom:24px;letter-spacing:1px}
-.legal-sec{font-size:13px;font-weight:700;color:var(--gold);margin:20px 0 6px;text-transform:uppercase;letter-spacing:1px}
-.legal-txt{font-size:12px;color:var(--sub);line-height:1.9;font-weight:300}
-.legal-close{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--sub);font-size:22px;cursor:pointer;line-height:1}
+/* ============ AVALIAÇÕES ============ */
+.aval-wrap{background:rgba(0,0,0,.4);border-top:1px solid var(--brd2);border-bottom:1px solid var(--brd2);padding:72px 32px}
+.aval-inner{max-width:980px;margin:0 auto}
+.aval-aviso{max-width:640px;margin:32px auto 0;background:var(--card);border:1px solid rgba(191,149,63,.15);border-radius:10px;padding:36px 32px;text-align:center;position:relative;overflow:hidden}
+.aval-aviso::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad)}
+.aval-aviso-ic{font-size:40px;margin-bottom:16px}
+.aval-aviso-tit{font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:700;margin-bottom:8px}
+.aval-aviso-txt{font-size:12px;color:var(--sub);line-height:1.85;margin-bottom:22px;font-weight:300}
+.aval-aviso-txt strong{color:var(--txt);font-weight:600}
+.btn-aval-wa{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;font-size:10px;font-weight:700;letter-spacing:2px;padding:12px 26px;border-radius:4px;text-decoration:none;text-transform:uppercase;transition:.2s}
+.btn-aval-wa:hover{opacity:.85;transform:translateY(-1px)}
 
-/* ADMIN */
-.alb{background:var(--card);border:1px solid var(--brd);border-radius:8px;padding:38px;max-width:310px;width:100%;text-align:center;position:relative}
-.alb::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad)}
-.anav{display:flex;align-items:center;justify-content:space-between;padding:15px 34px;border-bottom:1px solid var(--brd);background:rgba(5,5,5,.96);backdrop-filter:blur(20px);flex-wrap:wrap;gap:8px}
-.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:9px;padding:18px 34px}
-.sc{background:var(--card);border:1px solid rgba(191,149,63,.09);border-radius:6px;padding:15px}
-.sn{font-family:"Cormorant Garamond",serif;font-size:30px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:3px}
-.sl{font-size:9px;color:var(--sub);letter-spacing:2px;text-transform:uppercase;font-weight:700}
-.atabs{display:flex;padding:0 34px;border-bottom:1px solid rgba(191,149,63,.09)}
-.atab{background:none;border:none;border-bottom:2px solid transparent;padding:10px 16px;font-family:"DM Sans",sans-serif;font-size:10px;font-weight:700;color:var(--sub);cursor:pointer;letter-spacing:2px;text-transform:uppercase;transition:.2s;margin-bottom:-1px}
-.atab.on{color:var(--gold);border-bottom-color:var(--gold)}
-.ac{padding:20px 34px}
-.ap{display:none}.ap.on{display:block}
-.inp{width:100%;background:rgba(255,255,255,.02);border:1px solid var(--brd);border-radius:4px;padding:12px 14px;color:var(--txt);font-family:"DM Sans",sans-serif;font-size:14px;outline:none;transition:.2s;margin-bottom:9px}
-.inp:focus{border-color:var(--gold)}.inp::placeholder{color:var(--sub)}
-.err{font-size:11px;color:var(--red);min-height:14px;margin-bottom:7px;font-weight:600}
-.ilbl{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--sub);text-transform:uppercase;margin-bottom:5px;display:block}
-.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.fg .full{grid-column:1/-1}
-textarea.inp{resize:vertical;min-height:95px}
+/* ============ FAQ ============ */
+.faq-wrap{max-width:720px;margin:0 auto;padding:72px 32px 60px}
+.faq-item{border-bottom:1px solid rgba(240,235,224,.06)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:18px 0;cursor:pointer;gap:16px}
+.faq-q-txt{font-size:14px;font-weight:600;color:var(--txt);line-height:1.4}
+.faq-ic{font-size:18px;color:var(--gold);flex-shrink:0;transition:.2s}
+.faq-a{font-size:13px;color:var(--sub);line-height:1.85;font-weight:300;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease}
+.faq-item.on .faq-a{max-height:200px;padding-bottom:18px}
+.faq-item.on .faq-ic{transform:rotate(45deg)}
+
+/* ============ GARANTIA FULL ============ */
+.garantia-banner{background:linear-gradient(135deg,rgba(46,204,113,.08),rgba(46,204,113,.03));border-top:1px solid rgba(46,204,113,.15);border-bottom:1px solid rgba(46,204,113,.15);padding:36px 32px;text-align:center}
+.garantia-inner{max-width:640px;margin:0 auto}
+.garantia-ic{font-size:52px;margin-bottom:12px}
+.garantia-tit{font-family:"Cormorant Garamond",serif;font-size:28px;font-weight:700;margin-bottom:8px;color:#2ecc71}
+.garantia-txt{font-size:13px;color:var(--sub);line-height:1.85;font-weight:300}
+.garantia-txt strong{color:var(--txt)}
+
+/* ============ FOOTER ============ */
+footer{background:#000;border-top:1px solid rgba(191,149,63,.12);padding:48px 32px 28px}
+.footer-inner{max-width:980px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;margin-bottom:40px;flex-wrap:wrap}
+.footer-logo{font-family:"Cormorant Garamond",serif;font-size:26px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:6px;margin-bottom:6px}
+.footer-tagline{font-size:11px;color:var(--sub2);margin-bottom:16px;line-height:1.7}
+.footer-wa{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;font-size:10px;font-weight:700;padding:10px 18px;border-radius:4px;text-decoration:none;letter-spacing:1px;transition:.2s}
+.footer-wa:hover{opacity:.85}
+.footer-col-tit{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:14px}
+.footer-links{display:flex;flex-direction:column;gap:9px}
+.footer-links a,.footer-links span{font-size:12px;color:var(--sub);text-decoration:none;cursor:pointer;transition:color .2s;font-weight:300}
+.footer-links a:hover,.footer-links span:hover{color:var(--gold)}
+.footer-bottom{border-top:1px solid rgba(240,235,224,.05);padding-top:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.footer-copy{font-size:10px;color:rgba(240,235,224,.2)}
+.footer-selos{display:flex;gap:12px;flex-wrap:wrap}
+.footer-selo{font-size:9px;font-weight:700;color:var(--sub2);letter-spacing:1px;display:flex;align-items:center;gap:5px}
+
+/* ============ MODAIS ============ */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.modal-ov.on{display:flex}
+.modal-box{background:var(--card);border:1px solid var(--brd);border-radius:10px;padding:36px;max-width:660px;width:100%;position:relative;margin:auto;max-height:90vh;overflow-y:auto}
+.modal-box::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);border-radius:10px 10px 0 0}
+.modal-tit{font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:700;margin-bottom:4px}
+.modal-sub{font-size:10px;color:var(--sub);margin-bottom:24px;letter-spacing:1px}
+.modal-close{position:absolute;top:16px;right:18px;background:none;border:none;color:var(--sub);font-size:22px;cursor:pointer;line-height:1;transition:.2s}
+.modal-close:hover{color:var(--gold)}
+.modal-sec{font-size:11px;font-weight:700;color:var(--gold);margin:20px 0 6px;text-transform:uppercase;letter-spacing:2px}
+.modal-txt{font-size:12px;color:var(--sub);line-height:1.9;font-weight:300}
+
+/* MODAL GRÁTIS */
+.gratis-badge-tag{display:inline-block;background:rgba(46,204,113,.12);border:1px solid rgba(46,204,113,.35);color:#2ecc71;font-size:9px;font-weight:900;letter-spacing:2px;padding:3px 10px;border-radius:20px;text-transform:uppercase;margin-bottom:14px}
+.gratis-instrucao{font-size:11px;color:var(--sub);line-height:1.75;padding:10px 14px;background:rgba(46,204,113,.05);border-radius:5px;border-left:3px solid #2ecc71;margin-bottom:14px}
+.gratis-prompt-txt{background:#000;border:1px solid rgba(46,204,113,.15);border-radius:7px;padding:18px;font-size:11px;color:var(--sub);line-height:1.85;white-space:pre-wrap;word-break:break-word;max-height:280px;overflow-y:auto;margin-bottom:12px}
+.btn-copiar{background:linear-gradient(135deg,#2ecc71,#27ae60);border:none;color:#fff;padding:13px;border-radius:4px;font-family:"DM Sans",sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;cursor:pointer;width:100%;text-transform:uppercase;transition:.2s}
+.btn-copiar:hover{opacity:.85}
+.copy-ok{text-align:center;font-size:11px;color:#2ecc71;margin-top:8px;display:none}
+
+/* ============ ADMIN ============ */
+.admin-login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh}
+.admin-login-box{background:var(--card);border:1px solid var(--brd);border-radius:10px;padding:40px;max-width:320px;width:100%;text-align:center;position:relative}
+.admin-login-box::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);border-radius:10px 10px 0 0}
+.admin-nav{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;border-bottom:1px solid var(--brd2);background:rgba(5,5,5,.97);flex-wrap:wrap;gap:8px}
+.admin-stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;padding:20px 32px}
+.sc{background:var(--card);border:1px solid rgba(191,149,63,.09);border-radius:7px;padding:16px}
+.sc-num{font-family:"Cormorant Garamond",serif;font-size:32px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:4px}
+.sc-lbl{font-size:9px;color:var(--sub);letter-spacing:2px;text-transform:uppercase;font-weight:700}
+.admin-tabs{display:flex;padding:0 32px;border-bottom:1px solid rgba(191,149,63,.07)}
+.admin-tab{background:none;border:none;border-bottom:2px solid transparent;padding:10px 16px;font-family:"DM Sans",sans-serif;font-size:10px;font-weight:700;color:var(--sub);cursor:pointer;letter-spacing:2px;text-transform:uppercase;transition:.2s;margin-bottom:-1px}
+.admin-tab.on{color:var(--gold);border-bottom-color:var(--gold)}
+.admin-content{padding:22px 32px}
+.admin-panel{display:none}.admin-panel.on{display:block}
+.inp{width:100%;background:rgba(255,255,255,.03);border:1px solid var(--brd);border-radius:5px;padding:12px 14px;color:var(--txt);font-family:"DM Sans",sans-serif;font-size:14px;outline:none;transition:.2s;margin-bottom:9px}
+.inp:focus{border-color:var(--gold);background:rgba(255,255,255,.04)}.inp::placeholder{color:var(--sub2)}
+.inp-lbl{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--sub);text-transform:uppercase;margin-bottom:5px;display:block}
+.inp-err{font-size:11px;color:var(--red);min-height:16px;margin-bottom:7px;font-weight:600}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-grid .full{grid-column:1/-1}
+textarea.inp{resize:vertical;min-height:90px}
 select.inp{cursor:pointer}
-.pl{display:flex;flex-direction:column;gap:9px}
-.pc{background:var(--card);border:1px solid rgba(191,149,63,.09);border-radius:7px;padding:15px;transition:.2s;position:relative}
-.pc:hover{border-color:var(--brd)}
-.pc.nv{border-color:rgba(231,76,60,.32);box-shadow:0 0 16px rgba(231,76,60,.06)}
-.pct{font-family:"Cormorant Garamond",serif;font-size:17px;font-weight:700;margin-bottom:5px}
-.pcm{font-size:11px;color:var(--sub);display:flex;gap:10px;flex-wrap:wrap;font-weight:300}
-.pcp{font-family:"Cormorant Garamond",serif;font-size:19px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.bdg{font-size:8px;font-weight:700;letter-spacing:2px;padding:4px 9px;border-radius:20px;text-transform:uppercase;white-space:nowrap}
-.bdg-p{background:rgba(243,156,18,.09);border:1px solid rgba(243,156,18,.28);color:#f39c12}
-.bdg-ok{background:rgba(46,204,113,.09);border:1px solid rgba(46,204,113,.28);color:var(--grn)}
-.bdg-nv{background:rgba(231,76,60,.09);border:1px solid rgba(231,76,60,.28);color:var(--red)}
-.bsm{background:none;color:var(--gold);border:1px solid rgba(191,149,63,.22);padding:7px 13px;border-radius:3px;font-family:"DM Sans",sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.2s;margin-top:9px}
-.pbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
-.sync{display:flex;align-items:center;gap:7px}
-.dot{width:7px;height:7px;border-radius:50%;background:#f39c12;transition:.4s}
-.dot.ok{background:var(--grn)}.dot.err{background:var(--red)}
-.stxt{font-size:10px;color:var(--sub);font-weight:600}
-.bref{display:flex;align-items:center;gap:6px;background:none;border:1px solid var(--brd);color:var(--gold);padding:8px 15px;border-radius:3px;font-family:"DM Sans",sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:.2s;text-transform:uppercase}
-.spin{display:inline-block}.spin.go{animation:gr .6s linear infinite}
-.ftabs{display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap}
-.fpt{background:var(--card);border:1px solid rgba(191,149,63,.11);border-radius:6px;padding:7px 13px;font-size:10px;font-weight:700;color:var(--sub);cursor:pointer;transition:.2s;text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;gap:5px}
-.fpt:hover,.fpt.on{border-color:var(--gold);color:var(--gold);background:rgba(191,149,63,.05)}
-.fpb{background:rgba(255,255,255,.07);border-radius:20px;padding:2px 7px;font-size:9px;font-weight:900}
-.fpb.nv{background:rgba(231,76,60,.14);color:var(--red)}
-.fpb.pd{background:rgba(243,156,18,.14);color:#f39c12}
-.fpb.ok{background:rgba(46,204,113,.14);color:var(--grn)}
-
-/* FOOTER */
-.footer-bar{background:#000;border-top:1px solid var(--brd);padding:24px 30px;text-align:center}
-.footer-bar-logo{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:6px;margin-bottom:10px}
-.footer-bar-links{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
-.footer-bar-links a{font-size:10px;color:var(--sub);text-decoration:none;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:color .2s}
-.footer-bar-links a:hover{color:var(--gold)}
-.footer-bar-copy{font-size:10px;color:rgba(240,235,224,.2)}
-
-#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(18px);background:var(--grad);color:#000;padding:11px 22px;border-radius:3px;font-size:9px;font-weight:900;letter-spacing:4px;text-transform:uppercase;opacity:0;transition:.3s;z-index:9999;pointer-events:none;white-space:nowrap}
-#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.ped-list{display:flex;flex-direction:column;gap:10px}
+.ped-card{background:var(--card);border:1px solid rgba(191,149,63,.09);border-radius:7px;padding:16px;transition:.2s;position:relative}
+.ped-card:hover{border-color:var(--brd)}
+.ped-card.novo{border-color:rgba(231,76,60,.32);box-shadow:0 0 16px rgba(231,76,60,.07)}
+.ped-titulo{font-family:"Cormorant Garamond",serif;font-size:17px;font-weight:700;margin-bottom:5px}
+.ped-meta{font-size:11px;color:var(--sub);display:flex;gap:10px;flex-wrap:wrap;font-weight:300}
+.ped-preco{font-family:"Cormorant Garamond",serif;font-size:19px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.badge{font-size:8px;font-weight:700;letter-spacing:2px;padding:4px 9px;border-radius:20px;text-transform:uppercase;white-space:nowrap}
+.badge-novo{background:rgba(231,76,60,.09);border:1px solid rgba(231,76,60,.28);color:var(--red)}
+.badge-pend{background:rgba(243,156,18,.09);border:1px solid rgba(243,156,18,.28);color:#f39c12}
+.badge-ok{background:rgba(46,204,113,.09);border:1px solid rgba(46,204,113,.28);color:var(--grn)}
+.admin-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.sync-info{display:flex;align-items:center;gap:7px}
+.sync-dot{width:7px;height:7px;border-radius:50%;background:#f39c12;transition:.4s}
+.sync-dot.ok{background:var(--grn)}.sync-dot.err{background:var(--red)}
+.sync-txt{font-size:10px;color:var(--sub);font-weight:600}
+.btn-refresh{display:flex;align-items:center;gap:6px;background:none;border:1px solid var(--brd);color:var(--gold);padding:8px 15px;border-radius:3px;font-family:"DM Sans",sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:.2s;text-transform:uppercase}
+.spin.go{display:inline-block;animation:gr .6s linear infinite}
+.filter-tabs{display:flex;gap:7px;margin-bottom:16px;flex-wrap:wrap}
+.ftab{background:var(--card);border:1px solid rgba(191,149,63,.1);border-radius:6px;padding:7px 13px;font-size:10px;font-weight:700;color:var(--sub);cursor:pointer;transition:.2s;text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;gap:5px}
+.ftab:hover,.ftab.on{border-color:var(--gold);color:var(--gold);background:rgba(191,149,63,.05)}
+.ftab-ct{background:rgba(255,255,255,.07);border-radius:20px;padding:2px 7px;font-size:9px;font-weight:900}
+.ftab-ct.nv{background:rgba(231,76,60,.14);color:var(--red)}
+.ftab-ct.pd{background:rgba(243,156,18,.14);color:#f39c12}
+.ftab-ct.ok{background:rgba(46,204,113,.14);color:var(--grn)}
 
 /* WA FLOAT */
-.wa-float{position:fixed;bottom:24px;right:24px;z-index:300;background:linear-gradient(135deg,#25d366,#128c7e);width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 20px rgba(37,211,102,.35);cursor:pointer;transition:.2s;text-decoration:none}
-.wa-float:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(37,211,102,.5)}
+.wa-float{position:fixed;bottom:26px;right:26px;z-index:300;background:linear-gradient(135deg,#25d366,#128c7e);width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 4px 24px rgba(37,211,102,.4);cursor:pointer;transition:.25s;text-decoration:none}
+.wa-float:hover{transform:scale(1.1);box-shadow:0 8px 32px rgba(37,211,102,.55)}
 
-@keyframes up{from{opacity:0;transform:translateY(11px)}to{opacity:1;transform:translateY(0)}}
+/* TOAST */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--grad);color:#000;padding:11px 24px;border-radius:3px;font-size:9px;font-weight:900;letter-spacing:4px;text-transform:uppercase;opacity:0;transition:.3s;z-index:9999;pointer-events:none;white-space:nowrap}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ANIMAÇÕES */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 @keyframes gr{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-@media(max-width:560px){nav,.hero,.sw,.fw,.gw{padding-left:14px;padding-right:14px}.grid{grid-template-columns:1fr}.anav,.ac,.stats,.atabs{padding-left:12px;padding-right:12px}.fg{grid-template-columns:1fr}.banner-pacotes{padding:10px 14px;gap:14px}}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  nav,.hero,.search-wrap,.filter-wrap,.grid-wrap,.como-wrap,.faq-wrap,.admin-stats,.admin-content,.admin-tabs{padding-left:16px;padding-right:16px}
+  .sobre-wrap,.aval-wrap,.garantia-banner,footer{padding-left:16px;padding-right:16px}
+  nav{padding-top:12px;padding-bottom:12px}
+  .footer-top{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr}
+  .grid{grid-template-columns:1fr}
+  .hero-stats{gap:20px}
+  .hs-sep{display:none}
+  .sobre-inner{flex-direction:column;gap:24px}
+  .passos{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+  .passos{grid-template-columns:1fr}
+  .hero h1{font-size:44px}
+  .hero-garantia{gap:12px}
+  .hg-sep{display:none}
+}
 </style>
 </head>
 <body>
+
 <div id="toast"></div>
+<a class="wa-float" href="https://wa.me/5511978857415?text=Olá!%20Tenho%20uma%20dúvida%20sobre%20a%20PROMPTUS%20Store." target="_blank" title="WhatsApp">💬</a>
 
-<!-- WhatsApp Flutuante -->
-<a class="wa-float" href="https://wa.me/5511978857415?text=Olá! Tenho uma dúvida sobre os pacotes da PROMPTUS Store." target="_blank" title="Falar no WhatsApp">💬</a>
-
-<!-- MODAL PROMPT GRATUITO -->
-<div id="ov-gratis" class="ov-gratis" onclick="if(event.target===this)fecharGratis()">
-  <div class="gratis-box">
-    <button class="gratis-close" onclick="fecharGratis()">✕</button>
-    <div class="gratis-badge">✨ GRATUITO</div>
-    <div class="gratis-tit" id="gratis-tit"></div>
-    <div class="gratis-instrucao">📋 <strong>Como usar:</strong> Copie o prompt abaixo, cole no ChatGPT, Gemini ou Claude, substitua os campos entre [ ] com seus dados e envie.</div>
-    <div class="gratis-prompt" id="gratis-prompt"></div>
-    <button class="btn-gratis-copy" onclick="copiarGratis()">📋 COPIAR PROMPT COMPLETO</button>
-    <div id="gratis-ok" style="text-align:center;font-size:11px;color:#2ecc71;margin-top:8px;display:none">✅ Copiado! Cole na IA de sua escolha.</div>
+<!-- ========== MODAL GRÁTIS ========== -->
+<div id="modal-gratis" class="modal-ov" onclick="if(event.target===this)fecharModal('modal-gratis')">
+  <div class="modal-box" style="border-color:rgba(46,204,113,.3);max-width:640px">
+    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(135deg,#2ecc71,#27ae60);border-radius:10px 10px 0 0"></div>
+    <button class="modal-close" onclick="fecharModal('modal-gratis')">✕</button>
+    <div class="gratis-badge-tag">✨ GRATUITO</div>
+    <div class="modal-tit" id="gratis-tit"></div>
+    <div class="gratis-instrucao">📋 <strong>Como usar:</strong> Copie o prompt, cole no ChatGPT, Gemini ou Claude, substitua os campos entre [ ] com seus dados e envie.</div>
+    <div class="gratis-prompt-txt" id="gratis-prompt"></div>
+    <button class="btn-copiar" onclick="copiarGratis()">📋 COPIAR PROMPT COMPLETO</button>
+    <div class="copy-ok" id="gratis-ok">✅ Copiado! Agora cole na IA de sua escolha.</div>
   </div>
 </div>
 
-<!-- MODAL POLÍTICA DE PRIVACIDADE -->
-<div id="modal-priv" class="modal-legal" onclick="if(event.target===this)fecharLegal('modal-priv')">
-  <div class="legal-box">
-    <button class="legal-close" onclick="fecharLegal('modal-priv')">✕</button>
-    <div class="legal-tit">Política de Privacidade</div>
-    <div class="legal-sub">Última atualização: janeiro de 2025 · Em conformidade com a LGPD (Lei 13.709/2018)</div>
-    <div class="legal-sec">1. Quem somos</div>
-    <div class="legal-txt">A PROMPTUS Store é uma plataforma de venda de prompts profissionais para inteligências artificiais, operada por pessoa física no Brasil. Para dúvidas sobre privacidade, entre em contato pelo WhatsApp: (11) 97885-7415.</div>
-    <div class="legal-sec">2. Dados coletados</div>
-    <div class="legal-txt">Coletamos apenas os dados necessários para processar seu pedido via Kiwify: nome, e-mail e dados de pagamento. Não coletamos dados de cartão diretamente — o pagamento é processado com segurança pela plataforma Kiwify.</div>
-    <div class="legal-sec">3. Como usamos seus dados</div>
-    <div class="legal-txt">Seus dados são usados exclusivamente para processar e entregar seu pedido, enviar o produto adquirido e responder dúvidas de suporte. Não vendemos, compartilhamos ou cedemos seus dados a terceiros para fins comerciais.</div>
-    <div class="legal-sec">4. Seus direitos (LGPD art. 18)</div>
-    <div class="legal-txt">Você tem direito a confirmar, acessar, corrigir ou solicitar a exclusão dos seus dados a qualquer momento. Entre em contato pelo WhatsApp: (11) 97885-7415.</div>
-    <div class="legal-sec">5. Contato</div>
-    <div class="legal-txt">WhatsApp: (11) 97885-7415 · Você também pode registrar reclamações na ANPD: www.gov.br/anpd</div>
+<!-- ========== MODAL PRIVACIDADE ========== -->
+<div id="modal-priv" class="modal-ov" onclick="if(event.target===this)fecharModal('modal-priv')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="fecharModal('modal-priv')">✕</button>
+    <div class="modal-tit">Política de Privacidade</div>
+    <div class="modal-sub">Última atualização: janeiro de 2025 · Em conformidade com a LGPD (Lei 13.709/2018)</div>
+    <div class="modal-sec">1. Quem somos</div>
+    <div class="modal-txt">A PROMPTUS Store é uma plataforma de venda de prompts profissionais para inteligências artificiais, operada no Brasil. Para dúvidas sobre privacidade, entre em contato pelo WhatsApp: (11) 97885-7415.</div>
+    <div class="modal-sec">2. Dados coletados</div>
+    <div class="modal-txt">Coletamos apenas os dados necessários para processar seu pedido via Kiwify: nome, e-mail e dados de pagamento. Não coletamos dados de cartão diretamente — o pagamento é processado com segurança pela plataforma Kiwify.</div>
+    <div class="modal-sec">3. Como usamos seus dados</div>
+    <div class="modal-txt">Seus dados são usados exclusivamente para processar e entregar seu pedido e responder dúvidas de suporte. Não vendemos, compartilhamos ou cedemos seus dados a terceiros para fins comerciais.</div>
+    <div class="modal-sec">4. Seus direitos (LGPD art. 18)</div>
+    <div class="modal-txt">Você tem direito a confirmar, acessar, corrigir ou solicitar a exclusão dos seus dados a qualquer momento. Entre em contato pelo WhatsApp: (11) 97885-7415.</div>
+    <div class="modal-sec">5. Contato</div>
+    <div class="modal-txt">WhatsApp: (11) 97885-7415 · Reclamações: www.gov.br/anpd</div>
   </div>
 </div>
 
-<!-- MODAL TERMOS DE USO -->
-<div id="modal-termos" class="modal-legal" onclick="if(event.target===this)fecharLegal('modal-termos')">
-  <div class="legal-box">
-    <button class="legal-close" onclick="fecharLegal('modal-termos')">✕</button>
-    <div class="legal-tit">Termos de Uso</div>
-    <div class="legal-sub">Última atualização: janeiro de 2025 · Ao comprar, você concorda com estes termos</div>
-    <div class="legal-sec">1. O produto</div>
-    <div class="legal-txt">A PROMPTUS Store comercializa pacotes de prompts — instruções estruturadas para inteligências artificiais — para uso profissional. Cada pacote é entregue automaticamente após a confirmação do pagamento via Kiwify.</div>
-    <div class="legal-sec">2. Entrega automática</div>
-    <div class="legal-txt">Após o pagamento confirmado, o produto digital é entregue automaticamente no e-mail cadastrado no Kiwify. Guarde o arquivo após o recebimento.</div>
-    <div class="legal-sec">3. Uso profissional</div>
-    <div class="legal-txt">Os documentos gerados por prompts das categorias Jurídico, Médico, Contábil, Psicologia e Engenharia são minutas de apoio ao profissional habilitado. Nenhum prompt substitui a análise e assinatura do profissional competente.</div>
-    <div class="legal-sec">4. Garantia de 7 dias</div>
-    <div class="legal-txt">Em conformidade com o art. 49 do CDC, você tem direito de arrependimento em até 7 dias corridos. Para solicitar reembolso, entre em contato pelo WhatsApp: (11) 97885-7415.</div>
-    <div class="legal-sec">5. Licença de uso</div>
-    <div class="legal-txt">Ao adquirir um pacote, você recebe licença de uso pessoal e profissional, não exclusiva e intransferível. É vedado revender, sublicenciar ou redistribuir os prompts.</div>
-    <div class="legal-sec">6. Contato</div>
-    <div class="legal-txt">PROMPTUS Store · WhatsApp: (11) 97885-7415</div>
+<!-- ========== MODAL TERMOS ========== -->
+<div id="modal-termos" class="modal-ov" onclick="if(event.target===this)fecharModal('modal-termos')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="fecharModal('modal-termos')">✕</button>
+    <div class="modal-tit">Termos de Uso</div>
+    <div class="modal-sub">Última atualização: janeiro de 2025 · Ao comprar, você concorda com estes termos</div>
+    <div class="modal-sec">1. O produto</div>
+    <div class="modal-txt">A PROMPTUS Store comercializa pacotes de prompts — instruções estruturadas para inteligências artificiais — para uso profissional. Cada pacote é entregue automaticamente após confirmação do pagamento via Kiwify.</div>
+    <div class="modal-sec">2. Entrega automática</div>
+    <div class="modal-txt">Após o pagamento confirmado, o produto digital é entregue automaticamente no e-mail cadastrado no Kiwify. Guarde o arquivo após o recebimento.</div>
+    <div class="modal-sec">3. Uso profissional responsável</div>
+    <div class="modal-txt">Os documentos gerados por prompts das categorias Jurídico, Médico, Contábil, Psicologia e Engenharia são minutas de apoio ao profissional habilitado. Nenhum prompt substitui a análise e assinatura do profissional competente.</div>
+    <div class="modal-sec">4. Garantia de 7 dias</div>
+    <div class="modal-txt">Em conformidade com o art. 49 do CDC, você tem direito de arrependimento em até 7 dias corridos após a compra. Para solicitar reembolso, entre em contato pelo WhatsApp: (11) 97885-7415.</div>
+    <div class="modal-sec">5. Licença de uso</div>
+    <div class="modal-txt">Ao adquirir um pacote, você recebe licença de uso pessoal e profissional, não exclusiva e intransferível. É vedado revender, sublicenciar ou redistribuir os prompts.</div>
   </div>
 </div>
 
-<!-- ADMIN LOGIN -->
-<div id="pg-al" class="pg" style="display:none">
-  <div style="display:flex;align-items:center;justify-content:center;min-height:100vh">
-    <div class="alb">
-      <div style="font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:6px;margin-bottom:4px">PROMPTUS</div>
-      <div style="font-size:9px;letter-spacing:4px;color:var(--sub);text-transform:uppercase;margin-bottom:24px">Admin</div>
-      <input class="inp" type="password" id="a-pw" placeholder="Senha" onkeydown="if(event.key==='Enter')login()">
-      <div class="err" id="a-err"></div>
-      <button class="bgold" onclick="login()">ENTRAR</button>
-      <div style="margin-top:11px;font-size:11px;color:var(--sub);cursor:pointer" onclick="goLj()">← Voltar à loja</div>
+<!-- ========== ADMIN LOGIN ========== -->
+<div id="pg-admin-login" class="pg" style="display:none">
+  <div class="admin-login-wrap">
+    <div class="admin-login-box">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:6px;margin-bottom:4px">PROMPTUS</div>
+      <div style="font-size:9px;letter-spacing:4px;color:var(--sub2);text-transform:uppercase;margin-bottom:28px">Admin</div>
+      <input class="inp" type="password" id="admin-pw" placeholder="Senha" onkeydown="if(event.key==='Enter')doLogin()">
+      <div class="inp-err" id="admin-err"></div>
+      <button style="background:var(--grad);color:#000;border:none;padding:14px;border-radius:4px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;width:100%;margin-top:4px" onclick="doLogin()">ENTRAR</button>
+      <div style="margin-top:14px;font-size:11px;color:var(--sub2);cursor:pointer" onclick="goLoja()">← Voltar à loja</div>
     </div>
   </div>
 </div>
 
-<!-- ADMIN PAINEL -->
-<div id="pg-adm" class="pg" style="display:none">
-  <nav class="anav">
+<!-- ========== ADMIN PAINEL ========== -->
+<div id="pg-admin" class="pg" style="display:none">
+  <nav class="admin-nav">
     <div><div class="logo">PROMPTUS</div><div class="logo-s">Admin</div></div>
-    <div style="display:flex;gap:7px"><button class="btn" onclick="goLj()">Loja</button><button class="btn" onclick="goAL()">Sair</button></div>
+    <div style="display:flex;gap:7px">
+      <button class="btn-nav" onclick="goLoja()">← Loja</button>
+      <button class="btn-nav" onclick="goAdminLogin()">Sair</button>
+    </div>
   </nav>
-  <div class="stats">
-    <div class="sc"><div class="sn" id="st-t">0</div><div class="sl">Pedidos</div></div>
-    <div class="sc"><div class="sn" id="st-p">0</div><div class="sl">Pendentes</div></div>
-    <div class="sc"><div class="sn" id="st-n">0</div><div class="sl">Novos</div></div>
-    <div class="sc"><div class="sn" id="st-r">R$0</div><div class="sl">Receita</div></div>
+  <div class="admin-stats">
+    <div class="sc"><div class="sc-num" id="st-total">0</div><div class="sc-lbl">Total Pedidos</div></div>
+    <div class="sc"><div class="sc-num" id="st-pend">0</div><div class="sc-lbl">Pendentes</div></div>
+    <div class="sc"><div class="sc-num" id="st-novos">0</div><div class="sc-lbl">Novos</div></div>
+    <div class="sc"><div class="sc-num" id="st-receita">R$0</div><div class="sc-lbl">Receita</div></div>
   </div>
-  <div class="atabs">
-    <button class="atab on" onclick="aTab('pd',this)">Pedidos</button>
+  <div class="admin-tabs">
+    <button class="admin-tab on" onclick="adminTab('pedidos',this)">Pedidos</button>
   </div>
-  <div class="ac">
-    <div class="ap on" id="ap-pd">
-      <div class="pbar">
-        <div class="sync"><div class="dot" id="dot"></div><span class="stxt" id="stxt">Conectando...</span></div>
-        <button class="bref" onclick="rfM()"><span class="spin" id="rfic">↻</span> ATUALIZAR</button>
+  <div class="admin-content">
+    <div class="admin-panel on" id="panel-pedidos">
+      <div class="admin-bar">
+        <div class="sync-info"><div class="sync-dot" id="sync-dot"></div><span class="sync-txt" id="sync-txt">Conectando...</span></div>
+        <button class="btn-refresh" onclick="refreshPedidos()"><span class="spin" id="rf-ic">↻</span> Atualizar</button>
       </div>
-      <div class="ftabs">
-        <button class="fpt on" id="fp-all" onclick="filtPed('all',this)">Todos <span class="fpb" id="ct-a">0</span></button>
-        <button class="fpt" id="fp-nv" onclick="filtPed('nv',this)">Novos <span class="fpb nv" id="ct-n">0</span></button>
-        <button class="fpt" id="fp-pd" onclick="filtPed('pd',this)">Pendentes <span class="fpb pd" id="ct-p">0</span></button>
-        <button class="fpt" id="fp-ok" onclick="filtPed('ok',this)">Entregues <span class="fpb ok" id="ct-o">0</span></button>
+      <div class="filter-tabs">
+        <button class="ftab on" onclick="filtrarPedidos('all',this)">Todos <span class="ftab-ct" id="ct-all">0</span></button>
+        <button class="ftab" onclick="filtrarPedidos('novo',this)">Novos <span class="ftab-ct nv" id="ct-novo">0</span></button>
+        <button class="ftab" onclick="filtrarPedidos('pend',this)">Pendentes <span class="ftab-ct pd" id="ct-pend">0</span></button>
+        <button class="ftab" onclick="filtrarPedidos('entregue',this)">Entregues <span class="ftab-ct ok" id="ct-entregue">0</span></button>
       </div>
-      <div class="pl" id="ped-list"><div style="text-align:center;padding:40px;color:var(--sub)">Carregando...</div></div>
+      <div class="ped-list" id="ped-list"><div style="text-align:center;padding:40px;color:var(--sub)">Carregando...</div></div>
     </div>
   </div>
 </div>
 
-<!-- LOJA PRINCIPAL -->
-<div id="pg-lj" class="pg on">
+<!-- ========== LOJA PRINCIPAL ========== -->
+<div id="pg-loja" class="pg on">
+
+  <!-- NAV -->
   <nav>
-    <div>
-      <div class="logo" onclick="goLj()">PROMPTUS</div>
+    <div class="logo-wrap" onclick="goLoja()">
+      <div class="logo">PROMPTUS</div>
       <div class="logo-s">Store</div>
     </div>
-    <button class="btn" onclick="goAL()">Admin</button>
+    <div class="nav-links">
+      <button class="btn-nav-a" onclick="scrollTo('#sobre')">Sobre</button>
+      <button class="btn-nav-a" onclick="scrollTo('#como-funciona')">Como funciona</button>
+      <button class="btn-nav-a" onclick="scrollTo('#faq')">FAQ</button>
+      <button class="btn-nav" onclick="goAdminLogin()">Admin</button>
+    </div>
   </nav>
 
-  <!-- BANNER INFORMATIVO -->
-  <div class="banner-pacotes">
-    <div class="bp-item"><span class="bp-ic">📦</span><span>Vendidos em <strong>pacotes por área</strong></span></div>
-    <div class="bp-item"><span class="bp-ic">⚡</span><span><strong>Entrega automática</strong> após pagamento</span></div>
-    <div class="bp-item"><span class="bp-ic">🛡️</span><span><strong>7 dias</strong> de garantia</span></div>
-    <div class="bp-item"><span class="bp-ic">🤖</span><span>Funciona no <strong>ChatGPT, Gemini e Claude</strong></span></div>
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-inner" id="ticker-inner">
+      <span class="ticker-item"><span class="ticker-dot"></span>📦 Pacotes por área profissional</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>⚡ <strong>Entrega automática</strong> após pagamento</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>🛡️ <strong>Garantia de 7 dias</strong> sem perguntas</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>🤖 Funciona no <strong>ChatGPT, Gemini e Claude</strong></span>
+      <span class="ticker-item"><span class="ticker-dot"></span>⚖️ Juridico · Médico · Contábil · Negócios · Marketing</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>🇧🇷 Feito para o mercado <strong>brasileiro</strong></span>
+      <!-- duplicar para loop suave -->
+      <span class="ticker-item"><span class="ticker-dot"></span>📦 Pacotes por área profissional</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>⚡ <strong>Entrega automática</strong> após pagamento</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>🛡️ <strong>Garantia de 7 dias</strong> sem perguntas</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>🤖 Funciona no <strong>ChatGPT, Gemini e Claude</strong></span>
+      <span class="ticker-item"><span class="ticker-dot"></span>⚖️ Juridico · Médico · Contábil · Negócios · Marketing</span>
+      <span class="ticker-item"><span class="ticker-dot"></span>🇧🇷 Feito para o mercado <strong>brasileiro</strong></span>
+    </div>
   </div>
 
+  <!-- HERO -->
   <div class="hero">
-    <div class="htag">Prompts Profissionais - Mercado Brasileiro</div>
-    <h1>Prompts que resolvem<br><em>dores reais.</em></h1>
-    <p>Cole na IA, preencha seus dados e receba o resultado profissional em segundos. Compre o pacote da sua área e leve todos os prompts de uma vez.</p>
-    <span class="hbadge">✓ 7 dias de garantia · Entrega automática · Funciona em qualquer IA gratuita</span>
+    <div class="hero-eyebrow">Prompts Profissionais · Brasil 🇧🇷</div>
+    <h1>Sua IA trabalha.<br><span class="line2">Você assina.</span></h1>
+    <p class="hero-sub">Pacotes de prompts que transformam o ChatGPT, Gemini ou Claude em um <strong>assistente profissional da sua área</strong>. Do jurídico ao médico, do marketing ao contábil — <strong>documentos em minutos, não em horas.</strong></p>
+
+    <div class="hero-garantia">
+      <div class="hg-item"><div class="hg-ic grn">✓</div>7 dias de garantia <span>sem perguntas</span></div>
+      <div class="hg-sep"></div>
+      <div class="hg-item"><div class="hg-ic gold">⚡</div>Entrega automática <span>no seu e-mail</span></div>
+      <div class="hg-sep"></div>
+      <div class="hg-item"><div class="hg-ic grn">🤖</div>Qualquer IA gratuita <span>ChatGPT, Gemini...</span></div>
+    </div>
+
+    <div class="hero-cta">
+      <button class="btn-cta-main" onclick="scrollTo('#pacotes')">VER TODOS OS PACOTES</button>
+      <button class="btn-cta-sec" onclick="scrollTo('#como-funciona')">Como funciona?</button>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hs-item"><div class="hs-num">14</div><div class="hs-lbl">Áreas profissionais</div></div>
+      <div class="hs-sep"></div>
+      <div class="hs-item"><div class="hs-num">86</div><div class="hs-lbl">Prompts no total</div></div>
+      <div class="hs-sep"></div>
+      <div class="hs-item"><div class="hs-num">7d</div><div class="hs-lbl">Garantia CDC</div></div>
+      <div class="hs-sep"></div>
+      <div class="hs-item"><div class="hs-num">3</div><div class="hs-lbl">IAs suportadas</div></div>
+    </div>
   </div>
 
-  <div class="sw"><input type="text" id="busca" placeholder="Buscar área... ex: jurídico, médico, negócios, marketing" oninput="render()"></div>
-  <div class="fw" id="fw"></div>
-  <div class="gw">
-    <div class="glbl" id="glbl">Todos os Pacotes</div>
-    <div class="grid" id="grid"></div>
+  <!-- BUSCA & FILTROS -->
+  <div id="pacotes">
+    <div class="search-wrap">
+      <div class="search-inner">
+        <span class="search-ic">🔍</span>
+        <input type="text" id="busca" placeholder="Buscar área ou prompt... ex: jurídico, petição, plano de aula..." oninput="render()">
+      </div>
+    </div>
+    <div class="filter-wrap" id="filter-wrap"></div>
+    <div class="grid-wrap">
+      <div class="grid-label" id="grid-label">Todos os Pacotes</div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </div>
+
+  <!-- SOBRE -->
+  <div class="sobre-wrap" id="sobre">
+    <div class="sobre-inner">
+      <div class="sobre-avatar">👩‍💻</div>
+      <div class="sobre-content">
+        <div class="sobre-eyebrow">Quem está por trás da PROMPTUS</div>
+        <div class="sobre-titulo">Feita com responsabilidade<br>e muito amor. ✨</div>
+        <div class="sobre-texto">
+          A PROMPTUS Store está sendo construída com <strong>cuidado real</strong>. Cada prompt foi testado, revisado e estruturado para entregar resultado profissional — não apenas texto bonito.
+        </div>
+        <div class="sobre-texto">
+          Acredito que a inteligência artificial deve <strong>democratizar o acesso a documentos e serviços de qualidade</strong> no Brasil. Um advogado recém-formado, um médico em início de carreira, um contador autônomo — todos merecem ferramentas que os façam trabalhar melhor e mais rápido.
+        </div>
+        <div class="sobre-texto">
+          Esta loja não tem avaliações falsas, promessas vazias ou contadores fictícios. Estamos começando agora, com honestidade, e queremos crescer junto com você. 🙏
+        </div>
+        <div class="sobre-valores">
+          <span class="sv-item">✦ Honestidade</span>
+          <span class="sv-item">✦ Qualidade real</span>
+          <span class="sv-item">✦ Feito para o Brasil</span>
+          <span class="sv-item">✦ Sem promessas falsas</span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- COMO FUNCIONA -->
-  <div class="como-wrap">
-    <div class="sec-tit">Como funciona?</div>
-    <div class="sec-sub">Do pagamento ao uso em menos de 5 minutos</div>
-    <div class="passos-grid">
-      <div class="passo-item">
+  <div class="como-wrap" id="como-funciona">
+    <div class="sec-eyebrow">Simples assim</div>
+    <div class="sec-titulo">Do pagamento ao resultado<br>em menos de 5 minutos</div>
+    <div class="sec-sub">Sem complicação. Sem espera. Sem precisar saber programar.</div>
+    <div class="passos">
+      <div class="passo">
+        <div class="passo-ic">📦</div>
         <div class="passo-num">01</div>
         <div class="passo-tit">Escolha seu pacote</div>
-        <div class="passo-desc">Selecione a área profissional que você precisa e veja todos os prompts incluídos no pacote.</div>
+        <div class="passo-desc">Selecione a área profissional que você precisa. Cada pacote tem vários prompts prontos para usar.</div>
       </div>
-      <div class="passo-item">
+      <div class="passo">
+        <div class="passo-ic">💳</div>
         <div class="passo-num">02</div>
         <div class="passo-tit">Pague com segurança</div>
-        <div class="passo-desc">Pagamento via Pix, cartão ou boleto pela plataforma Kiwify. 100% seguro e criptografado.</div>
+        <div class="passo-desc">Pix, cartão ou boleto pela plataforma Kiwify. 100% seguro, sem seus dados passarem por nós.</div>
       </div>
-      <div class="passo-item">
+      <div class="passo">
+        <div class="passo-ic">📩</div>
         <div class="passo-num">03</div>
         <div class="passo-tit">Receba na hora</div>
-        <div class="passo-desc">Após confirmação do pagamento, o PDF com todos os prompts chega automaticamente no seu e-mail.</div>
+        <div class="passo-desc">O PDF com todos os prompts chega automaticamente no seu e-mail. Sem esperar, sem envio manual.</div>
       </div>
-      <div class="passo-item">
+      <div class="passo">
+        <div class="passo-ic">🤖</div>
         <div class="passo-num">04</div>
-        <div class="passo-tit">Use em qualquer IA</div>
-        <div class="passo-desc">Copie, cole no ChatGPT, Gemini ou Claude, preencha seus dados e receba o resultado profissional na hora.</div>
+        <div class="passo-tit">Cole e use</div>
+        <div class="passo-desc">Copie o prompt, cole no ChatGPT, Gemini ou Claude, preencha seus dados e receba o documento profissional.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GARANTIA BANNER -->
+  <div class="garantia-banner">
+    <div class="garantia-inner">
+      <div class="garantia-ic">🛡️</div>
+      <div class="garantia-tit">Garantia de 7 dias — sem perguntas</div>
+      <div class="garantia-txt">
+        Em conformidade com o <strong>art. 49 do Código de Defesa do Consumidor</strong>, você tem 7 dias corridos para solicitar reembolso completo, sem precisar dar nenhuma explicação.<br>
+        Basta mandar uma mensagem no WhatsApp: <strong>(11) 97885-7415</strong>.
       </div>
     </div>
   </div>
 
   <!-- AVALIAÇÕES -->
-  <div style="padding:48px 20px 16px;max-width:960px;margin:0 auto">
-    <div class="sec-tit" style="text-align:center;margin-bottom:8px">Avaliações</div>
-    <div class="sec-sub" style="text-align:center;margin-bottom:32px">Seja o primeiro a compartilhar sua experiência com a PROMPTUS Store</div>
-    <div style="background:var(--card);border:1px solid rgba(191,149,63,.15);border-radius:10px;padding:40px;text-align:center;max-width:560px;margin:0 auto">
-      <div style="font-size:40px;margin-bottom:12px">⭐</div>
-      <div style="font-size:14px;font-weight:700;color:var(--txt);letter-spacing:1px;margin-bottom:8px">Nenhuma avaliação ainda</div>
-      <div style="font-size:12px;color:var(--sub);line-height:1.9;margin-bottom:22px">Após receber seu pacote, adoraríamos saber como foi!<br>Mande uma mensagem no WhatsApp e conte pra gente.</div>
-      <a href="https://wa.me/5511978857415?text=Oi!%20Quero%20avaliar%20o%20pacote%20que%20comprei%20na%20PROMPTUS%20Store." target="_blank" style="display:inline-block;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;font-size:10px;font-weight:700;letter-spacing:2px;padding:11px 24px;border-radius:4px;text-decoration:none;text-transform:uppercase">AVALIAR NO WHATSAPP</a>
+  <div class="aval-wrap">
+    <div class="aval-inner">
+      <div class="sec-eyebrow">Avaliações</div>
+      <div class="sec-titulo">O que estão achando</div>
+      <div class="aval-aviso">
+        <div class="aval-aviso-ic">⭐</div>
+        <div class="aval-aviso-tit">Loja em construção — com honestidade</div>
+        <div class="aval-aviso-txt">
+          A PROMPTUS Store acabou de abrir. Preferimos <strong>não inventar avaliações falsas</strong> para parecer maior do que somos.<br><br>
+          Quando você comprar e usar, adoraríamos saber como foi! Sua experiência real vai ajudar outras pessoas a decidirem com confiança. 🙏
+        </div>
+        <a href="https://wa.me/5511978857415?text=Oi!%20Comprei%20na%20PROMPTUS%20e%20quero%20deixar%20minha%20avaliação." target="_blank" class="btn-aval-wa">💬 DEIXAR AVALIAÇÃO NO WHATSAPP</a>
+      </div>
     </div>
   </div>
 
-  <!-- RODAPÉ -->
-  <div class="footer-bar">
-    <div class="footer-bar-logo">PROMPTUS</div>
-    <div style="font-size:9px;letter-spacing:4px;color:var(--sub);text-transform:uppercase;margin-bottom:14px">Store — Prompts Profissionais</div>
-    <div class="footer-bar-links">
-      <a href="https://wa.me/5511978857415" target="_blank">Suporte WhatsApp</a>
-      <a onclick="abrirPrivacidade()">Política de Privacidade</a>
-      <a onclick="abrirTermos()">Termos de Uso</a>
-    </div>
-    <div class="footer-bar-copy">© 2025 PROMPTUS Store · CNPJ em regularização · Todos os direitos reservados · Brasil 🇧🇷</div>
+  <!-- FAQ -->
+  <div class="faq-wrap" id="faq">
+    <div class="sec-eyebrow">Dúvidas frequentes</div>
+    <div class="sec-titulo">Perguntas & Respostas</div>
+    <div class="sec-sub" style="margin-bottom:36px">Tem alguma dúvida que não está aqui? Fale no WhatsApp.</div>
+
+    <div id="faq-lista"></div>
   </div>
-</div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo">PROMPTUS</div>
+          <div class="footer-tagline">Prompts profissionais para o mercado brasileiro.<br>Feitos com responsabilidade e amor. 🇧🇷</div>
+          <a href="https://wa.me/5511978857415" target="_blank" class="footer-wa">💬 SUPORTE NO WHATSAPP</a>
+        </div>
+        <div>
+          <div class="footer-col-tit">Navegação</div>
+          <div class="footer-links">
+            <a onclick="scrollTo('#pacotes')">Ver Pacotes</a>
+            <a onclick="scrollTo('#sobre')">Sobre a Loja</a>
+            <a onclick="scrollTo('#como-funciona')">Como Funciona</a>
+            <a onclick="scrollTo('#faq')">FAQ</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-col-tit">Legal</div>
+          <div class="footer-links">
+            <span onclick="abrirModal('modal-priv')">Política de Privacidade</span>
+            <span onclick="abrirModal('modal-termos')">Termos de Uso</span>
+            <a href="https://wa.me/5511978857415" target="_blank">Suporte & Reembolso</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">© 2025 PROMPTUS Store · CNPJ em regularização · Todos os direitos reservados</div>
+        <div class="footer-selos">
+          <span class="footer-selo">🛡️ LGPD</span>
+          <span class="footer-selo">⚖️ CDC art. 49</span>
+          <span class="footer-selo">🔒 Kiwify</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- fim pg-loja -->
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 <script>
-var SENHA="C@ssia#2025!Store", FB="https://cassia-v9-default-rtdb.firebaseio.com";
-var aA="all", allP=[], filtAtual="all", arT=null;
+// ============ CONFIG ============
+var SENHA = "C@ssia#2025!Store";
+var FB_URL = "https://cassia-v9-default-rtdb.firebaseio.com";
+var filtroAtivo = "all";
+var filtroArea = "all";
+var todosPedidos = [];
+var autoRefreshTimer = null;
 
-// PACOTES POR ÁREA
+// ============ PACOTES ============
 var PACOTES = {
-  "juridico":  {nome:"Jurídico",       qtd:9,  preco:"R$97,90", link:"https://pay.kiwify.com.br/QA4IU7N",
-    prompts:["Petição Inicial Trabalhista","Contrato de Prestação de Serviços","Notificação Extrajudicial","NDA — Acordo de Confidencialidade","Ação de Indenização por Dano Moral","Habeas Corpus","Divórcio Consensual Completo","Recurso Administrativo de Multa","Sequência de Cartas de Cobrança"],
-    desc:"Peças processuais, contratos e notificações com fundamentos em CLT, CC, CPC e Súmulas TST/STJ. Economize horas de pesquisa por documento."},
-  "medico":    {nome:"Médico",          qtd:7,  preco:"R$97,90", link:"https://pay.kiwify.com.br/8LoqqSh",
-    prompts:["Laudo Médico Completo","Relatório para Plano de Saúde","Laudo de Incapacidade para INSS","Atestado Médico com Validade Legal","Evolução de Prontuário SOAP","Laudo Psiquiátrico Forense","Laudo para Cirurgia Bariátrica"],
-    desc:"Laudos, relatórios e atestados padronizados CFM, CID-10, MBE. Para médicos que querem ganhar tempo sem abrir mão da qualidade."},
-  "imoveis":   {nome:"Imobiliário",     qtd:5,  preco:"R$97,90", link:"https://pay.kiwify.com.br/b7qCn6g",
-    prompts:["Descrição de Imóvel para Anúncio","Contrato de Locação Residencial","Proposta de Compra e Venda","Notificação de Despejo","Parecer de Avaliação (PTAM)"],
-    desc:"Contratos, anúncios e avaliações baseados na Lei do Inquilinato e NBR 14.653. Para corretores e advogados imobiliários."},
-  "criativo":  {nome:"Criativo e Arte", qtd:17, preco:"R$97,90", link:"https://pay.kiwify.com.br/xpQ4h4R",
-    prompts:["Caricatura Artística a partir de Foto","Foto de Casal Romântica","Foto de Pet Profissional","Consultoria de Foto para LinkedIn","Letra de Música Personalizada","Discurso Emocionante","História Infantil Personalizada","Bio para Redes Sociais","Roteiro de Reels e TikTok","Nome + Slogan para Negócio","Mensagem Especial","Caricatura em Texto","Declaração de Amor","Pedido de Desculpas","Carta de Recomendação","Discurso de Casamento","e mais..."],
-    desc:"17 prompts para imagens, conteúdo, músicas, histórias e comunicação pessoal. O pacote mais completo da loja."},
-  "negocios":  {nome:"Negócios",        qtd:8,  preco:"R$79,90", link:"https://pay.kiwify.com.br/ZkfQdBC",
-    prompts:["Proposta Comercial de Alto Impacto","Plano de Demissão Humanizada","Análise SWOT com Plano de Ação","Script de Vendas por WhatsApp","Avaliação de Desempenho 360°","Plano de Negócios para MEI","Carta de Advertência Trabalhista","e mais..."],
-    desc:"Propostas, scripts de vendas, RH e estratégia. Para empreendedores, gestores e consultores que precisam de resultados rápidos."},
-  "marketing": {nome:"Marketing",       qtd:7,  preco:"R$79,90", link:"https://pay.kiwify.com.br/MIR1s8Y",
-    prompts:["Copy para Página de Vendas","Sequência de 7 E-mails de Vendas","Roteiro de VSL","Post Viral para Instagram","Anúncio para Meta Ads (A/B)","Estratégia de Lançamento","Persona de Comprador Detalhada"],
-    desc:"Copy, e-mail marketing, VSL e lançamentos. Metodologias AIDA, SPIN e Product Launch Formula para vender mais."},
-  "saude":     {nome:"Saúde e Bem-estar",qtd:7, preco:"R$79,90", link:"https://pay.kiwify.com.br/8xU4GdN",
-    prompts:["Plano Alimentar Individualizado","Relatório de Avaliação Nutricional","Laudo de Capacidade Funcional (TO)","Plano de Coaching com PDI","Relatório de Fisioterapia","Plano de Treino Personalizado","e mais..."],
-    desc:"Documentação para nutricionistas, fisioterapeutas, coaches e educadores físicos. Padrão CFN, COFFITO e CREF."},
-  "concursos": {nome:"Concursos Públicos",qtd:6, preco:"R$79,90", link:"https://pay.kiwify.com.br/luJuxcO",
-    prompts:["Recurso de Questão de Prova","Recurso de Prova Discursiva","Pedido de Isenção de Taxa","Plano de Estudos Personalizado","Redação para Concurso Público","e mais..."],
-    desc:"Recursos, planos de estudo e redações para concursos federais e estaduais. Baseados na Lei 9.784/99 e editais."},
-  "contabil":  {nome:"Contábil",         qtd:5, preco:"R$57,90", link:"https://pay.kiwify.com.br/zepG3rf",
-    prompts:["Parecer Contábil Técnico","Planejamento Tributário Legal","Laudo Pericial Contábil Judicial","Relatório Gerencial Mensal","Projeção de Fluxo de Caixa 12 Meses"],
-    desc:"Pareceres, planejamento tributário e laudos periciais. Padrão NBC TG, IFRS e CPC 2015 para contadores."},
-  "psicologia":{nome:"Psicologia",        qtd:5, preco:"R$57,90", link:"https://pay.kiwify.com.br/7FYAprF",
-    prompts:["Relatório Psicológico Completo","Laudo de Avaliação Neuropsicológica","Plano Terapêutico Individualizado","Laudo Psicológico para Adoção","Evolução de Sessão Psicológica"],
-    desc:"Laudos e relatórios conforme Resolução CFP 06/2019. Para psicólogos clínicos e forenses."},
-  "engenharia":{nome:"Engenharia",        qtd:3, preco:"R$57,90", link:"https://pay.kiwify.com.br/Ogdr0lU",
-    prompts:["Laudo Técnico de Vistoria","Memorial Descritivo de Obra","Laudo Pericial de Engenharia"],
-    desc:"Laudos e memoriais baseados em ABNT NBR 13752, 15575 e normas IBAPE. Para engenheiros e peritos."},
-  "ti":        {nome:"Tecnologia",        qtd:3, preco:"R$57,90", link:"https://pay.kiwify.com.br/jqU7hd7",
-    prompts:["Documento de Requisitos (SRS)","Plano de Resposta a Incidentes","Arquitetura de Microsserviços (ADR)"],
-    desc:"SRS padrão IEEE 830, IRP com playbooks e ADR de microsserviços. Para arquitetos e engenheiros de software."},
-  "educacao":  {nome:"Educação",          qtd:2, preco:"R$37,90", link:"https://pay.kiwify.com.br/afOshJV",
-    prompts:["Plano de Aula Completo BNCC","Projeto Interdisciplinar BNCC"],
-    desc:"Planos de aula e projetos alinhados à BNCC 2018 com metodologias ativas e avaliação formativa."},
-  "ecommerce": {nome:"E-commerce",        qtd:6, preco:"Em breve", link:null,
-    prompts:["Descrição de Produto para Marketplace","Resposta a Avaliação Negativa","Política de Troca e Devolução","Copy para Instagram Shopping","Plano de Lançamento de Loja Virtual","e mais..."],
-    desc:"Em breve! Descrições, políticas e estratégias para Shopee, Mercado Livre e Instagram Shop."},
+  juridico:  {nome:"Jurídico",         qtd:9,  preco:"R$97,90", link:"https://pay.kiwify.com.br/QA4IU7N",
+    desc:"Economize 3h por peça processual. Petições, contratos e notificações com fundamento em CLT, CC, CPC e Súmulas TST/STJ.",
+    prompts:["Petição Inicial Trabalhista","Contrato de Prestação de Serviços","Notificação Extrajudicial","NDA — Acordo de Confidencialidade","Ação de Indenização por Dano Moral","Habeas Corpus","Divórcio Consensual Completo","Recurso Administrativo de Multa","Sequência de Cartas de Cobrança"]},
+  medico:    {nome:"Médico",            qtd:7,  preco:"R$97,90", link:"https://pay.kiwify.com.br/8LoqqSh",
+    desc:"Laudos e relatórios padronizados CFM, CID-10 e MBE. Para médicos que querem ganhar horas sem abrir mão da qualidade.",
+    prompts:["Laudo Médico Completo","Relatório para Plano de Saúde","Laudo de Incapacidade para INSS","Atestado Médico com Validade Legal","Evolução de Prontuário SOAP","Laudo Psiquiátrico Forense","Laudo para Cirurgia Bariátrica"]},
+  criativo:  {nome:"Criativo e Arte",   qtd:17, preco:"R$97,90", link:"https://pay.kiwify.com.br/xpQ4h4R",
+    desc:"O maior pacote da loja. Imagens, músicas, histórias, discursos, bio, roteiros — tudo para quem cria.",
+    prompts:["Caricatura Artística a partir de Foto","Foto de Casal Romântica","Foto de Pet Profissional","Consultoria de Foto para LinkedIn","Letra de Música Personalizada","Discurso Emocionante","História Infantil Personalizada","Bio para Redes Sociais","Roteiro de Reels e TikTok","Nome + Slogan para Negócio","Mensagem Especial","e mais 6 prompts..."]},
+  imoveis:   {nome:"Imobiliário",       qtd:5,  preco:"R$97,90", link:"https://pay.kiwify.com.br/b7qCn6g",
+    desc:"Contratos, anúncios e avaliações baseados na Lei do Inquilinato e NBR 14.653. Para corretores e advogados imobiliários.",
+    prompts:["Descrição de Imóvel para Anúncio","Contrato de Locação Residencial","Proposta de Compra e Venda","Notificação de Despejo","Parecer de Avaliação (PTAM)"]},
+  negocios:  {nome:"Negócios",          qtd:8,  preco:"R$79,90", link:"https://pay.kiwify.com.br/ZkfQdBC",
+    desc:"Propostas, scripts de vendas, RH e estratégia. Para empreendedores e gestores que precisam de resultados rápidos.",
+    prompts:["Proposta Comercial de Alto Impacto","Plano de Demissão Humanizada","Análise SWOT com Plano de Ação","Script de Vendas por WhatsApp","Avaliação de Desempenho 360°","Plano de Negócios para MEI","Carta de Advertência Trabalhista","e mais 1 prompt..."]},
+  marketing: {nome:"Marketing",         qtd:7,  preco:"R$79,90", link:"https://pay.kiwify.com.br/MIR1s8Y",
+    desc:"Copy, e-mail marketing, VSL e lançamentos. Metodologias AIDA, SPIN e Product Launch Formula para vender mais.",
+    prompts:["Copy para Página de Vendas","Sequência de 7 E-mails de Vendas","Roteiro de VSL","Post Viral para Instagram","Anúncio para Meta Ads (A/B)","Estratégia de Lançamento","Persona de Comprador Detalhada"]},
+  saude:     {nome:"Saúde e Bem-estar", qtd:7,  preco:"R$79,90", link:"https://pay.kiwify.com.br/8xU4GdN",
+    desc:"Para nutricionistas, fisioterapeutas, coaches e educadores físicos. Padrão CFN, COFFITO e CREF.",
+    prompts:["Plano Alimentar Individualizado","Relatório de Avaliação Nutricional","Laudo de Capacidade Funcional","Plano de Coaching com PDI","Relatório de Fisioterapia","Plano de Treino Personalizado","e mais 1 prompt..."]},
+  concursos: {nome:"Concursos Públicos", qtd:6, preco:"R$79,90", link:"https://pay.kiwify.com.br/luJuxcO",
+    desc:"Recursos, planos de estudo e redações para concursos federais e estaduais. Baseados na Lei 9.784/99.",
+    prompts:["Recurso de Questão de Prova","Recurso de Prova Discursiva","Pedido de Isenção de Taxa","Plano de Estudos Personalizado","Redação para Concurso Público","e mais 1 prompt..."]},
+  contabil:  {nome:"Contábil",          qtd:5,  preco:"R$57,90", link:"https://pay.kiwify.com.br/zepG3rf",
+    desc:"Pareceres, planejamento tributário e laudos periciais. Padrão NBC TG, IFRS e CPC 2015 para contadores.",
+    prompts:["Parecer Contábil Técnico","Planejamento Tributário Legal","Laudo Pericial Contábil Judicial","Relatório Gerencial Mensal","Projeção de Fluxo de Caixa 12 Meses"]},
+  psicologia:{nome:"Psicologia",         qtd:5,  preco:"R$57,90", link:"https://pay.kiwify.com.br/7FYAprF",
+    desc:"Laudos e relatórios conforme Resolução CFP 06/2019. Para psicólogos clínicos e forenses.",
+    prompts:["Relatório Psicológico Completo","Laudo de Avaliação Neuropsicológica","Plano Terapêutico Individualizado","Laudo Psicológico para Adoção","Evolução de Sessão Psicológica"]},
+  engenharia:{nome:"Engenharia",         qtd:3,  preco:"R$57,90", link:"https://pay.kiwify.com.br/Ogdr0lU",
+    desc:"Laudos e memoriais baseados em ABNT NBR 13752, 15575 e normas IBAPE. Para engenheiros e peritos.",
+    prompts:["Laudo Técnico de Vistoria","Memorial Descritivo de Obra","Laudo Pericial de Engenharia"]},
+  ti:        {nome:"Tecnologia",         qtd:3,  preco:"R$57,90", link:"https://pay.kiwify.com.br/jqU7hd7",
+    desc:"SRS padrão IEEE 830, IRP com playbooks e ADR de microsserviços. Para arquitetos e engenheiros de software.",
+    prompts:["Documento de Requisitos (SRS)","Plano de Resposta a Incidentes","Arquitetura de Microsserviços (ADR)"]},
+  educacao:  {nome:"Educação",           qtd:2,  preco:"R$37,90", link:"https://pay.kiwify.com.br/afOshJV",
+    desc:"Planos de aula e projetos alinhados à BNCC 2018 com metodologias ativas e avaliação formativa.",
+    prompts:["Plano de Aula Completo BNCC","Projeto Interdisciplinar BNCC"]},
+  ecommerce: {nome:"E-commerce",         qtd:6,  preco:"Em breve", link:null,
+    desc:"Em breve! Descrições, políticas e estratégias para Shopee, Mercado Livre e Instagram Shop.",
+    prompts:["Descrição de Produto para Marketplace","Resposta a Avaliação Negativa","Política de Troca e Devolução","Copy para Instagram Shopping","Plano de Lançamento de Loja Virtual","e mais 1 prompt..."]}
 };
 
-// PROMPT GRÁTIS
-var GRATIS_PROMPTS = [
-  {titulo:"Atestado Médico Simples — GRÁTIS", area:"medico",
-   prompt:"SISTEMA: Você é médico com CRM ativo, especializado em medicina clínica.\nTAREFA: Redigir atestado médico simples, claro e com validade legal.\n\nBASE LEGAL: Resolução CFM 1.658/2002 — normas para atestados médicos.\n\nESTRUTURA:\n\nATESTADO MÉDICO\n\nAtesto que o(a) paciente [NOME COMPLETO], [IDADE] anos, [SEXO], portador(a) do CPF [CPF], foi atendido(a) nesta data e encontra-se sob meus cuidados médicos.\n\nEm virtude de [CONDIÇÃO/MOTIVO], necessita de afastamento de suas atividades por [NÚMERO] dia(s), a contar de [DATA INÍCIO] a [DATA FIM].\n\nCID-10: [CÓDIGO]\n\n[CIDADE], [DATA]\n\n_________________________________\nDr(a). [NOME DO MÉDICO]\nCRM [NÚMERO] — [ESTADO]\n[ESPECIALIDADE]\n\nPROTOCOLO ANTI-ALUCINAÇÃO:\n⛔ Não invente CIDs, dados do paciente ou do médico.\n✅ Use EXCLUSIVAMENTE os dados fornecidos.\n✅ Campos sem informação: escreva [DADO AUSENTE].\n\nDADOS:\n[PREENCHA: nome do paciente, idade, sexo, CID, dias de afastamento, nome e CRM do médico]"},
-  {titulo:"Mensagem de Cobrança Amigável — GRÁTIS", area:"negocios",
-   prompt:"SISTEMA: Você é especialista em relacionamento com clientes e cobrança respeitosa.\nTAREFA: Criar mensagem de cobrança amigável que preserve o relacionamento e gere pagamento.\n\nPRINCÍPIOS:\n— Tom educado, nunca agressivo\n— Facilita o pagamento (dá opções)\n— Preserva o relacionamento\n\n3 VERSÕES:\n\nVERSÃO 1 — PRIMEIRO CONTATO (até 7 dias):\nTom gentil, como se fosse um esquecimento.\n\nVERSÃO 2 — SEGUNDO CONTATO (8-20 dias):\nFirme mas respeitoso. Opções de parcelamento.\n\nVERSÃO 3 — TERCEIRO CONTATO (21+ dias):\nSério. Menciona consequências mas deixa porta aberta.\n\nREGRAS: Nunca ameace ilegalmente. Sempre baseado no CDC art. 42.\n\nDADOS:\n[PREENCHA: nome do cliente, valor devido, data de vencimento, seu nome/empresa, forma de pagamento]"}
+var AREAS = [
+  {k:"all",l:"Todos"},
+  {k:"juridico",l:"Jurídico"},{k:"medico",l:"Médico"},{k:"criativo",l:"Criativo"},
+  {k:"negocios",l:"Negócios"},{k:"marketing",l:"Marketing"},{k:"saude",l:"Saúde"},
+  {k:"contabil",l:"Contábil"},{k:"psicologia",l:"Psicologia"},{k:"imoveis",l:"Imobiliário"},
+  {k:"concursos",l:"Concursos"},{k:"engenharia",l:"Engenharia"},{k:"ti",l:"TI"},
+  {k:"educacao",l:"Educação"},{k:"ecommerce",l:"E-commerce"}
 ];
 
-var AREAS=[{k:"all",l:"Todos"},{k:"juridico",l:"Jurídico"},{k:"medico",l:"Médico"},{k:"negocios",l:"Negócios"},{k:"marketing",l:"Marketing"},{k:"contabil",l:"Contábil"},{k:"psicologia",l:"Psicologia"},{k:"saude",l:"Saúde"},{k:"imoveis",l:"Imobiliário"},{k:"ecommerce",l:"E-commerce"},{k:"concursos",l:"Concursos"},{k:"educacao",l:"Educação"},{k:"engenharia",l:"Engenharia"},{k:"ti",l:"TI"},{k:"criativo",l:"Criativo"}];
+// PROMPTS GRATUITOS
+var GRATIS = [
+  {titulo:"Atestado Médico Simples",area:"medico",
+   prompt:"SISTEMA: Você é médico com CRM ativo, especializado em medicina clínica.\nTAREFA: Redigir atestado médico simples, claro e com validade legal.\n\nBASE LEGAL: Resolução CFM 1.658/2002\n\nESTRUTURA:\n\nATESTADO MÉDICO\n\nAtesto que o(a) paciente [NOME COMPLETO], [IDADE] anos, [SEXO], portador(a) do CPF [CPF], foi atendido(a) nesta data e encontra-se sob meus cuidados médicos.\n\nEm virtude de [CONDIÇÃO/MOTIVO], necessita de afastamento de suas atividades por [NÚMERO] dia(s), a contar de [DATA INÍCIO] a [DATA FIM].\n\nCID-10: [CÓDIGO]\n\n[CIDADE], [DATA]\n\n_________________________________\nDr(a). [NOME DO MÉDICO]\nCRM [NÚMERO] — [ESTADO]\n[ESPECIALIDADE]\n\n⛔ Não invente CIDs, dados do paciente ou do médico.\n✅ Use EXCLUSIVAMENTE os dados fornecidos."},
+  {titulo:"Mensagem de Cobrança Amigável",area:"negocios",
+   prompt:"SISTEMA: Você é especialista em relacionamento com clientes e cobrança respeitosa.\nTAREFA: Criar mensagem de cobrança amigável que preserve o relacionamento e gere pagamento.\n\nPRINCÍPIOS:\n— Tom educado, nunca agressivo\n— Facilita o pagamento (dá opções)\n— Preserva o relacionamento\n— Baseado no CDC art. 42\n\n3 VERSÕES:\n\nVERSÃO 1 — 1º CONTATO (até 7 dias):\nTom gentil, como se fosse um esquecimento.\n\nVERSÃO 2 — 2º CONTATO (8–20 dias):\nFirme mas respeitoso. Ofereça opções de parcelamento.\n\nVERSÃO 3 — 3º CONTATO (21+ dias):\nSério. Menciona consequências mas deixa porta aberta.\n\nDADOS:\n[PREENCHA: nome do cliente, valor, data de vencimento, sua empresa, forma de pagamento preferida]"}
+];
 
+// FAQ
+var FAQ = [
+  {q:"Os prompts funcionam no ChatGPT gratuito?",a:"Sim! Todos os prompts funcionam no ChatGPT gratuito (GPT-3.5 e GPT-4o), no Google Gemini gratuito e no Claude. Você não precisa de nenhuma assinatura paga de IA."},
+  {q:"Como recebo o produto após o pagamento?",a:"Após a confirmação do pagamento pela Kiwify (instantâneo para Pix), você recebe um PDF com todos os prompts do pacote automaticamente no e-mail cadastrado na compra. Não há envio manual — é tudo automático."},
+  {q:"Posso usar os prompts para gerar documentos para clientes?",a:"Sim! Os prompts geram minutas de alta qualidade que você personaliza e adapta ao caso concreto. Para as áreas regulamentadas (jurídico, médico, contábil, psicologia, engenharia), o documento final deve ser revisado e assinado pelo profissional habilitado — os prompts são ferramentas de apoio, não substituem o profissional."},
+  {q:"E se eu não gostar? Tem garantia?",a:"Tem! São 7 dias corridos de garantia total, em conformidade com o art. 49 do CDC. Basta mandar uma mensagem no WhatsApp (11) 97885-7415 pedindo o reembolso. Sem perguntas, sem burocracia."},
+  {q:"Posso comprar mais de um pacote?",a:"Claro! Cada pacote é comprado separadamente no Kiwify. Você pode adquirir quantos quiser — cada um com seus prompts específicos da área."},
+  {q:"Os prompts são atualizados?",a:"Sim. Quando houver atualizações significativas nos prompts (por mudanças em legislação, por exemplo), os clientes que compraram receberão a versão atualizada. Entre em contato pelo WhatsApp para saber mais."},
+  {q:"O E-commerce está disponível?",a:"Ainda não! O Pacote E-commerce está em fase final de preparação e será lançado em breve. Se quiser ser avisada assim que sair, mande uma mensagem no WhatsApp com 'E-commerce'."}
+];
+
+// ============ INIT ============
 function init(){
-  try{if(!firebase.apps.length)firebase.initializeApp({databaseURL:FB});}catch(e){}
-  mkF();render();
+  try{if(!firebase.apps.length)firebase.initializeApp({databaseURL:FB_URL});}catch(e){}
+  mkFiltros();
+  mkFAQ();
+  render();
 }
 
-function goLj(){sP("pg-lj");}
-function goAL(){sP("pg-al");}
-function sP(id){
-  document.querySelectorAll(".pg").forEach(function(p){p.classList.remove("on");p.style.display="none";});
-  var e=document.getElementById(id);
-  if(e){e.style.display="block";e.classList.add("on");window.scrollTo(0,0);}
+// ============ NAVEGAÇÃO ============
+function showPage(id){
+  document.querySelectorAll(".pg").forEach(function(p){p.style.display="none";p.classList.remove("on");});
+  var el=document.getElementById(id);
+  if(el){el.style.display="block";el.classList.add("on");window.scrollTo(0,0);}
+}
+function goLoja(){showPage("pg-loja");}
+function goAdminLogin(){showPage("pg-admin-login");}
+function scrollTo(sel){
+  goLoja();
+  setTimeout(function(){
+    var el=document.querySelector(sel)||document.getElementById(sel.replace('#',''));
+    if(el)el.scrollIntoView({behavior:"smooth",block:"start"});
+  },100);
 }
 
-function mkF(){
-  var w=document.getElementById("fw");
+// ============ FILTROS ============
+function mkFiltros(){
+  var w=document.getElementById("filter-wrap");
   if(!w)return;
   w.innerHTML="";
   AREAS.forEach(function(a){
     var b=document.createElement("button");
-    b.className="ft"+(a.k===aA?" on":"");
+    b.className="ft"+(a.k===filtroArea?" on":"");
     b.textContent=a.l;
-    b.onclick=function(){aA=a.k;mkF();render();};
+    b.onclick=function(){filtroArea=a.k;mkFiltros();render();};
     w.appendChild(b);
   });
 }
 
+// ============ RENDER ============
+function normalize(s){return(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");}
+
 function render(){
-  var q=(document.getElementById("busca")||{value:""}).value.toLowerCase();
-  var g=document.getElementById("grid"),lbl=document.getElementById("glbl");
+  var q=normalize((document.getElementById("busca")||{value:""}).value);
+  var g=document.getElementById("grid");
+  var lbl=document.getElementById("grid-label");
   if(!g)return;
 
-  // Filtrar pacotes por área e busca
-  var keys=Object.keys(PACOTES);
-  var lista=keys.filter(function(k){
+  var lista=Object.keys(PACOTES).filter(function(k){
     var p=PACOTES[k];
-    var mA=aA==="all"||k===aA;
-    var mB=!q||p.nome.toLowerCase().indexOf(q)>=0||p.desc.toLowerCase().indexOf(q)>=0||p.prompts.some(function(pr){return pr.toLowerCase().indexOf(q)>=0;});
+    var mA=filtroArea==="all"||k===filtroArea;
+    var mB=!q||normalize(p.nome).indexOf(q)>=0||normalize(p.desc).indexOf(q)>=0||
+      p.prompts.some(function(pr){return normalize(pr).indexOf(q)>=0;});
     return mA&&mB;
   });
 
-  var ai=AREAS.filter(function(a){return a.k===aA;})[0];
-  if(lbl)lbl.textContent=(aA==="all"?"Todos os Pacotes":(ai?ai.l:""))+" ("+lista.length+")";
+  var ai=AREAS.filter(function(a){return a.k===filtroArea;})[0];
+  if(lbl){
+    var lblTxt=filtroArea==="all"?"Todos os Pacotes":(ai?ai.l:"Pacotes");
+    lbl.textContent=lblTxt+" ("+lista.length+" disponíveis)";
+  }
 
   g.innerHTML="";
-  if(!lista.length){g.innerHTML="<div class='empty'>Nenhum pacote encontrado.</div>";return;}
+
+  if(!lista.length){
+    g.innerHTML="<div class='empty-state'>Nenhum pacote encontrado para ""+q+""</div>";
+    return;
+  }
 
   lista.forEach(function(k,i){
     var p=PACOTES[k];
     var isBreve=!p.link;
-    var d=document.createElement("div");
-    d.className="card"+(isBreve?" em-breve":"");
-    d.style.animationDelay=(i*0.06)+"s";
+    var card=document.createElement("div");
+    card.className="card"+(isBreve?" em-breve":"");
+    card.style.animationDelay=(i*0.055)+"s";
 
-    // Mostrar até 5 prompts + indicador de mais
-    var promptsVisiveis=p.prompts.slice(0,5);
-    var temMais=p.prompts.length>5;
-    var promptsHtml=promptsVisiveis.map(function(pr){
+    var maxPrompts=5;
+    var visiveis=p.prompts.slice(0,maxPrompts);
+    var temMais=p.prompts.length>maxPrompts;
+    var promptsHtml=visiveis.map(function(pr){
       return "<div class='prompt-item'>"+esc(pr)+"</div>";
     }).join("");
-    if(temMais){
-      promptsHtml+="<div class='show-more'>+ "+(p.prompts.length-5)+" prompts incluídos</div>";
-    }
+    if(temMais)promptsHtml+="<div class='prompt-more'>+ "+(p.prompts.length-maxPrompts)+" prompts incluídos</div>";
 
-    var botao=isBreve
-      ?"<button class='bcmp-breve' disabled>EM BREVE</button>"
-      :"<button class='bcmp' onclick='comprar(\""+k+"\")'>COMPRAR</button>";
-
-    var precoEl=isBreve
-      ?"<span class='preco-breve'>Em breve</span>"
-      :"<span class='preco'>"+p.preco+"</span>";
-
-    d.innerHTML=
-      "<div class='ct'>"
-        +"<div class='ca'>"+esc(p.nome)+"</div>"
-        +"<div class='cn'>Pacote "+esc(p.nome)+"</div>"
-        +"<div class='cd'>"+esc(p.desc)+"</div>"
+    card.innerHTML=
+      "<div class='card-top'>"
+        +"<div class='card-area'>Pacote "+esc(p.nome)+"</div>"
+        +"<div class='card-nome'>"+esc(p.nome)+"</div>"
+        +"<div class='card-desc'>"+esc(p.desc)+"</div>"
       +"</div>"
-      +"<div class='pkg-badge'>📦 <span class='pkg-count'>"+p.qtd+"</span> prompts incluídos no pacote</div>"
+      +"<div class='pkg-badge'>"
+        +"<div class='pkg-num'>"+p.qtd+"</div>"
+        +"<div class='pkg-txt'>prompts incluídos<small>no pacote</small></div>"
+      +"</div>"
       +"<div class='prompt-list'>"+promptsHtml+"</div>"
-      +"<div class='cb'>"
-        +"<div>"
-          +precoEl
-          +(isBreve?"":"<div class='entrega-badge'>⚡ entrega automática</div>")
+      +"<div class='card-bottom'>"
+        +"<div class='preco-wrap'>"
+          +(isBreve?"<span class='preco-breve'>Em breve</span>":"<span class='preco'>"+esc(p.preco)+"</span>")
+          +(isBreve?"":"<div class='preco-detalhe'>⚡ entrega automática</div>")
         +"</div>"
-        +botao
+        +(isBreve
+          ?"<button class='btn-breve' disabled>EM BREVE</button>"
+          :"<button class='btn-comprar' onclick='comprar(\""+k+"\")'>COMPRAR</button>")
       +"</div>";
 
-    g.appendChild(d);
+    g.appendChild(card);
   });
 
-  // Adicionar cards de prompts gratuitos no final se filtro "all" ou áreas correspondentes
-  if(aA==="all"||aA==="medico"||aA==="negocios"){
-    GRATIS_PROMPTS.forEach(function(gp,i){
-      if(aA!=="all"&&gp.area!==aA)return;
-      if(q&&gp.titulo.toLowerCase().indexOf(q)<0)return;
-      var d=document.createElement("div");
-      d.className="card";
-      d.style.animationDelay=((lista.length+i)*0.06)+"s";
-      d.innerHTML=
-        "<div class='ct'>"
-          +"<div class='ca' style='color:#2ecc71'>✨ GRÁTIS</div>"
-          +"<div class='cn'>"+esc(gp.titulo)+"</div>"
-          +"<div class='cd'>Experimente gratuitamente. Sem pagamento necessário.</div>"
+  // Adicionar gratuitos se área compatível
+  var mostrarGratis=filtroArea==="all"||filtroArea==="medico"||filtroArea==="negocios";
+  if(mostrarGratis){
+    GRATIS.forEach(function(gp,i){
+      if(filtroArea!=="all"&&gp.area!==filtroArea)return;
+      if(q&&normalize(gp.titulo).indexOf(q)<0&&normalize(gp.area).indexOf(q)<0)return;
+      var card=document.createElement("div");
+      card.className="card card-gratis";
+      card.style.animationDelay=((lista.length+i)*0.055)+"s";
+      card.innerHTML=
+        "<div class='card-top'>"
+          +"<div class='card-area' style='color:#2ecc71'>✨ GRATUITO · Experimente agora</div>"
+          +"<div class='card-nome'>"+esc(gp.titulo)+"</div>"
+          +"<div class='card-desc'>Prompt completo, pronto para usar. Sem precisar comprar nada.</div>"
         +"</div>"
-        +"<div style='margin:8px 19px;padding:8px 12px;background:rgba(46,204,113,.06);border:1px solid rgba(46,204,113,.15);border-radius:4px;font-size:10px;color:#2ecc71;font-weight:700'>🎁 Prompt completo disponível na hora</div>"
-        +"<div class='cb'>"
-          +"<span style='font-family:\"Cormorant Garamond\",serif;font-size:22px;font-weight:700;color:#2ecc71'>GRÁTIS</span>"
-          +"<button class='bcmp' style='background:linear-gradient(135deg,#2ecc71,#27ae60)' onclick='abrirGratis("+GRATIS_PROMPTS.indexOf(gp)+")'>VER PROMPT</button>"
+        +"<div style='margin:4px 20px 0;padding:9px 14px;background:rgba(46,204,113,.07);border:1px solid rgba(46,204,113,.18);border-radius:5px;font-size:10px;color:#2ecc71;font-weight:700;display:flex;align-items:center;gap:6px'>🎁 Clique para ver e copiar o prompt</div>"
+        +"<div class='card-bottom'>"
+          +"<span style='font-family:\"Cormorant Garamond\",serif;font-size:26px;font-weight:700;color:#2ecc71;line-height:1'>GRÁTIS</span>"
+          +"<button class='btn-comprar' style='background:linear-gradient(135deg,#2ecc71,#27ae60)' onclick='verGratis("+i+")'>VER PROMPT</button>"
         +"</div>";
-      g.appendChild(d);
+      g.appendChild(card);
     });
   }
 }
@@ -563,109 +858,172 @@ function comprar(area){
   window.open(p.link,"_blank");
 }
 
-function esc(s){return(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
-
-function abrirGratis(idx){
-  var p=GRATIS_PROMPTS[idx];
-  if(!p)return;
-  document.getElementById('gratis-tit').textContent=p.titulo;
-  document.getElementById('gratis-prompt').textContent=p.prompt;
-  document.getElementById('gratis-ok').style.display='none';
-  document.getElementById('ov-gratis').classList.add('on');
-  document.body.style.overflow='hidden';
+// ============ FAQ ============
+function mkFAQ(){
+  var wrap=document.getElementById("faq-lista");
+  if(!wrap)return;
+  wrap.innerHTML="";
+  FAQ.forEach(function(item,i){
+    var div=document.createElement("div");
+    div.className="faq-item";
+    div.innerHTML=
+      "<div class='faq-q' onclick='toggleFAQ(this)'>"
+        +"<span class='faq-q-txt'>"+esc(item.q)+"</span>"
+        +"<span class='faq-ic'>+</span>"
+      +"</div>"
+      +"<div class='faq-a'>"+esc(item.a)+"</div>";
+    wrap.appendChild(div);
+  });
 }
-function fecharGratis(){
-  document.getElementById('ov-gratis').classList.remove('on');
-  document.body.style.overflow='';
+function toggleFAQ(el){
+  var item=el.parentElement;
+  var wasOn=item.classList.contains("on");
+  document.querySelectorAll(".faq-item").forEach(function(f){f.classList.remove("on");});
+  if(!wasOn)item.classList.add("on");
+}
+
+// ============ GRÁTIS ============
+function verGratis(idx){
+  var gp=GRATIS[idx];
+  if(!gp)return;
+  document.getElementById("gratis-tit").textContent=gp.titulo;
+  document.getElementById("gratis-prompt").textContent=gp.prompt;
+  document.getElementById("gratis-ok").style.display="none";
+  abrirModal("modal-gratis");
 }
 function copiarGratis(){
-  var txt=document.getElementById('gratis-prompt').textContent;
-  var ok=function(){document.getElementById('gratis-ok').style.display='block';toast("✅ COPIADO!");};
-  if(navigator.clipboard)navigator.clipboard.writeText(txt).then(ok).catch(function(){fb2(txt,ok);});
-  else fb2(txt,ok);
+  var txt=document.getElementById("gratis-prompt").textContent;
+  var ok=function(){document.getElementById("gratis-ok").style.display="block";toast("✅ COPIADO!");};
+  if(navigator.clipboard){navigator.clipboard.writeText(txt).then(ok).catch(function(){fallbackCopy(txt,ok);});}
+  else fallbackCopy(txt,ok);
+}
+function fallbackCopy(txt,cb){
+  var ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);ta.select();
+  try{document.execCommand("copy");cb();}catch(e){}document.body.removeChild(ta);
 }
 
-function abrirPrivacidade(){document.getElementById('modal-priv').classList.add('on');document.body.style.overflow='hidden';}
-function abrirTermos(){document.getElementById('modal-termos').classList.add('on');document.body.style.overflow='hidden';}
-function fecharLegal(id){document.getElementById(id).classList.remove('on');document.body.style.overflow='';}
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){fecharLegal('modal-priv');fecharLegal('modal-termos');fecharGratis();}});
-
-// ADMIN
-function login(){
-  var pw=document.getElementById("a-pw").value;
-  if(pw===SENHA){document.getElementById("a-err").textContent="";sP("pg-adm");carP();stAR();}
-  else{document.getElementById("a-err").textContent="❌ SENHA INCORRETA";}
+// ============ MODAIS ============
+function abrirModal(id){
+  document.getElementById(id).classList.add("on");
+  document.body.style.overflow="hidden";
 }
-function aTab(t,el){
-  document.querySelectorAll(".atab").forEach(function(x){x.classList.remove("on");});
-  document.querySelectorAll(".ap").forEach(function(x){x.classList.remove("on");});
+function fecharModal(id){
+  document.getElementById(id).classList.remove("on");
+  document.body.style.overflow="";
+}
+document.addEventListener("keydown",function(e){
+  if(e.key==="Escape"){
+    document.querySelectorAll(".modal-ov.on").forEach(function(m){m.classList.remove("on");});
+    document.body.style.overflow="";
+  }
+});
+
+// ============ ADMIN ============
+function doLogin(){
+  var pw=document.getElementById("admin-pw").value;
+  if(pw===SENHA){
+    document.getElementById("admin-err").textContent="";
+    showPage("pg-admin");
+    carregarPedidos();
+    iniciarAutoRefresh();
+  }else{
+    document.getElementById("admin-err").textContent="❌ Senha incorreta";
+  }
+}
+function adminTab(t,el){
+  document.querySelectorAll(".admin-tab").forEach(function(x){x.classList.remove("on");});
+  document.querySelectorAll(".admin-panel").forEach(function(x){x.classList.remove("on");});
   el.classList.add("on");
-  var ap=document.getElementById("ap-"+t);
-  if(ap)ap.classList.add("on");
-  if(t==="pd")carP();
+  var panel=document.getElementById("panel-"+t);
+  if(panel)panel.classList.add("on");
+  if(t==="pedidos")carregarPedidos();
 }
-function setSt(s){
-  var d=document.getElementById("dot"),t=document.getElementById("stxt");
-  if(!d||!t)return;
-  if(s==="ok"){d.className="dot ok";t.textContent="✓ Atualizado";}
-  else if(s==="ld"){d.className="dot";t.textContent="⟳ Atualizando...";}
-  else{d.className="dot err";t.textContent="✗ Erro";}
+function setSyncStatus(s){
+  var dot=document.getElementById("sync-dot"),txt=document.getElementById("sync-txt");
+  if(!dot||!txt)return;
+  if(s==="ok"){dot.className="sync-dot ok";txt.textContent="✓ Sincronizado";}
+  else if(s==="loading"){dot.className="sync-dot";txt.textContent="⟳ Atualizando...";}
+  else{dot.className="sync-dot err";txt.textContent="✗ Erro de conexão";}
 }
-function rfM(){
-  var ic=document.getElementById("rfic");
+function refreshPedidos(){
+  var ic=document.getElementById("rf-ic");
   if(ic)ic.classList.add("go");
-  setSt("ld");
-  carP(function(){if(ic)ic.classList.remove("go");});
+  setSyncStatus("loading");
+  carregarPedidos(function(){if(ic)ic.classList.remove("go");});
 }
-function stAR(){if(arT)clearInterval(arT);arT=setInterval(function(){setSt("ld");carP();},30000);}
-function filtPed(f,el){
-  filtAtual=f;
-  document.querySelectorAll(".fpt").forEach(function(b){b.classList.remove("on");});
+function iniciarAutoRefresh(){if(autoRefreshTimer)clearInterval(autoRefreshTimer);autoRefreshTimer=setInterval(function(){setSyncStatus("loading");carregarPedidos();},30000);}
+function filtrarPedidos(f,el){
+  filtroAtivo=f;
+  document.querySelectorAll(".ftab").forEach(function(b){b.classList.remove("on");});
   if(el)el.classList.add("on");
-  renderP();
+  renderPedidos();
 }
-function tmp(ts){var d=Date.now()-ts,m=Math.floor(d/60000),h=Math.floor(m/60),dy=Math.floor(h/24);if(dy>0)return"há "+dy+"d";if(h>0)return"há "+h+"h";if(m>0)return"há "+m+"min";return"agora";}
-function renderP(){
+function tempoAgo(ts){
+  var d=Date.now()-ts,m=Math.floor(d/60000),h=Math.floor(m/60),dy=Math.floor(h/24);
+  if(dy>0)return"há "+dy+"d";if(h>0)return"há "+h+"h";if(m>0)return"há "+m+"min";return"agora";
+}
+function renderPedidos(){
   var list=document.getElementById("ped-list");
   if(!list)return;
-  var NV=3600000,now=Date.now(),lista=allP;
-  if(filtAtual==="nv")lista=allP.filter(function(p){return p.status==="pendente"&&(now-p.criadoEm)<NV;});
-  else if(filtAtual==="pd")lista=allP.filter(function(p){return p.status==="pendente";});
-  else if(filtAtual==="ok")lista=allP.filter(function(p){return p.status==="entregue";});
-  if(!lista.length){list.innerHTML="<div style='text-align:center;padding:46px;color:var(--sub);font-size:12px;letter-spacing:2px'>Nenhum pedido aqui.</div>";return;}
+  var NV=3600000,now=Date.now();
+  var lista=todosPedidos;
+  if(filtroAtivo==="novo")lista=todosPedidos.filter(function(p){return p.status==="pendente"&&(now-p.criadoEm)<NV;});
+  else if(filtroAtivo==="pend")lista=todosPedidos.filter(function(p){return p.status==="pendente";});
+  else if(filtroAtivo==="entregue")lista=todosPedidos.filter(function(p){return p.status==="entregue";});
+  if(!lista.length){list.innerHTML="<div style='text-align:center;padding:48px;color:var(--sub);font-size:12px;letter-spacing:2px'>Nenhum pedido aqui.</div>";return;}
   list.innerHTML="";
   lista.forEach(function(p){
-    var n2=Date.now(),iN=p.status==="pendente"&&(n2-p.criadoEm)<NV,iP=p.status==="pendente";
+    var now2=Date.now(),iN=p.status==="pendente"&&(now2-p.criadoEm)<NV,iP=p.status==="pendente";
     var cli=p.cliente||{};var dt=new Date(p.criadoEm).toLocaleString("pt-BR");
     var div=document.createElement("div");
-    div.className="pc"+(iN?" nv":"");
-    div.innerHTML="<div style='display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:7px;margin-bottom:7px'><div><div class='pct'>"+esc(p.promptTitulo||p.pacote||"-")+"</div><div class='pcm' style='margin-top:3px'><span>"+esc(cli.nome||"-")+"</span><span>"+esc(cli.email||"-")+"</span></div><div style='font-size:10px;color:var(--sub);margin-top:3px;opacity:.5'>"+dt+" · "+tmp(p.criadoEm)+"</div></div><div style='display:flex;flex-direction:column;align-items:flex-end;gap:5px'><span class='pcp'>"+esc(p.preco||"-")+"</span><span class='bdg "+(iN?"bdg-nv":iP?"bdg-p":"bdg-ok")+"'>"+(iN?"🔥 NOVO":iP?"⏳ Pendente":"✓ Entregue")+"</span></div></div>";
+    div.className="ped-card"+(iN?" novo":"");
+    div.innerHTML=
+      "<div style='display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:7px'>"
+        +"<div>"
+          +"<div class='ped-titulo'>"+esc(p.promptTitulo||p.pacote||"-")+"</div>"
+          +"<div class='ped-meta' style='margin-top:3px'><span>"+esc(cli.nome||"-")+"</span><span>"+esc(cli.email||"-")+"</span></div>"
+          +"<div style='font-size:10px;color:var(--sub2);margin-top:3px'>"+dt+" · "+tempoAgo(p.criadoEm)+"</div>"
+        +"</div>"
+        +"<div style='display:flex;flex-direction:column;align-items:flex-end;gap:5px'>"
+          +"<span class='ped-preco'>"+esc(p.preco||"-")+"</span>"
+          +"<span class='badge "+(iN?"badge-novo":iP?"badge-pend":"badge-ok")+"'>"+(iN?"🔥 NOVO":iP?"⏳ Pendente":"✓ Entregue")+"</span>"
+        +"</div>"
+      +"</div>";
     list.appendChild(div);
   });
 }
-function atuSt(arr){
+function atualizarStats(arr){
   var now=Date.now(),NV=3600000;
-  var nv=arr.filter(function(p){return p.status==="pendente"&&(now-p.criadoEm)<NV;}).length;
-  var pd=arr.filter(function(p){return p.status==="pendente";}).length;
+  var novos=arr.filter(function(p){return p.status==="pendente"&&(now-p.criadoEm)<NV;}).length;
+  var pend=arr.filter(function(p){return p.status==="pendente";}).length;
   var ok=arr.filter(function(p){return p.status==="entregue";}).length;
-  var r=arr.reduce(function(a,p){return a+parseFloat((p.preco||"0").replace("R$","").replace(",",".")||0);},0);
+  var receita=arr.reduce(function(a,p){return a+parseFloat((p.preco||"0").replace("R$","").replace(",",".")||0);},0);
   function se(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
-  se("st-t",arr.length);se("st-p",pd);se("st-n",nv);se("st-r","R$"+r.toFixed(2).replace(".",","));
-  se("ct-a",arr.length);se("ct-n",nv);se("ct-p",pd);se("ct-o",ok);
+  se("st-total",arr.length);se("st-pend",pend);se("st-novos",novos);
+  se("st-receita","R$"+receita.toFixed(2).replace(".",","));
+  se("ct-all",arr.length);se("ct-novo",novos);se("ct-pend",pend);se("ct-entregue",ok);
 }
-function carP(cb){
-  fetch(FB+"/ps_pedidos.json")
+function carregarPedidos(cb){
+  fetch(FB_URL+"/ps_pedidos.json")
     .then(function(r){return r.json();})
     .then(function(data){
       var arr=[];
-      if(data&&typeof data==="object")Object.entries(data).forEach(function(e){var k=e[0],v=e[1];if(v&&v.criadoEm)arr.push(Object.assign({id:k},v));});
+      if(data&&typeof data==="object")Object.entries(data).forEach(function(e){
+        var k=e[0],v=e[1];if(v&&v.criadoEm)arr.push(Object.assign({id:k},v));
+      });
       arr.sort(function(a,b){return b.criadoEm-a.criadoEm;});
-      allP=arr;atuSt(arr);renderP();setSt("ok");if(cb)cb();
+      todosPedidos=arr;atualizarStats(arr);renderPedidos();setSyncStatus("ok");if(cb)cb();
     })
-    .catch(function(){setSt("err");if(cb)cb();});
+    .catch(function(){setSyncStatus("err");if(cb)cb();});
 }
-function fb2(t,cb){var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");cb();}catch(e){}document.body.removeChild(ta);}
-function toast(msg){var t=document.getElementById("toast");if(!t)return;t.textContent=msg;t.classList.add("on");setTimeout(function(){t.classList.remove("on");},3000);}
+
+// ============ UTILS ============
+function esc(s){return(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function toast(msg){
+  var t=document.getElementById("toast");if(!t)return;
+  t.textContent=msg;t.classList.add("on");
+  setTimeout(function(){t.classList.remove("on");},2800);
+}
 
 init();
 </script>
