@@ -633,7 +633,7 @@ footer{background:#000;border-top:1px solid rgba(191,149,63,.12);padding:48px 32
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 <script>
 // ============ CONFIG ============
-var _s = ["UHJv","bXB0","dXMy","MDI1"].join("");
+var _s = [80,114,111,109,112,116,117,115,50,48,50,53].map(function(c){return String.fromCharCode(c);}).join("");
 var FB_URL = "https://cassia-v9-default-rtdb.firebaseio.com";
 var filtroAtivo = "all";
 var filtroArea = "all";
@@ -988,7 +988,7 @@ function doLogin() {
   var pw = document.getElementById("admin-pw").value;
   var errEl = document.getElementById("admin-err");
   if (!pw) { errEl.textContent = "Digite a senha."; return; }
-  if (btoa(pw) === _s) {
+  if (pw === _s) {
     errEl.textContent = "";
     adminLogado = true;
     document.getElementById("admin-pw").value = "";
