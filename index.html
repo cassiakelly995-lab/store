@@ -17,7 +17,6 @@
 <meta name="twitter:title" content="PROMPTUS Store — Prompts Profissionais para IA">
 <meta name="twitter:description" content="Pacotes de prompts profissionais para IA. Entrega automática. Garantia de 7 dias.">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjMDUwNTA1Ii8+PHRleHQgeD0iMTYiIHk9IjIzIiBmb250LWZhbWlseT0ic2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjYmY5NTNmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QPC90ZXh0Pjwvc3ZnPg==">
-<!-- FIX: preconnect adicionado para reduzir latência das fontes -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -434,7 +433,6 @@ footer{background:#000;border-top:1px solid rgba(191,149,63,.12);padding:48px 32
     </div>
   </nav>
 
-  <!-- TICKER: apenas um conjunto — JS duplica para loop sem emenda -->
   <div class="ticker" aria-hidden="true">
     <div class="ticker-inner" id="ticker-inner">
       <span class="ticker-item"><span class="ticker-dot"></span>📦 Pacotes por área profissional</span>
@@ -633,15 +631,6 @@ footer{background:#000;border-top:1px solid rgba(191,149,63,.12);padding:48px 32
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 <script>
-// ============================================================
-// CONFIGURAÇÃO FIREBASE
-// Para habilitar o login seguro via Firebase Authentication:
-// 1. Acesse: Firebase Console > Project Settings > Your apps
-// 2. Copie os valores abaixo e substitua os campos marcados
-// 3. No Firebase Console > Authentication > Sign-in method:
-//    habilite "E-mail/senha"
-// 4. Em Authentication > Users: adicione um usuário admin
-// ============================================================
 var FIREBASE_CONFIG = {
   apiKey:            "AIzaSyAN0c5mBUFS47PgZFJuCgOBDU5lutYh95k",
   authDomain:        "cassia-v9.firebaseapp.com",
@@ -701,8 +690,8 @@ var PACOTES = {
   educacao:  {nome:"Educação",           qtd:2,  preco:"R$37,90", link:"https://pay.kiwify.com.br/afOshJV",
     desc:"Planos de aula e projetos alinhados à BNCC 2018 com metodologias ativas e avaliação formativa.",
     prompts:["Plano de Aula Completo BNCC","Projeto Interdisciplinar BNCC"]},
-  ecommerce: {nome:"E-commerce",         qtd:6,  preco:"Em breve", link:null,
-    desc:"Em breve! Descrições, políticas e estratégias para Shopee, Mercado Livre e Instagram Shop.",
+  ecommerce: {nome:"E-commerce",         qtd:6,  preco:"R$47,90", link:"https://pay.kiwify.com.br/CE590VK",
+    desc:"Descrições, políticas e estratégias para Shopee, Mercado Livre e Instagram Shop.",
     prompts:["Descrição de Produto para Marketplace","Resposta a Avaliação Negativa","Política de Troca e Devolução","Copy para Instagram Shopping","Plano de Lançamento de Loja Virtual","e mais 1 prompt..."]}
 };
 
@@ -737,7 +726,7 @@ var FAQ = [
   {q:"E se eu não gostar? Tem garantia?",a:"Tem! São 7 dias corridos de garantia total, em conformidade com o art. 49 do CDC. Basta mandar uma mensagem no WhatsApp (11) 97885-7415 pedindo o reembolso. Sem perguntas, sem burocracia."},
   {q:"Posso comprar mais de um pacote?",a:"Claro! Cada pacote é comprado separadamente no Kiwify. Você pode adquirir quantos quiser — cada um com seus prompts específicos da área."},
   {q:"Os prompts são atualizados?",a:"Sim. Quando houver atualizações significativas nos prompts (por mudanças em legislação, por exemplo), os clientes que compraram receberão a versão atualizada. Entre em contato pelo WhatsApp para saber mais."},
-  {q:"O E-commerce está disponível?",a:"Ainda não! O Pacote E-commerce está em fase final de preparação e será lançado em breve. Se quiser ser avisada assim que sair, mande uma mensagem no WhatsApp com 'E-commerce'."}
+  {q:"O E-commerce está disponível?",a:"Sim! O Pacote E-commerce já está disponível por R$47,90. São 6 prompts para Shopee, Mercado Livre e Instagram Shop — com entrega automática."}
 ];
 
 // ============ INIT ============
@@ -756,7 +745,6 @@ function init() {
   initVisibilityRefresh();
 }
 
-// ============ TICKER — gera duplicata via JS para loop contínuo ============
 function initTicker() {
   var inner = document.getElementById("ticker-inner");
   if (!inner) return;
@@ -764,7 +752,6 @@ function initTicker() {
   inner.innerHTML = original + original;
 }
 
-// ============ NAVEGAÇÃO ============
 function showPage(id) {
   var pages = document.querySelectorAll(".pg");
   for (var i = 0; i < pages.length; i++) {
@@ -800,7 +787,6 @@ function irPara(sel) {
   }, 100);
 }
 
-// ============ FILTROS ============
 function mkFiltros() {
   var w = document.getElementById("filter-wrap");
   if (!w) return;
@@ -812,7 +798,6 @@ function mkFiltros() {
       b.className = "ft" + (a.k === filtroArea ? " on" : "");
       b.textContent = a.l;
       b.setAttribute("aria-pressed", a.k === filtroArea ? "true" : "false");
-      if (a.k === "ecommerce") b.title = "Em breve";
       b.onclick = function() {
         filtroArea = a.k;
         mkFiltros();
@@ -823,7 +808,6 @@ function mkFiltros() {
   }
 }
 
-// ============ RENDER ============
 function normalize(s) {
   return (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
@@ -938,7 +922,6 @@ function comprar(area) {
   window.open(p.link, "_blank", "noopener,noreferrer");
 }
 
-// ============ FAQ ============
 function mkFAQ() {
   var wrap = document.getElementById("faq-lista");
   if (!wrap) return;
@@ -972,7 +955,6 @@ function toggleFAQ(el) {
   }
 }
 
-// ============ GRÁTIS ============
 function verGratis(idx) {
   var gp = GRATIS[idx];
   if (!gp) return;
@@ -1006,7 +988,6 @@ function fallbackCopy(txt, cb) {
   document.body.removeChild(ta);
 }
 
-// ============ MODAIS ============
 function trapFocus(modal) {
   var sel = 'button:not([disabled]),[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
   modal._trapHandler = function(e) {
@@ -1062,7 +1043,6 @@ document.addEventListener("keydown", function(e) {
   }
 });
 
-// ============ ADMIN — autenticação via Firebase Auth ============
 function doLogin() {
   var email = (document.getElementById("admin-email").value || "").trim();
   var pw = document.getElementById("admin-pw").value;
@@ -1146,7 +1126,6 @@ function pararAutoRefresh() {
   }
 }
 
-// Page Visibility API: pausa o refresh quando a aba fica em background
 function initVisibilityRefresh() {
   document.addEventListener("visibilitychange", function() {
     if (!adminLogado) return;
@@ -1285,7 +1264,6 @@ function carregarPedidos(cb) {
   }
 }
 
-// ============ UTILS ============
 function esc(s) {
   return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
