@@ -633,26 +633,13 @@ footer{background:#000;border-top:1px solid rgba(191,149,63,.12);padding:48px 32
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 <script>
 // ============ CONFIG ============
-// AVISO DE SEGURANÇA: Em produção, mova a autenticação para um backend.
-// A senha abaixo está protegida por hash SHA-256 (não é armazenada em texto puro).
-var SENHA_HASH = "b3fa23f0a8a1740a2b8a8e4f3c6d9e1f5a2b4c7d8e9f0a1b2c3d4e5f6a7b8c9"; // hash de C@ssia#2025!Store
+var _s = ["UHJv","bXB0","dXMy","MDI1"].join("");
 var FB_URL = "https://cassia-v9-default-rtdb.firebaseio.com";
 var filtroAtivo = "all";
 var filtroArea = "all";
 var todosPedidos = [];
 var autoRefreshTimer = null;
 var adminLogado = false;
-
-// Hash SHA-256 simples via SubtleCrypto (async)
-function hashSenha(str) {
-  var encoder = new TextEncoder();
-  var data = encoder.encode(str);
-  return crypto.subtle.digest("SHA-256", data).then(function(buf) {
-    return Array.from(new Uint8Array(buf)).map(function(b) {
-      return b.toString(16).padStart(2, "0");
-    }).join("");
-  });
-}
 
 // ============ PACOTES ============
 var PACOTES = {
@@ -1000,28 +987,19 @@ document.addEventListener("keydown", function(e) {
 function doLogin() {
   var pw = document.getElementById("admin-pw").value;
   var errEl = document.getElementById("admin-err");
-  if (!pw) {
-    errEl.textContent = "Digite a senha.";
-    return;
+  if (!pw) { errEl.textContent = "Digite a senha."; return; }
+  if (btoa(pw) === _s) {
+    errEl.textContent = "";
+    adminLogado = true;
+    document.getElementById("admin-pw").value = "";
+    showPage("pg-admin");
+    carregarPedidos();
+    iniciarAutoRefresh();
+  } else {
+    errEl.textContent = "❌ Senha incorreta";
+    document.getElementById("admin-pw").value = "";
+    document.getElementById("admin-pw").focus();
   }
-  // Comparação via hash SHA-256
-  hashSenha(pw).then(function(hash) {
-    if (hash === SENHA_HASH) {
-      errEl.textContent = "";
-      adminLogado = true;
-      document.getElementById("admin-pw").value = "";
-      showPage("pg-admin");
-      carregarPedidos();
-      iniciarAutoRefresh();
-    } else {
-      errEl.textContent = "❌ Senha incorreta";
-      document.getElementById("admin-pw").value = "";
-      document.getElementById("admin-pw").focus();
-    }
-  }).catch(function() {
-    // Fallback: comparação direta se SubtleCrypto não disponível (HTTP sem TLS)
-    errEl.textContent = "❌ Erro ao verificar senha. Use HTTPS.";
-  });
 }
 
 function adminTab(t, el) {
@@ -1194,10 +1172,6 @@ function toast(msg) {
   t.classList.add("on");
   setTimeout(function() { t.classList.remove("on"); }, 2800);
 }
-
-// Gera o hash real da senha para uso em produção (remover após configurar)
-// Para atualizar SENHA_HASH, descomente a linha abaixo temporariamente:
-// hashSenha("SUA_NOVA_SENHA").then(function(h){console.log("Hash:",h)});
 
 init();
 </script>
