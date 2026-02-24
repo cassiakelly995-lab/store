@@ -17,6 +17,9 @@
 <meta name="twitter:title" content="PROMPTUS Store — Prompts Profissionais para IA">
 <meta name="twitter:description" content="Pacotes de prompts profissionais para IA. Entrega automática. Garantia de 7 dias.">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjMDUwNTA1Ii8+PHRleHQgeD0iMTYiIHk9IjIzIiBmb250LWZhbWlseT0ic2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjYmY5NTNmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QPC90ZXh0Pjwvc3ZnPg==">
+<!-- FIX: preconnect adicionado para reduzir latência das fontes -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -57,7 +60,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:14px 4
 .ticker-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);opacity:.5;flex-shrink:0}
 @media(prefers-reduced-motion:reduce){
   .ticker-inner{animation:none}
-  @keyframes tick{}
 }
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
@@ -233,7 +235,7 @@ footer{background:#000;border-top:1px solid rgba(191,149,63,.12);padding:48px 32
 
 /* ============ ADMIN ============ */
 .admin-login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh}
-.admin-login-box{background:var(--card);border:1px solid var(--brd);border-radius:10px;padding:40px;max-width:320px;width:100%;text-align:center;position:relative}
+.admin-login-box{background:var(--card);border:1px solid var(--brd);border-radius:10px;padding:40px;max-width:340px;width:100%;text-align:center;position:relative}
 .admin-login-box::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);border-radius:10px 10px 0 0}
 .admin-nav{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;border-bottom:1px solid var(--brd2);background:rgba(5,5,5,.97);flex-wrap:wrap;gap:8px}
 .admin-stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;padding:20px 32px}
@@ -247,6 +249,7 @@ footer{background:#000;border-top:1px solid rgba(191,149,63,.12);padding:48px 32
 .admin-panel{display:none}.admin-panel.on{display:block}
 .inp{width:100%;background:rgba(255,255,255,.03);border:1px solid var(--brd);border-radius:5px;padding:12px 14px;color:var(--txt);font-family:"DM Sans",sans-serif;font-size:14px;outline:none;transition:.2s;margin-bottom:9px}
 .inp:focus{border-color:var(--gold);background:rgba(255,255,255,.04)}.inp::placeholder{color:var(--sub2)}
+.inp-lbl{text-align:left;display:block;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--sub);text-transform:uppercase;margin-bottom:5px}
 .inp-err{font-size:11px;color:var(--red);min-height:16px;margin-bottom:7px;font-weight:600}
 .ped-list{display:flex;flex-direction:column;gap:10px}
 .ped-card{background:var(--card);border:1px solid rgba(191,149,63,.09);border-radius:7px;padding:16px;transition:.2s;position:relative}
@@ -315,12 +318,12 @@ footer{background:#000;border-top:1px solid rgba(191,149,63,.12);padding:48px 32
 <div id="modal-gratis" class="modal-ov" role="dialog" aria-modal="true" aria-labelledby="gratis-tit" onclick="if(event.target===this)fecharModal('modal-gratis')">
   <div class="modal-box" style="border-color:rgba(46,204,113,.3);max-width:640px">
     <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(135deg,#2ecc71,#27ae60);border-radius:10px 10px 0 0"></div>
-    <button class="modal-close" onclick="fecharModal('modal-gratis')" aria-label="Fechar modal">✕</button>
+    <button type="button" class="modal-close" onclick="fecharModal('modal-gratis')" aria-label="Fechar modal">✕</button>
     <div class="gratis-badge-tag">✨ GRATUITO</div>
     <div class="modal-tit" id="gratis-tit"></div>
     <div class="gratis-instrucao">📋 <strong>Como usar:</strong> Copie o prompt, cole no ChatGPT, Gemini ou Claude, substitua os campos entre [ ] com seus dados e envie.</div>
     <div class="gratis-prompt-txt" id="gratis-prompt"></div>
-    <button class="btn-copiar" onclick="copiarGratis()">📋 COPIAR PROMPT COMPLETO</button>
+    <button type="button" class="btn-copiar" onclick="copiarGratis()">📋 COPIAR PROMPT COMPLETO</button>
     <div class="copy-ok" id="gratis-ok" role="status">✅ Copiado! Agora cole na IA de sua escolha.</div>
   </div>
 </div>
@@ -328,7 +331,7 @@ footer{background:#000;border-top:1px solid rgba(191,149,63,.12);padding:48px 32
 <!-- ========== MODAL PRIVACIDADE ========== -->
 <div id="modal-priv" class="modal-ov" role="dialog" aria-modal="true" aria-labelledby="modal-priv-tit" onclick="if(event.target===this)fecharModal('modal-priv')">
   <div class="modal-box">
-    <button class="modal-close" onclick="fecharModal('modal-priv')" aria-label="Fechar modal">✕</button>
+    <button type="button" class="modal-close" onclick="fecharModal('modal-priv')" aria-label="Fechar modal">✕</button>
     <div class="modal-tit" id="modal-priv-tit">Política de Privacidade</div>
     <div class="modal-sub">Última atualização: janeiro de 2025 · Em conformidade com a LGPD (Lei 13.709/2018)</div>
     <div class="modal-sec">1. Quem somos</div>
@@ -347,7 +350,7 @@ footer{background:#000;border-top:1px solid rgba(191,149,63,.12);padding:48px 32
 <!-- ========== MODAL TERMOS ========== -->
 <div id="modal-termos" class="modal-ov" role="dialog" aria-modal="true" aria-labelledby="modal-termos-tit" onclick="if(event.target===this)fecharModal('modal-termos')">
   <div class="modal-box">
-    <button class="modal-close" onclick="fecharModal('modal-termos')" aria-label="Fechar modal">✕</button>
+    <button type="button" class="modal-close" onclick="fecharModal('modal-termos')" aria-label="Fechar modal">✕</button>
     <div class="modal-tit" id="modal-termos-tit">Termos de Uso</div>
     <div class="modal-sub">Última atualização: janeiro de 2025 · Ao comprar, você concorda com estes termos</div>
     <div class="modal-sec">1. O produto</div>
@@ -369,10 +372,12 @@ footer{background:#000;border-top:1px solid rgba(191,149,63,.12);padding:48px 32
     <div class="admin-login-box">
       <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:6px;margin-bottom:4px">PROMPTUS</div>
       <div style="font-size:9px;letter-spacing:4px;color:var(--sub2);text-transform:uppercase;margin-bottom:28px">Admin</div>
-      <label for="admin-pw" class="inp-lbl" style="text-align:left;display:block;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--sub);text-transform:uppercase;margin-bottom:5px">Senha</label>
+      <label for="admin-email" class="inp-lbl">E-mail</label>
+      <input class="inp" type="email" id="admin-email" placeholder="admin@exemplo.com" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('admin-pw').focus()">
+      <label for="admin-pw" class="inp-lbl">Senha</label>
       <input class="inp" type="password" id="admin-pw" placeholder="Senha de acesso" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
       <div class="inp-err" id="admin-err" role="alert"></div>
-      <button style="background:var(--grad);color:#000;border:none;padding:14px;border-radius:4px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;width:100%;margin-top:4px" onclick="doLogin()">ENTRAR</button>
+      <button type="button" style="background:var(--grad);color:#000;border:none;padding:14px;border-radius:4px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;width:100%;margin-top:4px" onclick="doLogin()">ENTRAR</button>
       <div style="margin-top:14px;font-size:11px;color:var(--sub2);cursor:pointer" onclick="goLoja()" role="button" tabindex="0" onkeydown="if(event.key==='Enter')goLoja()">← Voltar à loja</div>
     </div>
   </div>
@@ -383,8 +388,8 @@ footer{background:#000;border-top:1px solid rgba(191,149,63,.12);padding:48px 32
   <nav class="admin-nav" aria-label="Navegação admin">
     <div><div class="logo">PROMPTUS</div><div class="logo-s">Admin</div></div>
     <div style="display:flex;gap:7px">
-      <button class="btn-nav" onclick="sairAdmin()">← Loja</button>
-      <button class="btn-nav" onclick="sairAdmin()">Sair</button>
+      <button type="button" class="btn-nav" onclick="sairAdmin()">← Loja</button>
+      <button type="button" class="btn-nav" onclick="sairAdmin()">Sair</button>
     </div>
   </nav>
   <div class="admin-stats" role="region" aria-label="Estatísticas">
@@ -394,19 +399,19 @@ footer{background:#000;border-top:1px solid rgba(191,149,63,.12);padding:48px 32
     <div class="sc"><div class="sc-num" id="st-receita">R$0</div><div class="sc-lbl">Receita</div></div>
   </div>
   <div class="admin-tabs" role="tablist">
-    <button class="admin-tab on" role="tab" aria-selected="true" onclick="adminTab('pedidos',this)">Pedidos</button>
+    <button type="button" class="admin-tab on" role="tab" aria-selected="true" onclick="adminTab('pedidos',this)">Pedidos</button>
   </div>
   <div class="admin-content">
     <div class="admin-panel on" id="panel-pedidos" role="tabpanel">
       <div class="admin-bar">
         <div class="sync-info" aria-live="polite"><div class="sync-dot" id="sync-dot"></div><span class="sync-txt" id="sync-txt">Conectando...</span></div>
-        <button class="btn-refresh" onclick="refreshPedidos()" aria-label="Atualizar pedidos"><span class="spin" id="rf-ic" aria-hidden="true">↻</span> Atualizar</button>
+        <button type="button" class="btn-refresh" onclick="refreshPedidos()" aria-label="Atualizar pedidos"><span class="spin" id="rf-ic" aria-hidden="true">↻</span> Atualizar</button>
       </div>
       <div class="filter-tabs" role="group" aria-label="Filtrar pedidos">
-        <button class="ftab on" onclick="filtrarPedidos('all',this)" aria-pressed="true">Todos <span class="ftab-ct" id="ct-all">0</span></button>
-        <button class="ftab" onclick="filtrarPedidos('novo',this)" aria-pressed="false">Novos <span class="ftab-ct nv" id="ct-novo">0</span></button>
-        <button class="ftab" onclick="filtrarPedidos('pend',this)" aria-pressed="false">Pendentes <span class="ftab-ct pd" id="ct-pend">0</span></button>
-        <button class="ftab" onclick="filtrarPedidos('entregue',this)" aria-pressed="false">Entregues <span class="ftab-ct ok" id="ct-entregue">0</span></button>
+        <button type="button" class="ftab on" onclick="filtrarPedidos('all',this)" aria-pressed="true">Todos <span class="ftab-ct" id="ct-all">0</span></button>
+        <button type="button" class="ftab" onclick="filtrarPedidos('novo',this)" aria-pressed="false">Novos <span class="ftab-ct nv" id="ct-novo">0</span></button>
+        <button type="button" class="ftab" onclick="filtrarPedidos('pend',this)" aria-pressed="false">Pendentes <span class="ftab-ct pd" id="ct-pend">0</span></button>
+        <button type="button" class="ftab" onclick="filtrarPedidos('entregue',this)" aria-pressed="false">Entregues <span class="ftab-ct ok" id="ct-entregue">0</span></button>
       </div>
       <div class="ped-list" id="ped-list" aria-live="polite"><div style="text-align:center;padding:40px;color:var(--sub)">Carregando...</div></div>
     </div>
@@ -422,22 +427,16 @@ footer{background:#000;border-top:1px solid rgba(191,149,63,.12);padding:48px 32
       <div class="logo-s">Store</div>
     </div>
     <div class="nav-links">
-      <button class="btn-nav-a" onclick="irPara('#sobre')">Sobre</button>
-      <button class="btn-nav-a" onclick="irPara('#como-funciona')">Como funciona</button>
-      <button class="btn-nav-a" onclick="irPara('#faq')">FAQ</button>
-      <button class="btn-nav" onclick="goAdminLogin()">Admin</button>
+      <button type="button" class="btn-nav-a" onclick="irPara('#sobre')">Sobre</button>
+      <button type="button" class="btn-nav-a" onclick="irPara('#como-funciona')">Como funciona</button>
+      <button type="button" class="btn-nav-a" onclick="irPara('#faq')">FAQ</button>
+      <button type="button" class="btn-nav" onclick="goAdminLogin()">Admin</button>
     </div>
   </nav>
 
-  <!-- TICKER -->
+  <!-- TICKER: apenas um conjunto — JS duplica para loop sem emenda -->
   <div class="ticker" aria-hidden="true">
     <div class="ticker-inner" id="ticker-inner">
-      <span class="ticker-item"><span class="ticker-dot"></span>📦 Pacotes por área profissional</span>
-      <span class="ticker-item"><span class="ticker-dot"></span>⚡ <strong>Entrega automática</strong> após pagamento</span>
-      <span class="ticker-item"><span class="ticker-dot"></span>🛡️ <strong>Garantia de 7 dias</strong> sem perguntas</span>
-      <span class="ticker-item"><span class="ticker-dot"></span>🤖 Funciona no <strong>ChatGPT, Gemini e Claude</strong></span>
-      <span class="ticker-item"><span class="ticker-dot"></span>⚖️ Juridico · Médico · Contábil · Negócios · Marketing</span>
-      <span class="ticker-item"><span class="ticker-dot"></span>🇧🇷 Feito para o mercado <strong>brasileiro</strong></span>
       <span class="ticker-item"><span class="ticker-dot"></span>📦 Pacotes por área profissional</span>
       <span class="ticker-item"><span class="ticker-dot"></span>⚡ <strong>Entrega automática</strong> após pagamento</span>
       <span class="ticker-item"><span class="ticker-dot"></span>🛡️ <strong>Garantia de 7 dias</strong> sem perguntas</span>
@@ -462,8 +461,8 @@ footer{background:#000;border-top:1px solid rgba(191,149,63,.12);padding:48px 32
     </div>
 
     <div class="hero-cta">
-      <button class="btn-cta-main" onclick="irPara('#pacotes')">VER TODOS OS PACOTES</button>
-      <button class="btn-cta-sec" onclick="irPara('#como-funciona')">Como funciona?</button>
+      <button type="button" class="btn-cta-main" onclick="irPara('#pacotes')">VER TODOS OS PACOTES</button>
+      <button type="button" class="btn-cta-sec" onclick="irPara('#como-funciona')">Como funciona?</button>
     </div>
 
     <div class="hero-stats" aria-label="Números da loja">
@@ -629,17 +628,37 @@ footer{background:#000;border-top:1px solid rgba(191,149,63,.12);padding:48px 32
 
 </div><!-- fim pg-loja -->
 
+<!-- Firebase SDK v8 -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 <script>
-// ============ CONFIG ============
-var _s = [80,114,111,109,112,116,117,115,50,48,50,53].map(function(c){return String.fromCharCode(c);}).join("");
-var FB_URL = "https://cassia-v9-default-rtdb.firebaseio.com";
+// ============================================================
+// CONFIGURAÇÃO FIREBASE
+// Para habilitar o login seguro via Firebase Authentication:
+// 1. Acesse: Firebase Console > Project Settings > Your apps
+// 2. Copie os valores abaixo e substitua os campos marcados
+// 3. No Firebase Console > Authentication > Sign-in method:
+//    habilite "E-mail/senha"
+// 4. Em Authentication > Users: adicione um usuário admin
+// ============================================================
+var FIREBASE_CONFIG = {
+  apiKey:            "COLE_SUA_API_KEY_AQUI",
+  authDomain:        "cassia-v9.firebaseapp.com",
+  databaseURL:       "https://cassia-v9-default-rtdb.firebaseio.com",
+  projectId:         "cassia-v9",
+  storageBucket:     "cassia-v9.appspot.com",
+  messagingSenderId: "COLE_SEU_MESSAGING_SENDER_ID",
+  appId:             "COLE_SEU_APP_ID"
+};
+
+var FB_URL = FIREBASE_CONFIG.databaseURL;
 var filtroAtivo = "all";
 var filtroArea = "all";
 var todosPedidos = [];
 var autoRefreshTimer = null;
 var adminLogado = false;
+var authConfigurado = FIREBASE_CONFIG.apiKey !== "COLE_SUA_API_KEY_AQUI";
 
 // ============ PACOTES ============
 var PACOTES = {
@@ -717,22 +736,33 @@ var FAQ = [
 function init() {
   try {
     if (!firebase.apps.length) {
-      firebase.initializeApp({databaseURL: FB_URL});
+      firebase.initializeApp(FIREBASE_CONFIG);
     }
   } catch(e) {
     console.warn("Firebase não inicializado:", e);
   }
+  initTicker();
   mkFiltros();
   mkFAQ();
   render();
+  initVisibilityRefresh();
+}
+
+// ============ TICKER — gera duplicata via JS para loop contínuo ============
+function initTicker() {
+  var inner = document.getElementById("ticker-inner");
+  if (!inner) return;
+  var original = inner.innerHTML;
+  inner.innerHTML = original + original;
 }
 
 // ============ NAVEGAÇÃO ============
 function showPage(id) {
-  document.querySelectorAll(".pg").forEach(function(p) {
-    p.style.display = "none";
-    p.classList.remove("on");
-  });
+  var pages = document.querySelectorAll(".pg");
+  for (var i = 0; i < pages.length; i++) {
+    pages[i].style.display = "none";
+    pages[i].classList.remove("on");
+  }
   var el = document.getElementById(id);
   if (el) {
     el.style.display = "block";
@@ -742,20 +772,21 @@ function showPage(id) {
 }
 
 function goLoja() { showPage("pg-loja"); }
-
 function goAdminLogin() { showPage("pg-admin-login"); }
 
 function sairAdmin() {
   adminLogado = false;
   pararAutoRefresh();
+  if (authConfigurado) {
+    firebase.auth().signOut().catch(function() {});
+  }
   goLoja();
 }
 
-// Renomeada para evitar conflito com window.scrollTo nativo
 function irPara(sel) {
   goLoja();
   setTimeout(function() {
-    var id = sel.replace('#', '');
+    var id = sel.replace("#", "");
     var el = document.getElementById(id) || document.querySelector(sel);
     if (el) el.scrollIntoView({behavior: "smooth", block: "start"});
   }, 100);
@@ -766,21 +797,22 @@ function mkFiltros() {
   var w = document.getElementById("filter-wrap");
   if (!w) return;
   w.innerHTML = "";
-  AREAS.forEach(function(a) {
-    var b = document.createElement("button");
-    b.className = "ft" + (a.k === filtroArea ? " on" : "");
-    b.textContent = a.l;
-    b.setAttribute("aria-pressed", a.k === filtroArea ? "true" : "false");
-    if (a.k === "ecommerce") {
-      b.title = "Em breve";
-    }
-    b.onclick = function() {
-      filtroArea = a.k;
-      mkFiltros();
-      render();
-    };
-    w.appendChild(b);
-  });
+  for (var i = 0; i < AREAS.length; i++) {
+    (function(a) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "ft" + (a.k === filtroArea ? " on" : "");
+      b.textContent = a.l;
+      b.setAttribute("aria-pressed", a.k === filtroArea ? "true" : "false");
+      if (a.k === "ecommerce") b.title = "Em breve";
+      b.onclick = function() {
+        filtroArea = a.k;
+        mkFiltros();
+        render();
+      };
+      w.appendChild(b);
+    })(AREAS[i]);
+  }
 }
 
 // ============ RENDER ============
@@ -794,15 +826,21 @@ function render() {
   var lbl = document.getElementById("grid-label");
   if (!g) return;
 
-  var lista = Object.keys(PACOTES).filter(function(k) {
+  var keys = Object.keys(PACOTES);
+  var lista = [];
+  for (var i = 0; i < keys.length; i++) {
+    var k = keys[i];
     var p = PACOTES[k];
     var mA = filtroArea === "all" || k === filtroArea;
     var mB = !q || normalize(p.nome).indexOf(q) >= 0 || normalize(p.desc).indexOf(q) >= 0 ||
       p.prompts.some(function(pr) { return normalize(pr).indexOf(q) >= 0; });
-    return mA && mB;
-  });
+    if (mA && mB) lista.push(k);
+  }
 
-  var ai = AREAS.filter(function(a) { return a.k === filtroArea; })[0];
+  var ai = null;
+  for (var j = 0; j < AREAS.length; j++) {
+    if (AREAS[j].k === filtroArea) { ai = AREAS[j]; break; }
+  }
   if (lbl) {
     var lblTxt = filtroArea === "all" ? "Todos os Pacotes" : (ai ? ai.l : "Pacotes");
     lbl.textContent = lblTxt + " (" + lista.length + " disponíveis)";
@@ -815,70 +853,74 @@ function render() {
     return;
   }
 
-  lista.forEach(function(k, i) {
-    var p = PACOTES[k];
-    var isBreve = !p.link;
-    var card = document.createElement("div");
-    card.className = "card" + (isBreve ? " em-breve" : "");
-    card.style.animationDelay = (i * 0.055) + "s";
-
-    var maxPrompts = 5;
-    var visiveis = p.prompts.slice(0, maxPrompts);
-    var temMais = p.prompts.length > maxPrompts;
-    var promptsHtml = visiveis.map(function(pr) {
-      return "<div class='prompt-item'>" + esc(pr) + "</div>";
-    }).join("");
-    if (temMais) promptsHtml += "<div class='prompt-more'>+ " + (p.prompts.length - maxPrompts) + " prompts incluídos</div>";
-
-    var btnHtml = isBreve
-      ? "<button class='btn-breve' disabled aria-disabled='true'>EM BREVE</button>"
-      : "<button class='btn-comprar' onclick='comprar(\"" + esc(k) + "\")' aria-label='Comprar pacote " + esc(p.nome) + "'>COMPRAR</button>";
-
-    var precoHtml = isBreve
-      ? "<span class='preco-breve'>Em breve</span><div style='font-size:9px;color:var(--sub);margin-top:3px;letter-spacing:1px'>Disponível em breve</div>"
-      : "<span class='preco'>" + esc(p.preco) + "</span><div class='preco-detalhe'>⚡ entrega automática</div>";
-
-    card.innerHTML =
-      "<div class='card-top'>"
-        + "<div class='card-area'>Pacote " + esc(p.nome) + "</div>"
-        + "<div class='card-nome'>" + esc(p.nome) + "</div>"
-        + "<div class='card-desc'>" + esc(p.desc) + "</div>"
-      + "</div>"
-      + "<div class='pkg-badge'>"
-        + "<div class='pkg-num' aria-label='" + p.qtd + " prompts incluídos'>" + p.qtd + "</div>"
-        + "<div class='pkg-txt'>prompts incluídos<small>no pacote</small></div>"
-      + "</div>"
-      + "<div class='prompt-list'>" + promptsHtml + "</div>"
-      + "<div class='card-bottom'>"
-        + "<div class='preco-wrap'>" + precoHtml + "</div>"
-        + btnHtml
-      + "</div>";
-
-    g.appendChild(card);
-  });
-
-  // Mostrar gratuitos de acordo com filtro atual (calculado aqui, não stale)
-  var mostrarGratis = filtroArea === "all" || filtroArea === "medico" || filtroArea === "negocios";
-  if (mostrarGratis) {
-    GRATIS.forEach(function(gp, gratisIdx) {
-      if (filtroArea !== "all" && gp.area !== filtroArea) return;
-      if (q && normalize(gp.titulo).indexOf(q) < 0 && normalize(gp.area).indexOf(q) < 0) return;
+  for (var idx = 0; idx < lista.length; idx++) {
+    (function(k, i) {
+      var p = PACOTES[k];
+      var isBreve = !p.link;
       var card = document.createElement("div");
-      card.className = "card card-gratis";
-      card.style.animationDelay = ((lista.length + gratisIdx) * 0.055) + "s";
+      card.className = "card" + (isBreve ? " em-breve" : "");
+      card.style.animationDelay = (i * 0.055) + "s";
+
+      var maxPrompts = 5;
+      var visiveis = p.prompts.slice(0, maxPrompts);
+      var temMais = p.prompts.length > maxPrompts;
+      var promptsHtml = "";
+      for (var pi = 0; pi < visiveis.length; pi++) {
+        promptsHtml += "<div class='prompt-item'>" + esc(visiveis[pi]) + "</div>";
+      }
+      if (temMais) promptsHtml += "<div class='prompt-more'>+ " + (p.prompts.length - maxPrompts) + " prompts incluídos</div>";
+
+      var btnHtml = isBreve
+        ? "<button type='button' class='btn-breve' disabled aria-disabled='true'>EM BREVE</button>"
+        : "<button type='button' class='btn-comprar' onclick='comprar(\"" + esc(k) + "\")' aria-label='Comprar pacote " + esc(p.nome) + "'>COMPRAR</button>";
+
+      var precoHtml = isBreve
+        ? "<span class='preco-breve'>Em breve</span><div style='font-size:9px;color:var(--sub);margin-top:3px;letter-spacing:1px'>Disponível em breve</div>"
+        : "<span class='preco'>" + esc(p.preco) + "</span><div class='preco-detalhe'>⚡ entrega automática</div>";
+
       card.innerHTML =
         "<div class='card-top'>"
-          + "<div class='card-area' style='color:#2ecc71'>✨ GRATUITO · Experimente agora</div>"
-          + "<div class='card-nome'>" + esc(gp.titulo) + "</div>"
-          + "<div class='card-desc'>Prompt completo, pronto para usar. Sem precisar comprar nada.</div>"
+          + "<div class='card-area'>Pacote " + esc(p.nome) + "</div>"
+          + "<div class='card-nome'>" + esc(p.nome) + "</div>"
+          + "<div class='card-desc'>" + esc(p.desc) + "</div>"
         + "</div>"
-        + "<div style='margin:4px 20px 0;padding:9px 14px;background:rgba(46,204,113,.07);border:1px solid rgba(46,204,113,.18);border-radius:5px;font-size:10px;color:#2ecc71;font-weight:700;display:flex;align-items:center;gap:6px'>🎁 Clique para ver e copiar o prompt</div>"
+        + "<div class='pkg-badge'>"
+          + "<div class='pkg-num' aria-label='" + p.qtd + " prompts incluídos'>" + p.qtd + "</div>"
+          + "<div class='pkg-txt'>prompts incluídos<small>no pacote</small></div>"
+        + "</div>"
+        + "<div class='prompt-list'>" + promptsHtml + "</div>"
         + "<div class='card-bottom'>"
-          + "<span style='font-family:\"Cormorant Garamond\",serif;font-size:26px;font-weight:700;color:#2ecc71;line-height:1'>GRÁTIS</span>"
-          + "<button class='btn-comprar' style='background:linear-gradient(135deg,#2ecc71,#27ae60)' onclick='verGratis(" + gratisIdx + ")' aria-label='Ver prompt gratuito: " + esc(gp.titulo) + "'>VER PROMPT</button>"
+          + "<div class='preco-wrap'>" + precoHtml + "</div>"
+          + btnHtml
         + "</div>";
+
       g.appendChild(card);
-    });
+    })(lista[idx], idx);
+  }
+
+  var mostrarGratis = filtroArea === "all" || filtroArea === "medico" || filtroArea === "negocios";
+  if (mostrarGratis) {
+    for (var gi = 0; gi < GRATIS.length; gi++) {
+      (function(gp, gratisIdx) {
+        if (filtroArea !== "all" && gp.area !== filtroArea) return;
+        if (q && normalize(gp.titulo).indexOf(q) < 0 && normalize(gp.area).indexOf(q) < 0) return;
+        var card = document.createElement("div");
+        card.className = "card card-gratis";
+        card.style.animationDelay = ((lista.length + gratisIdx) * 0.055) + "s";
+        card.innerHTML =
+          "<div class='card-top'>"
+            + "<div class='card-area' style='color:#2ecc71'>✨ GRATUITO · Experimente agora</div>"
+            + "<div class='card-nome'>" + esc(gp.titulo) + "</div>"
+            + "<div class='card-desc'>Prompt completo, pronto para usar. Sem precisar comprar nada.</div>"
+          + "</div>"
+          + "<div style='margin:4px 20px 0;padding:9px 14px;background:rgba(46,204,113,.07);border:1px solid rgba(46,204,113,.18);border-radius:5px;font-size:10px;color:#2ecc71;font-weight:700;display:flex;align-items:center;gap:6px'>🎁 Clique para ver e copiar o prompt</div>"
+          + "<div class='card-bottom'>"
+            + "<span style='font-family:\"Cormorant Garamond\",serif;font-size:26px;font-weight:700;color:#2ecc71;line-height:1'>GRÁTIS</span>"
+            + "<button type='button' class='btn-comprar' style='background:linear-gradient(135deg,#2ecc71,#27ae60)' onclick='verGratis(" + gratisIdx + ")' aria-label='Ver prompt gratuito: " + esc(gp.titulo) + "'>VER PROMPT</button>"
+          + "</div>";
+        g.appendChild(card);
+      })(GRATIS[gi], gi);
+    }
   }
 }
 
@@ -893,7 +935,8 @@ function mkFAQ() {
   var wrap = document.getElementById("faq-lista");
   if (!wrap) return;
   wrap.innerHTML = "";
-  FAQ.forEach(function(item) {
+  for (var i = 0; i < FAQ.length; i++) {
+    var item = FAQ[i];
     var div = document.createElement("div");
     div.className = "faq-item";
     div.innerHTML =
@@ -903,17 +946,18 @@ function mkFAQ() {
       + "</div>"
       + "<div class='faq-a' role='region'>" + esc(item.a) + "</div>";
     wrap.appendChild(div);
-  });
+  }
 }
 
 function toggleFAQ(el) {
   var item = el.parentElement;
   var wasOn = item.classList.contains("on");
-  document.querySelectorAll(".faq-item").forEach(function(f) {
-    f.classList.remove("on");
-    var btn = f.querySelector(".faq-q");
+  var items = document.querySelectorAll(".faq-item");
+  for (var i = 0; i < items.length; i++) {
+    items[i].classList.remove("on");
+    var btn = items[i].querySelector(".faq-q");
     if (btn) btn.setAttribute("aria-expanded", "false");
-  });
+  }
   if (!wasOn) {
     item.classList.add("on");
     el.setAttribute("aria-expanded", "true");
@@ -955,14 +999,38 @@ function fallbackCopy(txt, cb) {
 }
 
 // ============ MODAIS ============
+function trapFocus(modal) {
+  var sel = 'button:not([disabled]),[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+  modal._trapHandler = function(e) {
+    if (e.key !== "Tab") return;
+    var els = modal.querySelectorAll(sel);
+    if (!els.length) return;
+    var first = els[0];
+    var last = els[els.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  };
+  modal.addEventListener("keydown", modal._trapHandler);
+}
+
+function releaseFocus(modal) {
+  if (modal._trapHandler) {
+    modal.removeEventListener("keydown", modal._trapHandler);
+    modal._trapHandler = null;
+  }
+}
+
 function abrirModal(id) {
   var modal = document.getElementById(id);
   if (!modal) return;
   modal.classList.add("on");
   document.body.style.overflow = "hidden";
-  // Foco no primeiro elemento focável dentro do modal
+  trapFocus(modal);
   setTimeout(function() {
-    var focusable = modal.querySelector("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])");
+    var focusable = modal.querySelector('button:not([disabled]),[href],input:not([disabled]),[tabindex]:not([tabindex="-1"])');
     if (focusable) focusable.focus();
   }, 50);
 }
@@ -970,44 +1038,66 @@ function abrirModal(id) {
 function fecharModal(id) {
   var modal = document.getElementById(id);
   if (!modal) return;
+  releaseFocus(modal);
   modal.classList.remove("on");
   document.body.style.overflow = "";
 }
 
 document.addEventListener("keydown", function(e) {
   if (e.key === "Escape") {
-    document.querySelectorAll(".modal-ov.on").forEach(function(m) {
-      m.classList.remove("on");
-    });
+    var abertos = document.querySelectorAll(".modal-ov.on");
+    for (var i = 0; i < abertos.length; i++) {
+      releaseFocus(abertos[i]);
+      abertos[i].classList.remove("on");
+    }
     document.body.style.overflow = "";
   }
 });
 
-// ============ ADMIN ============
+// ============ ADMIN — autenticação via Firebase Auth ============
 function doLogin() {
+  var email = (document.getElementById("admin-email").value || "").trim();
   var pw = document.getElementById("admin-pw").value;
   var errEl = document.getElementById("admin-err");
-  if (!pw) { errEl.textContent = "Digite a senha."; return; }
-  if (pw === _s) {
-    errEl.textContent = "";
-    adminLogado = true;
-    document.getElementById("admin-pw").value = "";
-    showPage("pg-admin");
-    carregarPedidos();
-    iniciarAutoRefresh();
-  } else {
-    errEl.textContent = "❌ Senha incorreta";
-    document.getElementById("admin-pw").value = "";
-    document.getElementById("admin-pw").focus();
+
+  if (!email || !pw) { errEl.textContent = "Preencha e-mail e senha."; return; }
+
+  if (!authConfigurado) {
+    errEl.textContent = "⚠️ Firebase Auth não configurado. Veja os comentários no código.";
+    return;
   }
+
+  errEl.textContent = "";
+  firebase.auth().signInWithEmailAndPassword(email, pw)
+    .then(function() {
+      adminLogado = true;
+      document.getElementById("admin-pw").value = "";
+      document.getElementById("admin-email").value = "";
+      showPage("pg-admin");
+      carregarPedidos();
+      iniciarAutoRefresh();
+    })
+    .catch(function(error) {
+      var msg = "Erro ao fazer login. Tente novamente.";
+      if (error.code === "auth/wrong-password" || error.code === "auth/user-not-found" || error.code === "auth/invalid-credential") {
+        msg = "❌ E-mail ou senha incorretos.";
+      } else if (error.code === "auth/too-many-requests") {
+        msg = "⚠️ Muitas tentativas. Tente mais tarde.";
+      }
+      errEl.textContent = msg;
+      document.getElementById("admin-pw").value = "";
+      document.getElementById("admin-pw").focus();
+    });
 }
 
 function adminTab(t, el) {
-  document.querySelectorAll(".admin-tab").forEach(function(x) {
-    x.classList.remove("on");
-    x.setAttribute("aria-selected", "false");
-  });
-  document.querySelectorAll(".admin-panel").forEach(function(x) { x.classList.remove("on"); });
+  var tabs = document.querySelectorAll(".admin-tab");
+  for (var i = 0; i < tabs.length; i++) {
+    tabs[i].classList.remove("on");
+    tabs[i].setAttribute("aria-selected", "false");
+  }
+  var panels = document.querySelectorAll(".admin-panel");
+  for (var j = 0; j < panels.length; j++) panels[j].classList.remove("on");
   el.classList.add("on");
   el.setAttribute("aria-selected", "true");
   var panel = document.getElementById("panel-" + t);
@@ -1019,9 +1109,9 @@ function setSyncStatus(s) {
   var dot = document.getElementById("sync-dot");
   var txt = document.getElementById("sync-txt");
   if (!dot || !txt) return;
-  if (s === "ok") { dot.className = "sync-dot ok"; txt.textContent = "✓ Sincronizado"; }
+  if (s === "ok")      { dot.className = "sync-dot ok";  txt.textContent = "✓ Sincronizado"; }
   else if (s === "loading") { dot.className = "sync-dot"; txt.textContent = "⟳ Atualizando..."; }
-  else { dot.className = "sync-dot err"; txt.textContent = "✗ Erro de conexão"; }
+  else                 { dot.className = "sync-dot err"; txt.textContent = "✗ Erro de conexão"; }
 }
 
 function refreshPedidos() {
@@ -1035,6 +1125,7 @@ function iniciarAutoRefresh() {
   pararAutoRefresh();
   autoRefreshTimer = setInterval(function() {
     if (!adminLogado) { pararAutoRefresh(); return; }
+    if (document.hidden) return;
     setSyncStatus("loading");
     carregarPedidos();
   }, 30000);
@@ -1047,12 +1138,24 @@ function pararAutoRefresh() {
   }
 }
 
+// Page Visibility API: pausa o refresh quando a aba fica em background
+function initVisibilityRefresh() {
+  document.addEventListener("visibilitychange", function() {
+    if (!adminLogado) return;
+    if (!document.hidden) {
+      setSyncStatus("loading");
+      carregarPedidos();
+    }
+  });
+}
+
 function filtrarPedidos(f, el) {
   filtroAtivo = f;
-  document.querySelectorAll(".ftab").forEach(function(b) {
-    b.classList.remove("on");
-    b.setAttribute("aria-pressed", "false");
-  });
+  var ftabs = document.querySelectorAll(".ftab");
+  for (var i = 0; i < ftabs.length; i++) {
+    ftabs[i].classList.remove("on");
+    ftabs[i].setAttribute("aria-pressed", "false");
+  }
   if (el) {
     el.classList.add("on");
     el.setAttribute("aria-pressed", "true");
@@ -1073,7 +1176,7 @@ function renderPedidos() {
   if (!list) return;
   var NV = 3600000, now = Date.now();
   var lista = todosPedidos;
-  if (filtroAtivo === "novo") lista = todosPedidos.filter(function(p) { return p.status === "pendente" && (now - p.criadoEm) < NV; });
+  if (filtroAtivo === "novo")      lista = todosPedidos.filter(function(p) { return p.status === "pendente" && (now - p.criadoEm) < NV; });
   else if (filtroAtivo === "pend") lista = todosPedidos.filter(function(p) { return p.status === "pendente"; });
   else if (filtroAtivo === "entregue") lista = todosPedidos.filter(function(p) { return p.status === "entregue"; });
 
@@ -1083,8 +1186,10 @@ function renderPedidos() {
   }
 
   list.innerHTML = "";
-  lista.forEach(function(p) {
-    var now2 = Date.now(), iN = p.status === "pendente" && (now2 - p.criadoEm) < NV, iP = p.status === "pendente";
+  for (var i = 0; i < lista.length; i++) {
+    var p = lista[i];
+    var iN = p.status === "pendente" && (Date.now() - p.criadoEm) < NV;
+    var iP = p.status === "pendente";
     var cli = p.cliente || {};
     var dt = new Date(p.criadoEm).toLocaleString("pt-BR");
     var div = document.createElement("div");
@@ -1102,62 +1207,74 @@ function renderPedidos() {
         + "</div>"
       + "</div>";
     list.appendChild(div);
-  });
+  }
 }
 
 function atualizarStats(arr) {
   var now = Date.now(), NV = 3600000;
-  var novos = arr.filter(function(p) { return p.status === "pendente" && (now - p.criadoEm) < NV; }).length;
-  var pend = arr.filter(function(p) { return p.status === "pendente"; }).length;
-  var ok = arr.filter(function(p) { return p.status === "entregue"; }).length;
-  var receita = arr.reduce(function(a, p) {
-    return a + parseFloat((p.preco || "0").replace("R$", "").replace(",", ".") || 0);
-  }, 0);
+  var novos = 0, pend = 0, ok = 0, receita = 0;
+  for (var i = 0; i < arr.length; i++) {
+    var p = arr[i];
+    if (p.status === "pendente" && (now - p.criadoEm) < NV) novos++;
+    if (p.status === "pendente") pend++;
+    if (p.status === "entregue") ok++;
+    receita += parseFloat((p.preco || "0").replace("R$", "").replace(",", ".")) || 0;
+  }
   function se(id, v) { var e = document.getElementById(id); if (e) e.textContent = v; }
-  se("st-total", arr.length);
-  se("st-pend", pend);
-  se("st-novos", novos);
+  se("st-total",   arr.length);
+  se("st-pend",    pend);
+  se("st-novos",   novos);
   se("st-receita", "R$" + receita.toFixed(2).replace(".", ","));
-  se("ct-all", arr.length);
-  se("ct-novo", novos);
-  se("ct-pend", pend);
-  se("ct-entregue", ok);
+  se("ct-all",     arr.length);
+  se("ct-novo",    novos);
+  se("ct-pend",    pend);
+  se("ct-entregue",ok);
 }
 
 function carregarPedidos(cb) {
   var list = document.getElementById("ped-list");
-  if (list && list.innerHTML.indexOf("Carregando") < 0 && todosPedidos.length === 0) {
+  if (list && todosPedidos.length === 0) {
     list.innerHTML = "<div style='text-align:center;padding:40px;color:var(--sub)'>Carregando...</div>";
   }
-  fetch(FB_URL + "/ps_pedidos.json")
-    .then(function(r) {
-      if (!r.ok) throw new Error("HTTP " + r.status);
-      return r.json();
-    })
-    .then(function(data) {
-      var arr = [];
-      if (data && typeof data === "object") {
-        Object.entries(data).forEach(function(entry) {
-          var k = entry[0], v = entry[1];
-          if (v && v.criadoEm) arr.push(Object.assign({id: k}, v));
-        });
-      }
-      arr.sort(function(a, b) { return b.criadoEm - a.criadoEm; });
-      todosPedidos = arr;
-      atualizarStats(arr);
-      renderPedidos();
-      setSyncStatus("ok");
-      if (cb) cb();
-    })
-    .catch(function(err) {
-      console.error("Erro ao carregar pedidos:", err);
-      setSyncStatus("err");
-      var list2 = document.getElementById("ped-list");
-      if (list2 && todosPedidos.length === 0) {
-        list2.innerHTML = "<div style='text-align:center;padding:48px;color:var(--red);font-size:12px;letter-spacing:1px'>⚠️ Não foi possível carregar os pedidos.<br>Verifique sua conexão e tente novamente.</div>";
-      }
-      if (cb) cb();
-    });
+
+  function fetchComToken(token) {
+    var url = FB_URL + "/ps_pedidos.json" + (token ? "?auth=" + token : "");
+    fetch(url)
+      .then(function(r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
+      .then(function(data) {
+        var arr = [];
+        var keys = Object.keys(data || {});
+        for (var i = 0; i < keys.length; i++) {
+          var v = data[keys[i]];
+          if (v && v.criadoEm) arr.push(Object.assign({id: keys[i]}, v));
+        }
+        arr.sort(function(a, b) { return b.criadoEm - a.criadoEm; });
+        todosPedidos = arr;
+        atualizarStats(arr);
+        renderPedidos();
+        setSyncStatus("ok");
+        if (cb) cb();
+      })
+      .catch(function(err) {
+        console.error("Erro ao carregar pedidos:", err);
+        setSyncStatus("err");
+        var list2 = document.getElementById("ped-list");
+        if (list2 && todosPedidos.length === 0) {
+          list2.innerHTML = "<div style='text-align:center;padding:48px;color:var(--red);font-size:12px;letter-spacing:1px'>⚠️ Não foi possível carregar os pedidos.<br>Verifique sua conexão e tente novamente.</div>";
+        }
+        if (cb) cb();
+      });
+  }
+
+  var user = authConfigurado ? firebase.auth().currentUser : null;
+  if (user) {
+    user.getIdToken().then(fetchComToken).catch(function() { fetchComToken(null); });
+  } else {
+    fetchComToken(null);
+  }
 }
 
 // ============ UTILS ============
